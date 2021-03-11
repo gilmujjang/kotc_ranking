@@ -1,2 +1,4 @@
-# KOTC ranking system
-금오테니스 랭킹 시스템
+# 시작하기
+
+### `npm install`
+### `npm run start`
