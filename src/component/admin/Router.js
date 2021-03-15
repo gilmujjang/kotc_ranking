@@ -20,12 +20,21 @@ const AppRouter = ({ refreshUser,isLoggedIn, userObj }) => {
           }}
         >
           <Route exact path = "/">
+            주소에 /#/admin 또는 /#/client 를 붙이세요
+          </Route>
+          <Route exact path = "/admin">
             <AdminMain userObj={userObj} />
           </Route>
         </div>
          ) : (
           <>
+            <Route exact path = "/client">
+              여기다 client 작성하셈
+            </Route>
             <Route exact path = "/">
+              주소에 /#/admin 또는 /#/client 를 붙이세요
+            </Route>
+            <Route exact path = "/admin">
               <Auth/>
             </Route>
           </>
