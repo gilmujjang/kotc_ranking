@@ -8,13 +8,13 @@ const CreateUser = () => {
     name: '',
     studentid:'',
     department:'',
-    rating:'',
+    start_rating:'',
     status:''
   });
   const [attachment, setAttachment] = useState("");
 
 
-  const { name, studentid, department, rating, status} = inputs;
+  const { name, studentid, department, start_rating, status} = inputs;
 
   const handleChange = (e) => {
     const {value, name} = e.target;
@@ -37,7 +37,7 @@ const CreateUser = () => {
       alert("학과를 입력하세요")
       return;
     }
-    if(rating === ''){
+    if(start_rating === ''){
       alert("초기 레이팅을 입력하세요")
       return;
     }
@@ -69,7 +69,7 @@ const CreateUser = () => {
       name: name,
       studentid: studentid,
       department: department,
-      rating: rating,
+      start_rating: start_rating,
       status: status,
       time:time,
       attachmentUrl,
@@ -81,7 +81,7 @@ const CreateUser = () => {
       name: '',
       studentid:'',
       department:'',
-      rating:'',
+      start_rating:'',
       status:''
     })
   };
@@ -133,7 +133,7 @@ const CreateUser = () => {
         </div>
         <div className="needMargin">
           <span>초기레이팅</span>
-          <Input type="text" name='rating' onChange={handleChange} value={rating}/>
+          <Input type="text" name='start_rating' onChange={handleChange} value={start_rating}/>
         </div>
         <div className="needMargin">
           <span>상태</span>
