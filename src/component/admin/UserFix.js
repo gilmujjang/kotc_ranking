@@ -3,13 +3,13 @@ import '../../css/admin.css';
 // import { Form, Input, Button } from 'reactstrap';
 // import { dbService, storageService } from '../../fbase';
 
-const CreateUser = () => {
+const UserFix = () => {
  
   return (
     <div className="Box">
-      경기등록
+      유저(최근가입한순으로정렬)
     </div>
   );
 };
 
-export default CreateUser;
+export default UserFix;
