@@ -1,15 +1,26 @@
-import { React, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import '../../css/admin.css';
 import "react-datepicker/dist/react-datepicker.css"
 import 'react-datepicker/dist/react-datepicker-cssmodules.min.css'
-import { Form, Input, Button, ToastBody } from 'reactstrap';
+import { Form, Input, Button } from 'reactstrap';
 import DatePicker, { registerLocale } from "react-datepicker";
 import { dbService, storageService } from '../../fbase';
 
 const CreateUser = () => {
+  const [searchWinner,setSearchWinner] = useState("");
+  const [searchLoser,setSearchLoser] = useState("");
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+
+  useEffect(() => {
+    dbService.collection("user").onSnapshot(snapshot => {
+      snapshot.docs.map(doc => (
+        console.log(doc.data())
+      ))
+    })
+  }, [])
 
   const regiMatch = (
     <div className='userMaker'>
