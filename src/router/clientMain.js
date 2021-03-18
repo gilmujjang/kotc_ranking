@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../component/client/Header';
 import '../style.css';
 
-const clientMain = () => {
+const ClientMain = () => {
   return (
     <div className="App">
       <Header />
@@ -13,4 +13,4 @@ const clientMain = () => {
   );
 };
 
-export default clientMain;
+export default ClientMain;

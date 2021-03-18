@@ -1,6 +1,6 @@
 import './style.css';
 import React, { useState, useEffect } from "react";
-import AppRouter from "./component/admin/Router";
+import AppRouter from "./component/Router";
 import { authService } from "./fbase";
 
 
