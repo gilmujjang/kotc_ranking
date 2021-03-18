@@ -76,6 +76,9 @@ const CreateUser = () => {
     }
   };
 
+  const matchSubmit = () => {
+    
+  }
   const regiMatch = (
     <div className='userMaker'>
       <Form className="noteWriter">
@@ -109,7 +112,7 @@ const CreateUser = () => {
           <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
         </div>
         <div className="needMargin">{allUsers}</div>
-        <Button className="needMargin">전송</Button>
+        <Button className="needMargin" onClick={matchSubmit}>전송</Button>
       </Form>
     </div>
   );
