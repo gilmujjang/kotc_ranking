@@ -6,7 +6,7 @@ import { Form, Input, Button } from 'reactstrap';
 import DatePicker, { registerLocale } from "react-datepicker";
 import { dbService, storageService } from '../../fbase';
 
-const CreateUser = () => {
+const RegiMatch = () => {
   const [searchWinner,setSearchWinner] = useState("");
   const [searchLoser,setSearchLoser] = useState("");
   const [winners, setWinners] = useState([]);
@@ -153,4 +153,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default RegiMatch;
