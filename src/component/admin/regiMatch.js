@@ -26,15 +26,53 @@ const CreateUser = () => {
 
   const winnerChange = e => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       if(winners.length>=2){
         alert('2명이하만')
-        return
+        setSearchWinner('');
+        return;
+      } else {  //2명 이하이고
+        if(allUsers.includes(searchWinner)){  //유저목록에 있으면
+          if(winners.includes(searchWinner)){ //근데 이미 등록했으면
+            alert('이미 등록한 유저입니다');
+            setSearchWinner('');
+          } else {
+            setWinners(winners.concat(searchWinner))
+            setSearchWinner('');
+          }
+        } else { //등록된 유저가 아니면
+          alert('등록된 유저가 아닙니다')
+          setSearchWinner('');
+        }
       }
-      setWinners(winners.concat(searchWinner))
-      setSearchWinner('');
-      e.preventDefault();
-    } else {
+    } else { 
       setSearchWinner(e.target.value);
+    }
+  };
+
+  const loserChange = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if(losers.length>=2){
+        alert('2명이하만')
+        setSearchLoser('');
+        return;
+      } else {  //2명 이하이고
+        if(allUsers.includes(searchLoser)){  //유저목록에 있으면
+          if(losers.includes(searchLoser)){ //근데 이미 등록했으면
+            alert('이미 등록한 유저입니다');
+            setSearchLoser('');
+          } else {
+            setLosers(losers.concat(searchLoser))
+            setSearchLoser('');
+          }
+        } else { //등록된 유저가 아니면
+          alert('등록된 유저가 아닙니다')
+          setSearchLoser('');
+        }
+      }
+    } else { 
+      setSearchLoser(e.target.value);
     }
   };
 
@@ -56,7 +94,7 @@ const CreateUser = () => {
           <span className="versus"> VS </span>
           <span>
             <div>패</div>
-            <Input type="text" name='lose'/>
+            <Input type="text" name='lose' value={searchLoser} onChange={loserChange} onKeyPress={loserChange}/>
             <div className="users">
               <div className="flexWrap">
                 {losers.map(i => (
