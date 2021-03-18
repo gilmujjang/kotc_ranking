@@ -67,10 +67,10 @@ const CreateUser = () => {
 
     const userProfile = {
       name: name,
-      studentid: studentid,
+      studentid: parseInt(studentid),
       department: department,
-      start_rating: start_rating,
-      rating, start_rating,
+      start_rating: parseInt(start_rating),
+      rating: parseInt(start_rating),
       status: status,
       time:time,
       attachmentUrl,

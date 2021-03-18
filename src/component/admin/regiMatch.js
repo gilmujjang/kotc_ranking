@@ -5,10 +5,14 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.min.css'
 import { Form, Input, Button } from 'reactstrap';
 import DatePicker, { registerLocale } from "react-datepicker";
 import { dbService, storageService } from '../../fbase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const RegiMatch = () => {
   const [searchWinner,setSearchWinner] = useState("");
+  const [winnersRating, setWinnersRating] = useState([]);
   const [searchLoser,setSearchLoser] = useState("");
+  const [losersRating, setLosersRating] = useState([]);
   const [gameUser, setGameUser] = useState("");
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
@@ -41,8 +45,12 @@ const RegiMatch = () => {
           }
             setWinners(winners.concat(searchWinner))
             setGameUser(gameUser.concat(searchWinner))
-            setSearchWinner('');
-          
+            dbService.collection("user").where("name","==",searchWinner).get().then((snapshot) => {
+              snapshot.forEach((doc) => {
+                setWinnersRating(winnersRating.concat(doc.data().rating));
+              })
+            })
+            setSearchWinner('');          
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchWinner('');
@@ -69,6 +77,12 @@ const RegiMatch = () => {
           }
           setGameUser(gameUser.concat(searchLoser))
           setLosers(losers.concat(searchLoser))
+          dbService.collection("user").where("name","==",searchLoser).get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+              setLosersRating(losersRating.concat(doc.data().rating));
+            })
+          })
+          setSearchWinner('');  
           setSearchLoser('');
         
         } else { //등록된 유저가 아니면
@@ -82,6 +96,20 @@ const RegiMatch = () => {
   };
 
   const matchSubmit = async(e) => {
+    let winnerAverageRating = winnersRating[0];
+    let loserAverageRating = losersRating[0];
+    if(winnersRating.length==2){
+      winnerAverageRating = (winnersRating[0]+winnersRating[1])/2
+    }
+    if(losersRating.length==2){
+      loserAverageRating = (losersRating[0]+losersRating[1])/2
+    }
+    const percentage = (1/(1+(Math.pow(10,(loserAverageRating-winnerAverageRating)/400)))).toFixed(2)
+    const reversePercentage = (1-percentage).toFixed(2)
+    console.log(percentage)
+    console.log(reversePercentage)
+    const RatingChange = Math.round(reversePercentage*32)
+    console.log("rating 변화",RatingChange)
     if(winners.length===0){
       alert('승자를 입력하세요');
       return;
@@ -133,16 +161,34 @@ const RegiMatch = () => {
 
     const match = {
       winners: winners,
+      winnersRating: winnersRating,
       losers: losers,
+      losersRating: losersRating,
+      ratingChange: RatingChange,
       date: matchDate,
       write_time: time
     }
 
     await dbService.collection("game").doc(matchDate+'-'+time).set(match);
+    winners.map(winner => {
+      dbService.collection("user").doc(winner).update({
+        rating: winnersRating.shift() + RatingChange
+      })
+    })
+    losers.map(loser => {
+      dbService.collection("user").doc(loser).update({
+        rating: losersRating.shift() - RatingChange
+      })
+    })
     setSearchWinner('');
     setSearchLoser('');
     setWinners([]);
     setLosers([]);
+    setGameUser([]);
+    setWinnersRating([]);
+    setLosersRating([]);
+    winnerAverageRating = 0;
+    loserAverageRating = 0;
   }
 
 
@@ -155,10 +201,7 @@ const RegiMatch = () => {
             <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
             <div className="users flexWrap">
               {winners.map(i => (
-                <>
-                  <span className="targetUser">{i}</span>
-                  <i className="fas fa-times-circle winnerSearchCancle"></i>
-                </>
+                <span className="targetUser">{i}</span>
               ))}
             </div>
           </span>
@@ -169,10 +212,7 @@ const RegiMatch = () => {
             <div className="users">
               <div className="flexWrap">
                 {losers.map(i => (
-                  <>
                   <span className="targetUser">{i}</span>
-                  <i className="fas fa-times-circle winnerSearchCancle"></i>
-                </>
                 ))}
               </div>
             </div>
