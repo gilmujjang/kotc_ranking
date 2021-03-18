@@ -24,7 +24,8 @@ const CreateUser = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const userMakeSubmit = async(e) => {
+    e.preventDefault();
     if(name === ''){
       alert("이름을 입력하세요")
       return;
@@ -45,8 +46,6 @@ const CreateUser = () => {
       alert("재학상태를 입력하세요")
       return;
     }
-    
-    e.preventDefault();
     let attachmentUrl = "";
     if(attachment !== ""){
       const attachmentRef = storageService.ref().child(name+studentid);
@@ -139,7 +138,7 @@ const CreateUser = () => {
           <span>상태</span>
           <Input type="text" name='status' onChange={handleChange} value={status}/>
         </div>
-        <Button className="needMargin" onClick={handleSubmit}>전송</Button>
+        <Button className="needMargin" onClick={userMakeSubmit}>전송</Button>
       </Form>
     </div>
   );

@@ -76,8 +76,37 @@ const CreateUser = () => {
     }
   };
 
-  const matchSubmit = () => {
-    
+  const matchSubmit = async(e) => {
+    if(winners.length===0){
+      alert('승자를 입력하세요');
+      return;
+    }
+    if(losers.length===0){
+      alert('패자를 입력하세요');
+      return;
+    }
+    e.preventDefault();
+
+    let today = new Date();   
+    let year = today.getFullYear(); // 년도
+    let month = today.getMonth() + 1;  // 월
+    let date = today.getDate();  // 날짜
+    let hours = today.getHours(); // 시
+    let minutes = today.getMinutes();  // 분
+    let seconds = today.getSeconds();  // 초
+    const time = (year + '/' + month + '/' + date + '-' + hours + ':' + minutes + ':' + seconds)
+
+    const match = {
+      winners: winners,
+      losers: losers,
+      date: startDate,
+      write_time: time
+    }
+    console.log(match);
+    await dbService.collection("game").doc(startDate+''+time).set(match);
+    setSearchWinner('');
+    setSearchLoser('');
+
   }
   const regiMatch = (
     <div className='userMaker'>
@@ -109,7 +138,7 @@ const CreateUser = () => {
         </div>
         <div className="needMargin">
           <span className="needMargin">시합일</span>
-          <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+          <DatePicker selected={startDate} dateFormat="Pp" onChange={date => setStartDate(date)} />
         </div>
         <div className="needMargin">{allUsers}</div>
         <Button className="needMargin" onClick={matchSubmit}>전송</Button>
