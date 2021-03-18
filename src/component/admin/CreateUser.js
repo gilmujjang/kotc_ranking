@@ -9,12 +9,13 @@ const CreateUser = () => {
     studentid:'',
     department:'',
     start_rating:'',
+    rating:'',
     status:''
   });
   const [attachment, setAttachment] = useState("");
 
 
-  const { name, studentid, department, start_rating, status} = inputs;
+  const { name, studentid, department, start_rating, rating, status} = inputs;
 
   const handleChange = (e) => {
     const {value, name} = e.target;
@@ -48,7 +49,7 @@ const CreateUser = () => {
     }
     let attachmentUrl = "";
     if(attachment !== ""){
-      const attachmentRef = storageService.ref().child(name+studentid);
+      const attachmentRef = storageService.ref().child(name);
       const response = await attachmentRef.putString(attachment, "data_url");
       attachmentUrl = await response.ref.getDownloadURL();
     }
@@ -69,11 +70,12 @@ const CreateUser = () => {
       studentid: studentid,
       department: department,
       start_rating: start_rating,
+      rating, start_rating,
       status: status,
       time:time,
       attachmentUrl,
     }
-    await dbService.collection("user").doc(studentid+''+name).set(userProfile);
+    await dbService.collection("user").doc(name).set(userProfile);
 
     setAttachment("");
     setInputs({
@@ -81,6 +83,7 @@ const CreateUser = () => {
       studentid:'',
       department:'',
       start_rating:'',
+      rating:'',
       status:''
     })
   };

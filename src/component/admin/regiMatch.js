@@ -6,9 +6,10 @@ import { Form, Input, Button } from 'reactstrap';
 import DatePicker, { registerLocale } from "react-datepicker";
 import { dbService, storageService } from '../../fbase';
 
-const CreateUser = () => {
+const RegiMatch = () => {
   const [searchWinner,setSearchWinner] = useState("");
   const [searchLoser,setSearchLoser] = useState("");
+  const [gameUser, setGameUser] = useState("");
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -33,13 +34,15 @@ const CreateUser = () => {
         return;
       } else {  //2명 이하이고
         if(allUsers.includes(searchWinner)){  //유저목록에 있으면
-          if(winners.includes(searchWinner)){ //근데 이미 등록했으면
-            alert('이미 등록한 유저입니다');
+          if(gameUser.includes(searchWinner)){
+            alert("이미 등록된 유저입니다")
             setSearchWinner('');
-          } else {
-            setWinners(winners.concat(searchWinner))
-            setSearchWinner('');
+            return;
           }
+            setWinners(winners.concat(searchWinner))
+            setGameUser(gameUser.concat(searchWinner))
+            setSearchWinner('');
+          
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchWinner('');
@@ -59,13 +62,15 @@ const CreateUser = () => {
         return;
       } else {  //2명 이하이고
         if(allUsers.includes(searchLoser)){  //유저목록에 있으면
-          if(losers.includes(searchLoser)){ //근데 이미 등록했으면
-            alert('이미 등록한 유저입니다');
+          if(gameUser.includes(searchLoser)){
+            alert("이미 등록된 유저입니다")
             setSearchLoser('');
-          } else {
-            setLosers(losers.concat(searchLoser))
-            setSearchLoser('');
+            return;
           }
+          setGameUser(gameUser.concat(searchLoser))
+          setLosers(losers.concat(searchLoser))
+          setSearchLoser('');
+        
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchLoser('');
@@ -85,29 +90,62 @@ const CreateUser = () => {
       alert('패자를 입력하세요');
       return;
     }
+    if(winners.length !== losers.length){
+      alert("인원을 맞추시오");
+      return;
+    }
     e.preventDefault();
 
-    let today = new Date();   
-    let year = today.getFullYear(); // 년도
-    let month = today.getMonth() + 1;  // 월
-    let date = today.getDate();  // 날짜
-    let hours = today.getHours(); // 시
-    let minutes = today.getMinutes();  // 분
-    let seconds = today.getSeconds();  // 초
-    const time = (year + '/' + month + '/' + date + '-' + hours + ':' + minutes + ':' + seconds)
+    let now = new Date();   
+    let year = now.getFullYear(); // 년도
+    let month = now.getMonth() + 1;  // 월
+    if(month<10){
+      month = 0+''+month
+    }
+    let date = now.getDate();  // 날짜
+    if(date<10){
+      date = 0+''+date
+    }
+    let hours = now.getHours(); // 시
+    if(hours<10){
+      hours = 0+''+hours
+    }
+    let minutes = now.getMinutes();  // 분
+    if(minutes<10){
+      minutes = 0+''+minutes
+    }
+    let seconds = now.getSeconds();  // 초
+    if(seconds<10){
+      seconds = 0+''+seconds
+    }
+    const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
+
+    year = startDate.getFullYear(); // 년도
+    month = startDate.getMonth() + 1;  // 월
+    if(month<10){
+      month = 0+''+month
+    }
+    date = startDate.getDate();  // 날짜
+    if(date<10){
+      date = 0+''+date
+    }
+    const matchDate = (year + '' + month + '' + date)
 
     const match = {
       winners: winners,
       losers: losers,
-      date: startDate,
+      date: matchDate,
       write_time: time
     }
-    console.log(match);
-    await dbService.collection("game").doc(startDate+''+time).set(match);
+
+    await dbService.collection("game").doc(matchDate+'-'+time).set(match);
     setSearchWinner('');
     setSearchLoser('');
-
+    setWinners([]);
+    setLosers([]);
   }
+
+
   const regiMatch = (
     <div className='userMaker'>
       <Form className="noteWriter">
@@ -115,12 +153,13 @@ const CreateUser = () => {
           <span>
             <div>승</div>
             <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
-            <div className="users">
-              <div className="flexWrap">
-                {winners.map(i => (
+            <div className="users flexWrap">
+              {winners.map(i => (
+                <>
                   <span className="targetUser">{i}</span>
-                ))}
-              </div>
+                  <i className="fas fa-times-circle winnerSearchCancle"></i>
+                </>
+              ))}
             </div>
           </span>
           <span className="versus"> VS </span>
@@ -130,7 +169,10 @@ const CreateUser = () => {
             <div className="users">
               <div className="flexWrap">
                 {losers.map(i => (
+                  <>
                   <span className="targetUser">{i}</span>
+                  <i className="fas fa-times-circle winnerSearchCancle"></i>
+                </>
                 ))}
               </div>
             </div>
@@ -138,7 +180,7 @@ const CreateUser = () => {
         </div>
         <div className="needMargin">
           <span className="needMargin">시합일</span>
-          <DatePicker selected={startDate} dateFormat="Pp" onChange={date => setStartDate(date)} />
+          <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
         </div>
         <div className="needMargin">{allUsers}</div>
         <Button className="needMargin" onClick={matchSubmit}>전송</Button>
@@ -153,4 +195,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default RegiMatch;
