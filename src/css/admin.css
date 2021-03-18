@@ -65,6 +65,13 @@
   font-size: 14px;
   background-color: #D1DFE8;
 }
+
+.winnerSearchCancle {
+  color: red;
+  position: relative;
+  right: 12px;
+}
+
 /* Auth */
 .container {
   width: 100%;
