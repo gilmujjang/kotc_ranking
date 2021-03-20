@@ -15,7 +15,6 @@ const UserFix = ({allUsers}) => {
         <div>Rating : {user.rating}</div>
         <div>{user.time}</div>
       </div>
-
     </Toast>
   ))
 

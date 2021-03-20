@@ -9,7 +9,6 @@ import '../css/admin.css';
 
 const AdminMain = () => {
   const [allUsers, setAllUsers] = useState([]);
-
   useEffect(() => {
     dbService.collection("user").orderBy("rating","desc").onSnapshot(snapshot => {
       snapshot.docs.map(doc => {
