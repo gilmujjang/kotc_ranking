@@ -4,10 +4,16 @@ import { Toast, ToastHeader } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
 const UserFix = ({allUsers}) => {
+
   const RecentUser = allUsers.map(user => (
     <Toast>
-      <ToastHeader>{user.name}</ToastHeader>
-      <div className="needMargin flexWrap spaceBetween">
+      <ToastHeader>
+        <div className="spaceBetween">
+          <div>{user.name}__</div>
+          <div>{user.status}</div>
+        </div>
+      </ToastHeader>
+      <div className="needMargin spaceBetween">
         <div>학번 : {user.studentid}</div>
         <div>학과 : {user.department}</div>
       </div>
