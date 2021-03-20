@@ -34,11 +34,11 @@ const RegiMatch = ({allUsers}) => {
         return;
       } else {  //2명 이하이고
         if(allUserList.includes(searchWinner)){  //유저목록에 있으면
-          if(gameUser.includes(searchWinner)){
+          if(gameUser.includes(searchWinner)){  //이면서 들어가있으면 안됨
             alert("이미 등록된 유저입니다")
             setSearchWinner('');
             return;
-          }
+          } else {
             setWinners(winners.concat(searchWinner))
             setGameUser(gameUser.concat(searchWinner))
             dbService.collection("user").where("name","==",searchWinner).get().then((snapshot) => {
@@ -46,7 +46,8 @@ const RegiMatch = ({allUsers}) => {
                 setWinnersRating(winnersRating.concat(doc.data().rating));
               })
             })
-            setSearchWinner('');    
+            setSearchWinner('');  
+          }  
             
         } else if(Number.isInteger(parseInt(searchWinner))){
           setWinners(winners.concat(searchWinner))
@@ -76,16 +77,17 @@ const RegiMatch = ({allUsers}) => {
             alert("이미 등록된 유저입니다")
             setSearchLoser('');
             return;
-          }
-          setGameUser(gameUser.concat(searchLoser))
-          setLosers(losers.concat(searchLoser))
-          dbService.collection("user").where("name","==",searchLoser).get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-              setLosersRating(losersRating.concat(doc.data().rating));
+          } else {
+            setGameUser(gameUser.concat(searchLoser))
+            setLosers(losers.concat(searchLoser))
+            dbService.collection("user").where("name","==",searchLoser).get().then((snapshot) => {
+              snapshot.forEach((doc) => {
+                setLosersRating(losersRating.concat(doc.data().rating));
+              })
             })
-          })
-          setSearchLoser('');
-        
+            setSearchLoser('');
+          }
+
         } else if(Number.isInteger(parseInt(searchLoser))){
           setLosers(losers.concat(searchLoser))
           setSearchLoser('');
@@ -161,11 +163,17 @@ const RegiMatch = ({allUsers}) => {
     }
     const matchDate = (year + '' + month + '' + date)
 
+    let winnerRatingAfter = winnersRating.map(winner => winner + RatingChange)
+    let loserRatingAfter = losersRating.map(loser => loser - RatingChange)
+
     const match = {
       winners: winners,
-      winnersRating: winnersRating,
+      winnerRatingBefore: winnersRating,
+      winnerRatingAfter: winnerRatingAfter,
       losers: losers,
-      losersRating: losersRating,
+      loserRatingBefore: losersRating,
+      loserRatingAfter: loserRatingAfter,
+      percentage: percentage*100,
       ratingChange: RatingChange,
       date: matchDate,
       write_time: time
@@ -174,16 +182,16 @@ const RegiMatch = ({allUsers}) => {
     await dbService.collection("game").doc(matchDate+'-'+time).set(match);
     
     await winners.map(winner => {
+      dbService.collection("user").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
       dbService.collection("user").doc(winner).update({
         rating: winnersRating.shift() + RatingChange
       })
-      dbService.collection("user").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
     })
     await losers.map(loser => {
+      dbService.collection("user").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
       dbService.collection("user").doc(loser).update({
         rating: losersRating.shift() - RatingChange
       })
-      dbService.collection("user").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
     })
     setSearchWinner('');
     setSearchLoser('');
