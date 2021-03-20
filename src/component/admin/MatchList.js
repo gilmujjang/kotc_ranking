@@ -35,7 +35,6 @@ const MatchList = () => {
     await dbService.collection("game").doc(e.target.id).delete()
     alert(e.target.id+' 를 삭제했습니다')
     setAllGame([]);
-    console.log(allGame)
   }
 
   const RecentGame = allGame.map(game => (
