@@ -10,7 +10,7 @@ const CreateUser = () => {
     department:'',
     start_rating:'',
     rating:'',
-    status:''
+    status:'재학'
   });
   const [attachment, setAttachment] = useState("");
 
@@ -87,6 +87,9 @@ const CreateUser = () => {
       status: status,
       time:time,
       attachmentUrl,
+      game_all:0,
+      game_win:0,
+      game_lose:0,
     }
     await dbService.collection("user").doc(name).set(userProfile);
 
@@ -97,7 +100,7 @@ const CreateUser = () => {
       department:'',
       start_rating:'',
       rating:'',
-      status:''
+      status:'재학'
     })
   };
 

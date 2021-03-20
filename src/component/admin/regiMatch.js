@@ -8,7 +8,8 @@ import { dbService, storageService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-const RegiMatch = ({allUsers}) => {
+const RegiMatch = () => {
+  const increment = firebase.firestore.FieldValue.increment(1);
   const [searchWinner,setSearchWinner] = useState("");
   const [winnersRating, setWinnersRating] = useState([]);
   const [searchLoser,setSearchLoser] = useState("");
@@ -17,13 +18,30 @@ const RegiMatch = ({allUsers}) => {
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [allUsers, setAllUsers] = useState([]);
   const [allUserList, setAllUserList] = useState([])
+
+  useEffect(() => {
+    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
+      snapshot.docs.map(doc => {
+        const userObject = {
+          name:doc.data().name,
+          rating:doc.data().rating,
+          studentid:doc.data().studentid,
+          department:doc.data().department,
+          status: doc.data().status,
+          time:doc.data().time
+        }
+        setAllUsers(allUsers => [...allUsers, userObject]);
+      })
+    })
+  }, [])
 
   useEffect(() => {
     allUsers.map(user => {
       setAllUserList(allUserList => [...allUserList, user.name])
     })
-  }, [])
+  }, [allUsers])
 
   const winnerChange = e => {
     if (e.key === 'Enter') {
@@ -103,6 +121,7 @@ const RegiMatch = ({allUsers}) => {
   };
 
   const matchSubmit = async(e) => {
+    e.preventDefault();
     let winnerAverageRating = winnersRating[0];
     let loserAverageRating = losersRating[0];
     if(winnersRating.length==2){
@@ -126,7 +145,6 @@ const RegiMatch = ({allUsers}) => {
       alert("인원을 맞추시오");
       return;
     }
-    e.preventDefault();
 
     let now = new Date();   
     let year = now.getFullYear(); // 년도
@@ -173,7 +191,7 @@ const RegiMatch = ({allUsers}) => {
       losers: losers,
       loserRatingBefore: losersRating,
       loserRatingAfter: loserRatingAfter,
-      percentage: percentage*100,
+      percentage: Math.round(percentage*100),
       ratingChange: RatingChange,
       date: matchDate,
       write_time: time
@@ -184,13 +202,17 @@ const RegiMatch = ({allUsers}) => {
     await winners.map(winner => {
       dbService.collection("user").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
       dbService.collection("user").doc(winner).update({
-        rating: winnersRating.shift() + RatingChange
+        rating: winnersRating.shift() + RatingChange,
+        game_all: increment,
+        game_win: increment
       })
     })
     await losers.map(loser => {
       dbService.collection("user").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
       dbService.collection("user").doc(loser).update({
-        rating: losersRating.shift() - RatingChange
+        rating: losersRating.shift() - RatingChange,
+        game_all: increment,
+        game_lose: increment
       })
     })
     setSearchWinner('');
@@ -214,7 +236,7 @@ const RegiMatch = ({allUsers}) => {
             <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
             <div className="users flexWrap">
               {winners.map(i => (
-                <span className="targetUser">{i}</span>
+                <span className="targetUser" key={i}>{i}</span>
               ))}
             </div>
           </span>
@@ -225,7 +247,7 @@ const RegiMatch = ({allUsers}) => {
             <div className="users">
               <div className="flexWrap">
                 {losers.map(i => (
-                  <span className="targetUser">{i}</span>
+                  <span className="targetUser" key={i}>{i}</span>
                 ))}
               </div>
             </div>

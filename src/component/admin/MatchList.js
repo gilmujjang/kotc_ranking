@@ -15,7 +15,8 @@ const MatchList = () => {
           losers:doc.data().losers,
           ratingChange:doc.data().ratingChange,
           date:doc.data().date,
-          time:doc.data().write_time
+          time:doc.data().write_time,
+          id:doc.data().date+''+doc.data().write_time
         }
         setAllGame(allGame => [...allGame, gameObject]);
       })

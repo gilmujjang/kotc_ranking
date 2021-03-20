@@ -3,7 +3,25 @@ import '../../css/admin.css';
 import { Toast, ToastHeader } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
-const UserFix = ({allUsers}) => {
+const UserList = () => {
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
+      snapshot.docs.map(doc => {
+        const userObject = {
+          name:doc.data().name,
+          rating:doc.data().rating,
+          studentid:doc.data().studentid,
+          department:doc.data().department,
+          status: doc.data().status,
+          time:doc.data().time
+        }
+        setAllUsers(allUsers => [...allUsers, userObject]);
+      })
+    })
+  }, [])
+
   const RecentUser = allUsers.map(user => (
     <Toast>
       <ToastHeader>
@@ -30,4 +48,4 @@ const UserFix = ({allUsers}) => {
   );
 };
 
-export default UserFix;
+export default UserList;
