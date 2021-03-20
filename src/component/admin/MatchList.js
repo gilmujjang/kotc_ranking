@@ -5,9 +5,9 @@ import { dbService, storageService } from '../../fbase';
 
 const MatchList = () => {
   const [allGame, setAllGame] = useState([]);
-  const [renew, setRenew] = useState(0);
 
   useEffect(() => {
+    setAllGame([]);
     dbService.collection("game").orderBy("write_time","desc").limit(20).onSnapshot(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
@@ -20,7 +20,7 @@ const MatchList = () => {
         setAllGame(allGame => [...allGame, gameObject]);
       })
     })
-  }, [renew])
+  }, [])
 
   const deleteClick = async(e) => {
     let player = [];
@@ -33,9 +33,9 @@ const MatchList = () => {
       })
     })
     await dbService.collection("game").doc(e.target.id).delete()
-    setRenew(renew+1)
     alert(e.target.id+' 를 삭제했습니다')
     setAllGame([]);
+    console.log(allGame)
   }
 
   const RecentGame = allGame.map(game => (
