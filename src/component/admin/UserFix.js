@@ -7,11 +7,11 @@ const UserFix = ({allUsers}) => {
   const RecentUser = allUsers.map(user => (
     <Toast>
       <ToastHeader>{user.name}</ToastHeader>
-      <div className="needMargin flexWrap userInfo">
+      <div className="needMargin flexWrap spaceBetween">
         <div>학번 : {user.studentid}</div>
         <div>학과 : {user.department}</div>
       </div>
-      <div className="needMargin flexWrap userInfo">
+      <div className="needMargin spaceBetween">
         <div>Rating : {user.rating}</div>
         <div>{user.time}</div>
       </div>

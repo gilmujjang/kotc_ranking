@@ -22,12 +22,18 @@ const MatchFix = () => {
 
   const RecentGame = allGame.map(game => (
     <Toast>
-      <ToastHeader>{game.winners} vs {game.losers}</ToastHeader>
-      <div className="needMargin flexWrap userInfo">
-
+      <ToastHeader>{game.winners.map(i => (
+        <span className="targetUser">{i}</span>
+      ))}
+       vs 
+       {game.losers.map(i => (
+        <span className="targetUser">{i}</span>
+      ))}</ToastHeader>
+      <div className="needMargin flexWrap spaceBetween">
+        레이팅변화 : {game.ratingChange}
       </div>
-      <div className="needMargin flexWrap userInfo">
-
+      <div className="needMargin flexWrap spaceBetween">
+        등록시각 : {game.time}
       </div>
 
     </Toast>
@@ -35,7 +41,11 @@ const MatchFix = () => {
  
   return (
     <div className="Box">
-      {RecentGame}
+      <div className="spaceBetween">
+        <span>승리팀</span>
+        <span>패배팀</span>
+      </div>
+      <div>{RecentGame}</div>
     </div>
   );
 };

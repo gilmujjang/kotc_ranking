@@ -27,16 +27,11 @@
 
 .Box {
   padding: 20px;
-  width: 320px;
+  width: 340px;
   height: 520px;
   margin-top: 72px;
   box-shadow: 2px 2px 10px 1px grey;
   overflow: scroll;
-}
-
-/* UserFix */
-.userInfo {
-  justify-content: space-between;
 }
 
 /* Createuser */
@@ -56,11 +51,6 @@
 .versus{
   margin-top: 24px;
   padding: 4px;
-}
-
-.flexWrap {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .targetUser{
@@ -153,4 +143,10 @@
 /* Utility  */
 .needMargin {
   margin: 4px;
+}
+
+.spaceBetween {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
