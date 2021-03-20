@@ -15,7 +15,7 @@ const CreateUser = () => {
   const [attachment, setAttachment] = useState("");
 
 
-  const { name, studentid, department, start_rating, rating, status} = inputs;
+  const { name, studentid, department, start_rating, status} = inputs;
 
   const handleChange = (e) => {
     const {value, name} = e.target;

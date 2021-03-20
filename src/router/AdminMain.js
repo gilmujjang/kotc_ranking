@@ -4,7 +4,7 @@ import Header from '../component/admin/Header';
 import CreateUser from '../component/admin/CreateUser'
 import RegiMatch from '../component/admin/RegiMatch'
 import UserFix from '../component/admin/UserFix'
-import MatchFix from '../component/admin/MatchFix'
+import MatchList from '../component/admin/MatchList'
 import '../css/admin.css';
 
 const AdminMain = () => {
@@ -31,7 +31,7 @@ const AdminMain = () => {
         <CreateUser/>
         <RegiMatch allUsers={allUsers}/>
         <UserFix allUsers={allUsers}/>
-        <MatchFix/>
+        <MatchList/>
       </div>
     </div>
   );
