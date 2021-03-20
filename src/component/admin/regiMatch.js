@@ -17,6 +17,13 @@ const RegiMatch = ({allUsers}) => {
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [allUserList, setAllUserList] = useState([])
+
+  useEffect(() => {
+    allUsers.map(user => {
+      setAllUserList(allUserList => [...allUserList, user.name])
+    })
+  }, [])
 
   const winnerChange = e => {
     if (e.key === 'Enter') {
@@ -26,7 +33,7 @@ const RegiMatch = ({allUsers}) => {
         setSearchWinner('');
         return;
       } else {  //2명 이하이고
-        if(allUsers.includes(searchWinner)){  //유저목록에 있으면
+        if(allUserList.includes(searchWinner)){  //유저목록에 있으면
           if(gameUser.includes(searchWinner)){
             alert("이미 등록된 유저입니다")
             setSearchWinner('');
@@ -36,9 +43,7 @@ const RegiMatch = ({allUsers}) => {
             setGameUser(gameUser.concat(searchWinner))
             dbService.collection("user").where("name","==",searchWinner).get().then((snapshot) => {
               snapshot.forEach((doc) => {
-                console.log(doc.data().rating)
                 setWinnersRating(winnersRating.concat(doc.data().rating));
-                console.log(doc.data().rating)
               })
             })
             setSearchWinner('');    
@@ -66,7 +71,7 @@ const RegiMatch = ({allUsers}) => {
         setSearchLoser('');
         return;
       } else {  //2명 이하이고
-        if(allUsers.includes(searchLoser)){  //유저목록에 있으면
+        if(allUserList.includes(searchLoser)){  //유저목록에 있으면
           if(gameUser.includes(searchLoser)){
             alert("이미 등록된 유저입니다")
             setSearchLoser('');
@@ -167,15 +172,18 @@ const RegiMatch = ({allUsers}) => {
     }
 
     await dbService.collection("game").doc(matchDate+'-'+time).set(match);
+    
     await winners.map(winner => {
       dbService.collection("user").doc(winner).update({
         rating: winnersRating.shift() + RatingChange
       })
+      dbService.collection("user").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
     })
     await losers.map(loser => {
       dbService.collection("user").doc(loser).update({
         rating: losersRating.shift() - RatingChange
       })
+      dbService.collection("user").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
     })
     setSearchWinner('');
     setSearchLoser('');
