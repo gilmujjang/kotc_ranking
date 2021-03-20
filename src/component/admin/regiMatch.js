@@ -8,7 +8,7 @@ import { dbService, storageService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-const RegiMatch = () => {
+const RegiMatch = ({allUsers}) => {
   const [searchWinner,setSearchWinner] = useState("");
   const [winnersRating, setWinnersRating] = useState([]);
   const [searchLoser,setSearchLoser] = useState("");
@@ -16,18 +16,7 @@ const RegiMatch = () => {
   const [gameUser, setGameUser] = useState("");
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-
-  useEffect(() => {
-    dbService.collection("user").onSnapshot(snapshot => {
-      const userArray = [];
-      snapshot.docs.map(doc => (
-        userArray.push(doc.data().name)
-      ))
-      setAllUsers(userArray);
-    })
-  }, [])
 
   const winnerChange = e => {
     if (e.key === 'Enter') {
@@ -230,7 +219,6 @@ const RegiMatch = () => {
           <span className="needMargin">시합일</span>
           <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
         </div>
-        <div className="needMargin">{allUsers}</div>
         <Button className="needMargin" onClick={matchSubmit}>전송</Button>
       </Form>
     </div>

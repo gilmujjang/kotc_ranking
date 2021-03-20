@@ -3,25 +3,25 @@ import '../../css/admin.css';
 import { Toast, ToastHeader } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
-const UserFix = () => {
-  const [allUsers, setAllUsers] = useState([]);
+const UserFix = ({allUsers}) => {
+  const RecentUser = allUsers.map(user => (
+    <Toast>
+      <ToastHeader>{user.name}</ToastHeader>
+      <div className="needMargin flexWrap userInfo">
+        <div>학번 : {user.studentid}</div>
+        <div>학과 : {user.department}</div>
+      </div>
+      <div className="needMargin flexWrap userInfo">
+        <div>Rating : {user.rating}</div>
+        <div>{user.time}</div>
+      </div>
 
-  useEffect(() => {
-    dbService.collection("user").onSnapshot(snapshot => {
-      const userArray = [];
-      snapshot.docs.map(doc => (
-        userArray.push(doc.data().name),
-        userArray.push(doc.data().rating),
-        userArray.push(doc.data().studentid),
-        userArray.push(doc.data().department),
-        userArray.push(doc.data().time)
-      ))
-      setAllUsers(userArray);
-    })
-  }, [])
+    </Toast>
+  ))
 
   return (
     <div className="Box">
+      {RecentUser}
     </div>
   );
 };

@@ -28,9 +28,15 @@
 .Box {
   padding: 20px;
   width: 320px;
+  height: 520px;
   margin-top: 72px;
   box-shadow: 2px 2px 10px 1px grey;
   overflow: scroll;
+}
+
+/* UserFix */
+.userInfo {
+  justify-content: space-between;
 }
 
 /* Createuser */
