@@ -3,26 +3,22 @@ import '../../css/admin.css';
 import { Toast, ToastHeader } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
-const UserList = () => {
-  const [allUsers, setAllUsers] = useState([]);
-
+const UserList = ({allUsers}) => {
+  const [userlist, setUserlist] = useState([]);
   useEffect(() => {
-    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
-      snapshot.docs.map(doc => {
-        const userObject = {
-          name:doc.data().name,
-          rating:doc.data().rating,
-          studentid:doc.data().studentid,
-          department:doc.data().department,
-          status: doc.data().status,
-          time:doc.data().time
-        }
-        setAllUsers(allUsers => [...allUsers, userObject]);
-      })
+    setUserlist([]);
+    allUsers.map(user => {
+      setUserlist(userlist => [...userlist, user]);
     })
-  }, [])
+  }, [allUsers])
 
-  const RecentUser = allUsers.map(user => (
+  console.log("allUsers array")
+  console.log(allUsers)
+
+  console.log("userlist array")
+  console.log(userlist)
+
+  const RecentUser = userlist.map(user => (
     <Toast>
       <ToastHeader>
         <div className="spaceBetween">

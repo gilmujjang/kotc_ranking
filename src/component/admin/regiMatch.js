@@ -8,7 +8,7 @@ import { dbService, storageService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-const RegiMatch = () => {
+const RegiMatch = ({allUsers}) => {
   const increment = firebase.firestore.FieldValue.increment(1);
   const [searchWinner,setSearchWinner] = useState("");
   const [winnersRating, setWinnersRating] = useState([]);
@@ -18,24 +18,7 @@ const RegiMatch = () => {
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
-  const [allUsers, setAllUsers] = useState([]);
   const [allUserList, setAllUserList] = useState([])
-
-  useEffect(() => {
-    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
-      snapshot.docs.map(doc => {
-        const userObject = {
-          name:doc.data().name,
-          rating:doc.data().rating,
-          studentid:doc.data().studentid,
-          department:doc.data().department,
-          status: doc.data().status,
-          time:doc.data().time
-        }
-        setAllUsers(allUsers => [...allUsers, userObject]);
-      })
-    })
-  }, [])
 
   useEffect(() => {
     allUsers.map(user => {
@@ -236,7 +219,7 @@ const RegiMatch = () => {
             <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
             <div className="users flexWrap">
               {winners.map(i => (
-                <span className="targetUser" key={i}>{i}</span>
+                <span className="targetUser">{i}</span>
               ))}
             </div>
           </span>
@@ -247,7 +230,7 @@ const RegiMatch = () => {
             <div className="users">
               <div className="flexWrap">
                 {losers.map(i => (
-                  <span className="targetUser" key={i}>{i}</span>
+                  <span className="targetUser">{i}</span>
                 ))}
               </div>
             </div>
