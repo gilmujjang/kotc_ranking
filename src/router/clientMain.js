@@ -7,6 +7,8 @@ const ClientMain = () => {
     <div className="App">
       <div id="clientMain">
         <Nav/>
+        {/* 유저 랭킹 리스트 */}
+        {/* 최근 경기 */}
       </div>
     </div>
   );
