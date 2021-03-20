@@ -1,16 +1,15 @@
 import React from 'react';
-import Header from '../component/client/Header';
+import Nav from '../component/client/Nav';
 import '../style.css';
 
-const clientMain = () => {
+const ClientMain = () => {
   return (
     <div className="App">
-      <Header />
-      <div className="Content">
-        ㅁㄴㅇㄹ
+      <div id="clientMain">
+        <Nav/>
       </div>
     </div>
   );
 };
 
-export default clientMain;
+export default ClientMain;

@@ -8,13 +8,14 @@ const CreateUser = () => {
     name: '',
     studentid:'',
     department:'',
+    start_rating:'',
     rating:'',
     status:''
   });
   const [attachment, setAttachment] = useState("");
 
 
-  const { name, studentid, department, rating, status} = inputs;
+  const { name, studentid, department, start_rating, rating, status} = inputs;
 
   const handleChange = (e) => {
     const {value, name} = e.target;
@@ -24,7 +25,8 @@ const CreateUser = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const userMakeSubmit = async(e) => {
+    e.preventDefault();
     if(name === ''){
       alert("이름을 입력하세요")
       return;
@@ -37,7 +39,7 @@ const CreateUser = () => {
       alert("학과를 입력하세요")
       return;
     }
-    if(rating === ''){
+    if(start_rating === ''){
       alert("초기 레이팅을 입력하세요")
       return;
     }
@@ -45,42 +47,55 @@ const CreateUser = () => {
       alert("재학상태를 입력하세요")
       return;
     }
-    
-    e.preventDefault();
     let attachmentUrl = "";
     if(attachment !== ""){
-      const attachmentRef = storageService.ref().child(name+studentid);
+      const attachmentRef = storageService.ref().child(name);
       const response = await attachmentRef.putString(attachment, "data_url");
       attachmentUrl = await response.ref.getDownloadURL();
     }
 
-    let today = new Date();   
-
-    let year = today.getFullYear(); // 년도
-    let month = today.getMonth() + 1;  // 월
-    let date = today.getDate();  // 날짜
-    let hours = today.getHours(); // 시
-    let minutes = today.getMinutes();  // 분
-    let seconds = today.getSeconds();  // 초
-
-    const time = (year + '/' + month + '/' + date + '-' + hours + ':' + minutes + ':' + seconds)
+    let now = new Date();   
+    let year = now.getFullYear(); // 년도
+    let month = now.getMonth() + 1;  // 월
+    if(month<10){
+      month = 0+''+month
+    }
+    let date = now.getDate();  // 날짜
+    if(date<10){
+      date = 0+''+date
+    }
+    let hours = now.getHours(); // 시
+    if(hours<10){
+      hours = 0+''+hours
+    }
+    let minutes = now.getMinutes();  // 분
+    if(minutes<10){
+      minutes = 0+''+minutes
+    }
+    let seconds = now.getSeconds();  // 초
+    if(seconds<10){
+      seconds = 0+''+seconds
+    }
+    const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
     const userProfile = {
       name: name,
-      studentid: studentid,
+      studentid: parseInt(studentid),
       department: department,
-      rating: rating,
+      start_rating: parseInt(start_rating),
+      rating: parseInt(start_rating),
       status: status,
       time:time,
       attachmentUrl,
     }
-    await dbService.collection("user").doc(studentid+''+name).set(userProfile);
+    await dbService.collection("user").doc(name).set(userProfile);
 
     setAttachment("");
     setInputs({
       name: '',
       studentid:'',
       department:'',
+      start_rating:'',
       rating:'',
       status:''
     })
@@ -133,13 +148,13 @@ const CreateUser = () => {
         </div>
         <div className="needMargin">
           <span>초기레이팅</span>
-          <Input type="text" name='rating' onChange={handleChange} value={rating}/>
+          <Input type="text" name='start_rating' onChange={handleChange} value={start_rating}/>
         </div>
         <div className="needMargin">
           <span>상태</span>
           <Input type="text" name='status' onChange={handleChange} value={status}/>
         </div>
-        <Button className="needMargin" onClick={handleSubmit}>전송</Button>
+        <Button className="needMargin" onClick={userMakeSubmit}>전송</Button>
       </Form>
     </div>
   );
