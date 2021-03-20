@@ -47,10 +47,18 @@ const RegiMatch = () => {
             setGameUser(gameUser.concat(searchWinner))
             dbService.collection("user").where("name","==",searchWinner).get().then((snapshot) => {
               snapshot.forEach((doc) => {
+                console.log(doc.data().rating)
                 setWinnersRating(winnersRating.concat(doc.data().rating));
+                console.log(doc.data().rating)
               })
             })
-            setSearchWinner('');          
+            setSearchWinner('');    
+            
+        } else if(Number.isInteger(parseInt(searchWinner))){
+          setWinners(winners.concat(searchWinner))
+          setSearchWinner('');
+          setWinnersRating(winnersRating.concat(searchWinner));  
+
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchWinner('');
@@ -82,9 +90,12 @@ const RegiMatch = () => {
               setLosersRating(losersRating.concat(doc.data().rating));
             })
           })
-          setSearchWinner('');  
           setSearchLoser('');
         
+        } else if(Number.isInteger(parseInt(searchLoser))){
+          setLosers(losers.concat(searchLoser))
+          setSearchLoser('');
+          setLosersRating(losersRating.concat(searchLoser));
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchLoser('');
@@ -106,10 +117,7 @@ const RegiMatch = () => {
     }
     const percentage = (1/(1+(Math.pow(10,(loserAverageRating-winnerAverageRating)/400)))).toFixed(2)
     const reversePercentage = (1-percentage).toFixed(2)
-    console.log(percentage)
-    console.log(reversePercentage)
     const RatingChange = Math.round(reversePercentage*32)
-    console.log("rating 변화",RatingChange)
     if(winners.length===0){
       alert('승자를 입력하세요');
       return;
@@ -170,12 +178,12 @@ const RegiMatch = () => {
     }
 
     await dbService.collection("game").doc(matchDate+'-'+time).set(match);
-    winners.map(winner => {
+    await winners.map(winner => {
       dbService.collection("user").doc(winner).update({
         rating: winnersRating.shift() + RatingChange
       })
     })
-    losers.map(loser => {
+    await losers.map(loser => {
       dbService.collection("user").doc(loser).update({
         rating: losersRating.shift() - RatingChange
       })
