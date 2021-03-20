@@ -54,16 +54,29 @@ const CreateUser = () => {
       attachmentUrl = await response.ref.getDownloadURL();
     }
 
-    let today = new Date();   
-
-    let year = today.getFullYear(); // 년도
-    let month = today.getMonth() + 1;  // 월
-    let date = today.getDate();  // 날짜
-    let hours = today.getHours(); // 시
-    let minutes = today.getMinutes();  // 분
-    let seconds = today.getSeconds();  // 초
-
-    const time = (year + '/' + month + '/' + date + '-' + hours + ':' + minutes + ':' + seconds)
+    let now = new Date();   
+    let year = now.getFullYear(); // 년도
+    let month = now.getMonth() + 1;  // 월
+    if(month<10){
+      month = 0+''+month
+    }
+    let date = now.getDate();  // 날짜
+    if(date<10){
+      date = 0+''+date
+    }
+    let hours = now.getHours(); // 시
+    if(hours<10){
+      hours = 0+''+hours
+    }
+    let minutes = now.getMinutes();  // 분
+    if(minutes<10){
+      minutes = 0+''+minutes
+    }
+    let seconds = now.getSeconds();  // 초
+    if(seconds<10){
+      seconds = 0+''+seconds
+    }
+    const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
     const userProfile = {
       name: name,

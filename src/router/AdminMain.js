@@ -8,7 +8,7 @@ import '../css/admin.css';
 
 const AdminMain = () => {
   return (
-    <div className="App">
+    <div className="AdminMain">
       <Header />
       <div className="Content">
         <CreateUser/>
