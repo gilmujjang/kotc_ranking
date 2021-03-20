@@ -152,7 +152,10 @@ const CreateUser = () => {
         </div>
         <div className="needMargin">
           <span>상태</span>
-          <Input type="text" name='status' onChange={handleChange} value={status}/>
+          <Input type="select" name='status' onChange={handleChange} value={status}>
+            <option>재학</option>
+            <option>졸업</option>
+          </Input>
         </div>
         <Button className="needMargin" onClick={userMakeSubmit}>전송</Button>
       </Form>
