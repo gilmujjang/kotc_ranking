@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import '../../css/admin.css';
 import "react-datepicker/dist/react-datepicker.css"
 import 'react-datepicker/dist/react-datepicker-cssmodules.min.css'
 import { Form, Input, Button } from 'reactstrap';
-import DatePicker, { registerLocale } from "react-datepicker";
-import { dbService, storageService } from '../../fbase';
+import DatePicker from "react-datepicker";
+import { dbService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 const RegiMatch = ({allUsers}) => {
+  const increment = firebase.firestore.FieldValue.increment(1);
   const [searchWinner,setSearchWinner] = useState("");
   const [winnersRating, setWinnersRating] = useState([]);
   const [searchLoser,setSearchLoser] = useState("");
@@ -17,6 +17,23 @@ const RegiMatch = ({allUsers}) => {
   const [winners, setWinners] = useState([]);
   const [losers, setLosers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [allUserList, setAllUserList] = useState([])
+
+  useEffect(() => {
+    allUsers.map(user => {
+      setAllUserList(allUserList => [...allUserList, user.name])
+    })
+  }, [allUsers])
+
+  const stateInit = () => {
+    setSearchWinner('');
+    setSearchLoser('');
+    setWinners([]);
+    setLosers([]);
+    setGameUser([]);
+    setWinnersRating([]);
+    setLosersRating([]);
+  }
 
   const winnerChange = e => {
     if (e.key === 'Enter') {
@@ -26,27 +43,26 @@ const RegiMatch = ({allUsers}) => {
         setSearchWinner('');
         return;
       } else {  //2명 이하이고
-        if(allUsers.includes(searchWinner)){  //유저목록에 있으면
-          if(gameUser.includes(searchWinner)){
+        if(allUserList.includes(searchWinner)){  //유저목록에 있으면
+          if(gameUser.includes(searchWinner)){  //이면서 들어가있으면 안됨
             alert("이미 등록된 유저입니다")
             setSearchWinner('');
             return;
-          }
+          } else {
             setWinners(winners.concat(searchWinner))
             setGameUser(gameUser.concat(searchWinner))
             dbService.collection("user").where("name","==",searchWinner).get().then((snapshot) => {
               snapshot.forEach((doc) => {
-                console.log(doc.data().rating)
                 setWinnersRating(winnersRating.concat(doc.data().rating));
-                console.log(doc.data().rating)
               })
             })
-            setSearchWinner('');    
+            setSearchWinner('');  
+          }  
             
         } else if(Number.isInteger(parseInt(searchWinner))){
           setWinners(winners.concat(searchWinner))
           setSearchWinner('');
-          setWinnersRating(winnersRating.concat(searchWinner));  
+          setWinnersRating(winnersRating.concat(Number(searchWinner)));  
 
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
@@ -66,25 +82,26 @@ const RegiMatch = ({allUsers}) => {
         setSearchLoser('');
         return;
       } else {  //2명 이하이고
-        if(allUsers.includes(searchLoser)){  //유저목록에 있으면
+        if(allUserList.includes(searchLoser)){  //유저목록에 있으면
           if(gameUser.includes(searchLoser)){
             alert("이미 등록된 유저입니다")
             setSearchLoser('');
             return;
-          }
-          setGameUser(gameUser.concat(searchLoser))
-          setLosers(losers.concat(searchLoser))
-          dbService.collection("user").where("name","==",searchLoser).get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-              setLosersRating(losersRating.concat(doc.data().rating));
+          } else {
+            setGameUser(gameUser.concat(searchLoser))
+            setLosers(losers.concat(searchLoser))
+            dbService.collection("user").where("name","==",searchLoser).get().then((snapshot) => {
+              snapshot.forEach((doc) => {
+                setLosersRating(losersRating.concat(doc.data().rating));
+              })
             })
-          })
-          setSearchLoser('');
-        
+            setSearchLoser('');
+          }
+
         } else if(Number.isInteger(parseInt(searchLoser))){
           setLosers(losers.concat(searchLoser))
           setSearchLoser('');
-          setLosersRating(losersRating.concat(searchLoser));
+          setLosersRating(losersRating.concat(Number(searchLoser)));
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchLoser('');
@@ -96,13 +113,14 @@ const RegiMatch = ({allUsers}) => {
   };
 
   const matchSubmit = async(e) => {
+    e.preventDefault();
     let winnerAverageRating = winnersRating[0];
     let loserAverageRating = losersRating[0];
     if(winnersRating.length==2){
-      winnerAverageRating = (winnersRating[0]+winnersRating[1])/2
+      winnerAverageRating = (Math.max(winnersRating[0],winnersRating[1])+2*Math.min(winnersRating[0],winnersRating[1]))/3
     }
     if(losersRating.length==2){
-      loserAverageRating = (losersRating[0]+losersRating[1])/2
+      loserAverageRating = (Math.max(losersRating[0],losersRating[1])+2*Math.min(losersRating[0],losersRating[1]))/3
     }
     const percentage = (1/(1+(Math.pow(10,(loserAverageRating-winnerAverageRating)/400)))).toFixed(2)
     const reversePercentage = (1-percentage).toFixed(2)
@@ -119,7 +137,6 @@ const RegiMatch = ({allUsers}) => {
       alert("인원을 맞추시오");
       return;
     }
-    e.preventDefault();
 
     let now = new Date();   
     let year = now.getFullYear(); // 년도
@@ -156,47 +173,57 @@ const RegiMatch = ({allUsers}) => {
     }
     const matchDate = (year + '' + month + '' + date)
 
+    let winnerRatingAfter = winnersRating.map(winner => winner + RatingChange)
+    let loserRatingAfter = losersRating.map(loser => loser - RatingChange)
+
     const match = {
       winners: winners,
-      winnersRating: winnersRating,
+      winnerRatingBefore: winnersRating,
+      winnerRatingAfter: winnerRatingAfter,
       losers: losers,
-      losersRating: losersRating,
+      loserRatingBefore: losersRating,
+      loserRatingAfter: loserRatingAfter,
+      percentage: Math.round(percentage*100),
       ratingChange: RatingChange,
       date: matchDate,
       write_time: time
     }
 
+    if(percentage==NaN){
+      alert("percentage is never NaN");
+      return;
+    }
+
     await dbService.collection("game").doc(matchDate+'-'+time).set(match);
+    
     await winners.map(winner => {
+      dbService.collection("user").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
       dbService.collection("user").doc(winner).update({
-        rating: winnersRating.shift() + RatingChange
+        rating: winnersRating.shift() + RatingChange,
+        game_all: increment,
+        game_win: increment
       })
     })
     await losers.map(loser => {
+      dbService.collection("user").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
       dbService.collection("user").doc(loser).update({
-        rating: losersRating.shift() - RatingChange
+        rating: losersRating.shift() - RatingChange,
+        game_all: increment,
+        game_lose: increment
       })
     })
-    setSearchWinner('');
-    setSearchLoser('');
-    setWinners([]);
-    setLosers([]);
-    setGameUser([]);
-    setWinnersRating([]);
-    setLosersRating([]);
-    winnerAverageRating = 0;
-    loserAverageRating = 0;
+    stateInit();
   }
 
 
   const regiMatch = (
     <div className='userMaker'>
       <Form className="noteWriter">
-        <div className="needMargin matchResult">
+        <div className="matchResult">
           <span>
             <div>승</div>
             <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
-            <div className="users flexWrap">
+            <div className="users playerView">
               {winners.map(i => (
                 <span className="targetUser">{i}</span>
               ))}
@@ -215,7 +242,7 @@ const RegiMatch = ({allUsers}) => {
             </div>
           </span>
         </div>
-        <div className="needMargin">
+        <div className="datepicker">
           <span className="needMargin">시합일</span>
           <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
         </div>
@@ -225,7 +252,7 @@ const RegiMatch = ({allUsers}) => {
   );
 
   return (
-    <div className="Box">
+    <div className="ShortBox">
       {regiMatch}
     </div>
   );

@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import '../../css/admin.css';
 import { Form, Input, Button } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
@@ -10,12 +9,12 @@ const CreateUser = () => {
     department:'',
     start_rating:'',
     rating:'',
-    status:''
+    status:'재학'
   });
   const [attachment, setAttachment] = useState("");
 
 
-  const { name, studentid, department, start_rating, rating, status} = inputs;
+  const { name, studentid, department, start_rating, status} = inputs;
 
   const handleChange = (e) => {
     const {value, name} = e.target;
@@ -87,6 +86,9 @@ const CreateUser = () => {
       status: status,
       time:time,
       attachmentUrl,
+      game_all:0,
+      game_win:0,
+      game_lose:0,
     }
     await dbService.collection("user").doc(name).set(userProfile);
 
@@ -97,7 +99,7 @@ const CreateUser = () => {
       department:'',
       start_rating:'',
       rating:'',
-      status:''
+      status:'재학'
     })
   };
 
@@ -152,7 +154,10 @@ const CreateUser = () => {
         </div>
         <div className="needMargin">
           <span>상태</span>
-          <Input type="text" name='status' onChange={handleChange} value={status}/>
+          <Input type="select" name='status' onChange={handleChange} value={status}>
+            <option>재학</option>
+            <option>졸업</option>
+          </Input>
         </div>
         <Button className="needMargin" onClick={userMakeSubmit}>전송</Button>
       </Form>
@@ -160,7 +165,7 @@ const CreateUser = () => {
   );
 
   return (
-    <div className="Box">
+    <div className="ShortBox">
       {userMaker}
     </div>
   );
