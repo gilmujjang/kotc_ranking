@@ -4,19 +4,10 @@ import { firebaseInstance } from '../fbase';
 import AuthForm from "../component/admin/AuthForm"
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Auth = () => {
   
-  const onSocialClick = async(event) => {
-    const {target:{name},
-    } = event;
-    let provider;
-    if(name === "google") {
-      provider = new firebaseInstance.auth.GoogleAuthProvider();
-    }
-    const data = await authService.signInWithPopup(provider);
-  };
   return(
     <div className="authContainer">
       <FontAwesomeIcon
@@ -26,11 +17,7 @@ const Auth = () => {
         style={{ marginBottom: 30 }}
       />
       <AuthForm />
-      <div className="authBtns">
-        <button onClick={onSocialClick} name="google" className="authBtn">
-          Continue with Google <FontAwesomeIcon icon={faGoogle} />
-        </button>
-      </div>
+
     </div>
   )
 }
