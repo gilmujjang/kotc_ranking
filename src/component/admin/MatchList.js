@@ -27,7 +27,6 @@ const MatchList = () => {
   }, [componentUpdate])
 
   const deleteClick = async(e) => {
-    console.log("delete clicked")
     let winTeam = []
     let loseTeam = []
     let changedRating = 0
@@ -40,7 +39,6 @@ const MatchList = () => {
     })
 
     await winTeam.map(winner => {
-      console.log(winner)
       dbService.collection("user").doc(winner).collection("game_record").doc(e.target.id).delete()
       dbService.collection("user").doc(winner).update({
         rating:firebase.firestore.FieldValue.increment(-changedRating),
@@ -50,7 +48,6 @@ const MatchList = () => {
     })
 
     await loseTeam.map(loser => {
-      console.log(loser)
       dbService.collection("user").doc(loser).collection("game_record").doc(e.target.id).delete()
       dbService.collection("user").doc(loser).update({
         rating:firebase.firestore.FieldValue.increment(changedRating),
