@@ -180,6 +180,11 @@ const RegiMatch = ({allUsers}) => {
       write_time: time
     }
 
+    if(percentage==NaN){
+      alert("percentage is never NaN");
+      return;
+    }
+
     await dbService.collection("game").doc(matchDate+'-'+time).set(match);
     
     await winners.map(winner => {
