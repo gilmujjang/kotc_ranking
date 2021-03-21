@@ -36,7 +36,7 @@ const UserList = ({allUsers}) => {
   ))
 
   return (
-    <div className="Box">
+    <div className="LongBox">
       {RecentUser}
     </div>
   );

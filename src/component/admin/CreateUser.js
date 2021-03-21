@@ -166,7 +166,7 @@ const CreateUser = () => {
   );
 
   return (
-    <div className="Box">
+    <div className="ShortBox">
       {userMaker}
     </div>
   );

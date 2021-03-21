@@ -251,7 +251,7 @@ const RegiMatch = ({allUsers}) => {
   );
 
   return (
-    <div className="Box">
+    <div className="ShortBox">
       {regiMatch}
     </div>
   );

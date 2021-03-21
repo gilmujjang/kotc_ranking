@@ -85,7 +85,7 @@ const MatchList = () => {
   ))
  
   return (
-    <div className="Box">
+    <div className="LongBox">
       <div className="spaceBetween gameListHeader">
         <span>승리팀</span>
         <span>패배팀</span>
