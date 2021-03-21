@@ -5,18 +5,16 @@ import { dbService, storageService } from '../../fbase';
 
 const UserList = ({allUsers}) => {
   const [userlist, setUserlist] = useState([]);
+
   useEffect(() => {
     setUserlist([]);
     allUsers.map(user => {
       setUserlist(userlist => [...userlist, user]);
     })
+    return () => {
+      setUserlist([]);
+    }
   }, [allUsers])
-
-  console.log("allUsers array")
-  console.log(allUsers)
-
-  console.log("userlist array")
-  console.log(userlist)
 
   const RecentUser = userlist.map(user => (
     <Toast>

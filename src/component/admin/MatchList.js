@@ -8,7 +8,7 @@ const MatchList = () => {
 
   useEffect(() => {
     setAllGame([]);
-    dbService.collection("game").orderBy("write_time","desc").limit(20).onSnapshot(snapshot => {
+    dbService.collection("game").orderBy("write_time","desc").limit(20).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
           winners:doc.data().winners,
@@ -36,7 +36,6 @@ const MatchList = () => {
     await dbService.collection("game").doc(e.target.id).delete()
     alert(e.target.id+' 를 삭제했습니다')
     setAllGame([]);
-    console.log(allGame)
   }
 
   const RecentGame = allGame.map(game => (

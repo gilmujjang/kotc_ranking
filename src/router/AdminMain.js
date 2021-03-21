@@ -10,8 +10,7 @@ import '../css/admin.css';
 const AdminMain = () => {
   const [allUsers, setAllUsers] = useState([]);
   useEffect(() => {
-    console.log("AdminMain useEffect excute!!!")
-    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
+    dbService.collection("user").orderBy("time","desc").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {
           name:doc.data().name,
@@ -24,9 +23,8 @@ const AdminMain = () => {
         setAllUsers(allUsers => [...allUsers, userObject]);
       })
     })
-    console.log("adminUsers array")
-    console.log(allUsers)
   }, [])
+
   return (
     <div className="AdminMain">
       <Header />
