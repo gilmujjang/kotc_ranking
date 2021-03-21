@@ -92,7 +92,7 @@ const RegiMatch = ({allUsers}) => {
         } else if(Number.isInteger(parseInt(searchLoser))){
           setLosers(losers.concat(searchLoser))
           setSearchLoser('');
-          setLosersRating(losersRating.concat(searchLoser));
+          setLosersRating(losersRating.concat(Number(searchLoser)));
         } else { //등록된 유저가 아니면
           alert('등록된 유저가 아닙니다')
           setSearchLoser('');
