@@ -26,6 +26,16 @@ const RegiMatch = ({allUsers}) => {
     })
   }, [allUsers])
 
+  const stateInit = () => {
+    setSearchWinner('');
+    setSearchLoser('');
+    setWinners([]);
+    setLosers([]);
+    setGameUser([]);
+    setWinnersRating([]);
+    setLosersRating([]);
+  }
+
   const winnerChange = e => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -203,15 +213,7 @@ const RegiMatch = ({allUsers}) => {
         game_lose: increment
       })
     })
-    setSearchWinner('');
-    setSearchLoser('');
-    setWinners([]);
-    setLosers([]);
-    setGameUser([]);
-    setWinnersRating([]);
-    setLosersRating([]);
-    winnerAverageRating = 0;
-    loserAverageRating = 0;
+    stateInit();
   }
 
 

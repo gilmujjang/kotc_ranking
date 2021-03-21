@@ -8,7 +8,6 @@ import 'firebase/firestore';
 const MatchList = () => {
   const [allGame, setAllGame] = useState([]);
   const [componentUpdate, setComponentUpdate] = useState();
-  function increment(n) {firebase.firestore.FieldValue.increment(n)};
 
   useEffect(() => {
     dbService.collection("game").orderBy("write_time","desc").limit(5).get().then(snapshot => {
