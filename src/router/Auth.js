@@ -17,7 +17,6 @@ const Auth = () => {
         style={{ marginBottom: 30 }}
       />
       <AuthForm />
-
     </div>
   )
 }
