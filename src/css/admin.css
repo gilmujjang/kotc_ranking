@@ -61,6 +61,7 @@
 }
 
 /* MatchList */
+
 .deleteIcon {
   position: relative;
   right: 20px;
@@ -70,6 +71,9 @@
 }
 
 .gameListHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   margin: 12px;
   margin-top: 0;
 }

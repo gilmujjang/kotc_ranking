@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { dbService, storageService } from '../fbase';
+import { dbService } from '../fbase';
 import Header from '../component/admin/Header';
 import CreateUser from '../component/admin/CreateUser'
 import RegiMatch from '../component/admin/RegiMatch'
@@ -10,7 +10,6 @@ import '../css/admin.css';
 const AdminMain = () => {
   const [allUsers, setAllUsers] = useState([]);
   useEffect(() => {
-    setAllUsers([])
     dbService.collection("user").orderBy("time","desc").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {

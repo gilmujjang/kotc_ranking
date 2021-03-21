@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../css/admin.css';
 import { authService } from "../../fbase";
 import { useHistory } from "react-router-dom";
 

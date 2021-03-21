@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from 'react';
-import '../../css/admin.css';
 import { Toast, ToastHeader } from 'reactstrap';
-import { dbService, storageService } from '../../fbase';
+import { dbService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -25,7 +24,7 @@ const MatchList = () => {
       })
     })
   }, [componentUpdate])
-  
+
   const deleteClick = async(e) => {
     let winTeam = []
     let loseTeam = []
@@ -87,7 +86,7 @@ const MatchList = () => {
  
   return (
     <div className="LongBox">
-      <div className="spaceBetween gameListHeader">
+      <div className="gameListHeader">
         <span>승리팀</span>
         <span>패배팀</span>
       </div>

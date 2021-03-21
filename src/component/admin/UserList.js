@@ -1,7 +1,5 @@
-import { React, useEffect, useState } from 'react';
-import '../../css/admin.css';
+import { React } from 'react';
 import { Toast, ToastHeader } from 'reactstrap';
-import { dbService, storageService } from '../../fbase';
 
 const UserList = ({allUsers}) => {
 

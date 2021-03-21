@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import '../../css/admin.css';
 import "react-datepicker/dist/react-datepicker.css"
 import 'react-datepicker/dist/react-datepicker-cssmodules.min.css'
 import { Form, Input, Button } from 'reactstrap';
-import DatePicker, { registerLocale } from "react-datepicker";
-import { dbService, storageService } from '../../fbase';
+import DatePicker from "react-datepicker";
+import { dbService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
