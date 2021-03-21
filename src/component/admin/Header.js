@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../style.css';
 import { authService } from "../../fbase";
 import { useHistory } from "react-router-dom";
 
@@ -13,10 +12,8 @@ const Header = () => {
   };
   return (
     <div className="header">
-      <span className="headerText">랭킹시스템 관리자 페이지</span>
-      <span className="formBtn cancelBtn logOut headerText" onClick={onLogOutClick}>
-        Log Out
-      </span>
+      <span className="headerText">KOTC 랭킹시스템 관리자 페이지</span>
+      <i class="fas fa-sign-out-alt fa-2x logout needMargin"  onClick={onLogOutClick}></i>
     </div>
   );
 };
