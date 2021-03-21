@@ -218,11 +218,11 @@ const RegiMatch = ({allUsers}) => {
   const regiMatch = (
     <div className='userMaker'>
       <Form className="noteWriter">
-        <div className="needMargin matchResult">
+        <div className="matchResult">
           <span>
             <div>승</div>
             <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
-            <div className="users flexWrap">
+            <div className="users playerView">
               {winners.map(i => (
                 <span className="targetUser">{i}</span>
               ))}
@@ -241,7 +241,7 @@ const RegiMatch = ({allUsers}) => {
             </div>
           </span>
         </div>
-        <div className="needMargin">
+        <div className="datepicker">
           <span className="needMargin">시합일</span>
           <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
         </div>
