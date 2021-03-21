@@ -1,14 +1,23 @@
 import React from 'react';
 import Nav from '../component/client/Nav';
-import '../style.css';
+import UserRanking from '../component/client/UserRanking';
+import '../css/client.css';
 
 const ClientMain = () => {
   return (
     <div className="App">
-      <div id="clientMain">
+      <div className="client-container">
         <Nav/>
-        {/* 유저 랭킹 리스트 */}
-        {/* 최근 경기 */}
+        <div id="main">
+          <UserRanking/>
+        </div>
+        <div id="aside1">
+          {/* 최근 경기 */}
+          <h2>aside1</h2>
+        </div>
+        <div id="aside2">
+          <h2>aside2</h2>
+        </div>
       </div>
     </div>
   );

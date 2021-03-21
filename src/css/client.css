@@ -27,28 +27,24 @@ address, em, i {font-style: normal;}
 .clearfix::after{content: ''; clear: both; display: block;}
 
 /* GRID */
-.container{
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-areas: 
-  "nav nav main main main main main main main aside1 aside1 asdie1"
-  "nav nav main main main main main main main aside2 aside2 asdie2";
+.client-container{
+    height: 100%;
+    background: -webkit-linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));
+    background: linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));  
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 140px 140px repeat(10, 1fr);
+    grid-template-areas: 
+    "nav nav main main main main main main main aside1 aside1 asdie1"
+    "nav nav main main main main main main main aside2 aside2 asdie2";
 }
 #nav{grid-area: nav;}
 #main{grid-area: main;}
 #aside1{grid-area: aside1;}
 #aside2{grid-area: aside2;}
 
-/* CLIENTMAIN */
-#clientMain{
-  height: 100%;
-  background: -webkit-linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));
-  background: linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));  
-}
-
 /* NAV */
-#nav{width: 280px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
+#nav{max-width: 280px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
 #nav ul{margin-top: 12px;}
 #nav ul li{height: 40px;}
 #nav ul li a{display: block; padding-left: 12px; font-size: 18px; line-height: 40px; transition: .2s ease-in-out;}
@@ -63,8 +59,8 @@ address, em, i {font-style: normal;}
 #nav .footer--top{letter-spacing: 1.4px;}
 #nav .footer--bot{letter-spacing: 1.1px;}
 
-
-
-
-.rankingContainer{height: 250px; width: 300px; overflow: auto;}
-.ranking{background-color: cadetblue;}
+/* MAIN */
+#main{padding: 100px 150px;}
+#main .rankingContainer{width: 100%; height: 100%; overflow: auto;}
+#main .rankingContainer .ranking{background-color: rgba(212, 228, 230, 0.4);}
+#main .ranking .ranking-item{height: 100px; border-bottom: 2px solid black;}
