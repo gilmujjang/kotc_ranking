@@ -118,10 +118,10 @@ const RegiMatch = ({allUsers}) => {
     let winnerAverageRating = winnersRating[0];
     let loserAverageRating = losersRating[0];
     if(winnersRating.length==2){
-      winnerAverageRating = (winnersRating[0]+winnersRating[1])/2
+      winnerAverageRating = (Math.max(winnersRating[0],winnersRating[1])+2*Math.min(winnersRating[0],winnersRating[1]))/3
     }
     if(losersRating.length==2){
-      loserAverageRating = (losersRating[0]+losersRating[1])/2
+      loserAverageRating = (Math.max(losersRating[0],losersRating[1])+2*Math.min(losersRating[0],losersRating[1]))/3
     }
     const percentage = (1/(1+(Math.pow(10,(loserAverageRating-winnerAverageRating)/400)))).toFixed(2)
     const reversePercentage = (1-percentage).toFixed(2)

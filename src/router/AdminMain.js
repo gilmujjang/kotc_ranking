@@ -16,6 +16,9 @@ const AdminMain = () => {
         const userObject = {
           name:doc.data().name,
           rating:doc.data().rating,
+          game_all:doc.data().game_all,
+          game_win:doc.data().game_win,
+          game_lose:doc.data().game_lose,
           studentid:doc.data().studentid,
           department:doc.data().department,
           status: doc.data().status,

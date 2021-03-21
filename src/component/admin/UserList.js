@@ -4,19 +4,8 @@ import { Toast, ToastHeader } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
 const UserList = ({allUsers}) => {
-  const [userlist, setUserlist] = useState([]);
 
-  useEffect(() => {
-    setUserlist([]);
-    allUsers.map(user => {
-      setUserlist(userlist => [...userlist, user]);
-    })
-    return () => {
-      setUserlist([]);
-    }
-  }, [allUsers])
-
-  const RecentUser = userlist.map(user => (
+  const RecentUser = allUsers.map(user => (
     <Toast>
       <ToastHeader>
         <div className="spaceBetween">
@@ -30,7 +19,7 @@ const UserList = ({allUsers}) => {
       </div>
       <div className="needMargin spaceBetween">
         <div>Rating : {user.rating}</div>
-        <div>{user.time}</div>
+        <div>전적 : {user.game_win}승 {user.game_lose}패</div>
       </div>
     </Toast>
   ))

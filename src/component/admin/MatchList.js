@@ -10,12 +10,13 @@ const MatchList = () => {
   const [componentUpdate, setComponentUpdate] = useState();
 
   useEffect(() => {
-    dbService.collection("game").orderBy("write_time","desc").limit(5).get().then(snapshot => {
+    dbService.collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
           winners:doc.data().winners,
           losers:doc.data().losers,
           ratingChange:doc.data().ratingChange,
+          percentage:doc.data().percentage,
           date:doc.data().date,
           time:doc.data().write_time,
           id:doc.data().date+'-'+doc.data().write_time
@@ -24,7 +25,7 @@ const MatchList = () => {
       })
     })
   }, [componentUpdate])
-
+  
   const deleteClick = async(e) => {
     let winTeam = []
     let loseTeam = []
@@ -73,7 +74,8 @@ const MatchList = () => {
           ))}
         </ToastHeader>
         <div className="needMargin flexWrap spaceBetween">
-          레이팅변화 : {game.ratingChange}
+          <div>레이팅변화 : {game.ratingChange}</div>
+          <div>승률예측 : {game.percentage}%</div>
         </div>
         <div className="needMargin flexWrap spaceBetween">
           등록시각 : {game.time}
