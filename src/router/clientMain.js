@@ -4,12 +4,14 @@ import UserRanking from '../component/client/UserRanking';
 import '../css/client.css';
 
 const ClientMain = () => {
+  
+
   return (
     <div className="App">
       <div className="client-container">
         <Nav/>
         <div id="main">
-          <UserRanking/>
+          <UserRanking />
         </div>
         <div id="aside1">
           {/* 최근 경기 */}

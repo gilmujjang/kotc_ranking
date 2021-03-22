@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { dbService } from '../../fbase'
 
 const UserRanking = () => {
@@ -8,8 +8,9 @@ const UserRanking = () => {
     const [users, setUsers] = useState([]);
 
     // 02 재학생만 가져오기
+    const onScrollTarget = useRef();
     const getRanking = async () => {
-        await dbService.collection('user').where('status', '==', '재학').get()
+        await dbService.collection('user').where('status', '==', '재학').get() //.orderBy('rating') 나중에 색인 다시 만들어야 함
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // 03 setUsers()로 항목 추가
@@ -39,18 +40,22 @@ const UserRanking = () => {
         users[i].grade = i + 1;
     }
 
-    // 06 rankingContainer를 스크롤 했을 때
-    function onScrollAction() {
-        // if(
-        //     rankingContainer.scrollTop + rankingContainer.clientHeight
-        //     >= rankingContainer.scrollHeight) {
-        //         console.log('hello');
-        // }
+    console.log(users);
+
+    // 06 rankingContainer 스크롤 했을 때
+
+    const onScrollAction = (e) => {
+        const rankingContainer = e.target
+        
+        if(
+            rankingContainer.scrollTop + rankingContainer.clientHeight
+            >= rankingContainer.scrollHeight) {
+                console.log('he');
+        }
     }
-    
 
     return (
-        <div className="rankingContainer" onScroll={onScrollAction}>
+        <div className="rankingContainer" ref={onScrollTarget} onScroll={onScrollAction}>
             <div className="ranking">
             {users.length > 0 && users.map((users) =>
                 <div className="ranking-item" key={users.grade}>
