@@ -9,8 +9,10 @@ import '../css/admin.css';
 
 const AdminMain = () => {
   const [allUsers, setAllUsers] = useState([]);
+  const [allGame, setAllGame] = useState([]);
+
   useEffect(() => {
-    dbService.collection("user").orderBy("time","desc").get().then(snapshot => {
+    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {
           name:doc.data().name,
@@ -28,6 +30,23 @@ const AdminMain = () => {
     })
   }, [])
 
+  useEffect(() => {
+    dbService.collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
+      snapshot.docs.map(doc => {
+        const gameObject = {
+          winners:doc.data().winners,
+          losers:doc.data().losers,
+          ratingChange:doc.data().ratingChange,
+          percentage:doc.data().percentage,
+          date:doc.data().date,
+          time:doc.data().write_time,
+          id:doc.data().date+'-'+doc.data().write_time
+        }
+        setAllGame(allGame => [...allGame, gameObject]);
+      })
+    })
+  }, [])
+
   return (
     <div className="AdminMain">
       <Header />
@@ -35,7 +54,7 @@ const AdminMain = () => {
         <CreateUser/>
         <RegiMatch allUsers={allUsers}/>
         <UserList allUsers={allUsers}/>
-        <MatchList/>
+        <MatchList allGame={allGame}/>
       </div>
     </div>
   );
