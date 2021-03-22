@@ -5,7 +5,7 @@ import AdminMain from '../router/AdminMain';
 import ClientMain from '../router/ClientMain';
 
 
-const AppRouter = ({ refreshUser,isLoggedIn, userObj }) => {
+const AppRouter = ({ isLoggedIn, userObj }) => {
   return(
     <Router>
       {isLoggedIn}
@@ -13,22 +13,16 @@ const AppRouter = ({ refreshUser,isLoggedIn, userObj }) => {
         {isLoggedIn ? (
         <>
           <Route exact path = "/">
-            주소에 /#/admin 또는 /#/client 를 붙이세요
+            <ClientMain/>
           </Route>
           <Route path="/admin">
             <AdminMain userObj={userObj} />
           </Route>
-          <Route exact path="/client">
-            <ClientMain/>
-          </Route>
         </>
          ) : (
           <>
-            <Route exact path = "/client">
-              <ClientMain/>
-            </Route>
             <Route exact path = "/">
-              주소에 /#/admin 또는 /#/client 를 붙이세요
+              <ClientMain/>
             </Route>
             <Route exact path = "/admin">
               <Auth/>
