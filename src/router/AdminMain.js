@@ -12,7 +12,7 @@ const AdminMain = () => {
   const [allGame, setAllGame] = useState([]);
 
   useEffect(() => {
-    dbService.collection("user").orderBy("time","desc").onSnapshot(snapshot => {
+    dbService.collection("user").orderBy("time","desc").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {
           name:doc.data().name,
