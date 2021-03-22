@@ -8,6 +8,7 @@ const Header = () => {
   const history = useHistory();
   const onLogOutClick = () => {
     authService.signOut();
+    console.log("hi")
     history.push("/")
   };
   return (
