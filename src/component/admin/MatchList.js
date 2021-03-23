@@ -4,26 +4,7 @@ import { dbService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-const MatchList = () => {
-  const [allGame, setAllGame] = useState([]);
-  const [componentUpdate, setComponentUpdate] = useState();
-
-  useEffect(() => {
-    dbService.collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
-      snapshot.docs.map(doc => {
-        const gameObject = {
-          winners:doc.data().winners,
-          losers:doc.data().losers,
-          ratingChange:doc.data().ratingChange,
-          percentage:doc.data().percentage,
-          date:doc.data().date,
-          time:doc.data().write_time,
-          id:doc.data().date+'-'+doc.data().write_time
-        }
-        setAllGame(allGame => [...allGame, gameObject]);
-      })
-    })
-  }, [componentUpdate])
+const MatchList = ({allGame}) => {
 
   const deleteClick = async(e) => {
     let winTeam = []
@@ -56,8 +37,6 @@ const MatchList = () => {
     })
     await dbService.collection("game").doc(e.target.id).delete()
     alert(e.target.id+' 를 삭제했습니다')
-    setAllGame([]);
-    setComponentUpdate((prev) => !prev)
   }
 
   const RecentGame = allGame.map(game => (
