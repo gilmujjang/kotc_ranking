@@ -13,10 +13,10 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
         {isLoggedIn ? (
         <>
           <Route exact path = "/">
-            <ClientMain/>
+            <ClientMain userObj={userObj}/>
           </Route>
           <Route path="/admin">
-            <AdminMain userObj={userObj} />
+            <AdminMain userObj={userObj}/>
           </Route>
         </>
          ) : (
