@@ -52,7 +52,7 @@ const CreateUser = () => {
       const response = await attachmentRef.putString(attachment, "data_url");
       attachmentUrl = await response.ref.getDownloadURL();
     }
-
+    
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월

@@ -39,7 +39,7 @@ address, em, i {font-style: normal;}
     "nav nav main main main main main main main aside2 aside2 asdie2";
 }
 #nav{grid-area: nav;}
-#main{grid-area: main;}
+.ClientMain{grid-area: main;}
 #aside1{grid-area: aside1;}
 #aside2{grid-area: aside2;}
 
@@ -60,7 +60,23 @@ address, em, i {font-style: normal;}
 #nav .footer--bot{letter-spacing: 1.1px;}
 
 /* MAIN */
-#main{padding: 100px 150px;}
-#main .rankingContainer{width: 100%; height: 100%; overflow: auto;}
-#main .rankingContainer .ranking{background-color: rgba(212, 228, 230, 0.4);}
-#main .ranking .ranking-item{height: 100px; border-bottom: 2px solid black;}
+.ClientMain {
+  padding: 100px 150px;
+}
+
+.rankingContainer {
+  width: 100%; height: 100%; overflow: auto;
+}
+
+.ranking {
+  height: 100px; border-bottom: 2px solid black;
+  background-color: rgba(212, 228, 230, 0.4);
+  display: flex;
+}
+
+/* RankingContent */
+.userImage {
+  width: 96px;
+  height: 96px;
+  border-radius: 36px;
+}
