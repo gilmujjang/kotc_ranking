@@ -58,7 +58,7 @@ const ClientMain = ({userObj}) => {
         <div id="nav">
               <ul>
                 <li><a id="재학생랭킹" onClick={listOnClicked}>재학생 랭킹</a></li>
-                <li><a id="역대랭킹" onClick={listOnClicked}>역대 랭킹</a></li>
+                <li><a id="전체랭킹" onClick={listOnClicked}>전체 랭킹</a></li>
                 <li><a id="학번별랭킹" onClick={listOnClicked}>학번별 랭킹</a></li>
                 <li><a id="선수상세정보" onClick={listOnClicked}>선수 상세정보</a></li>
                 <li><a id="게시글" onClick={listOnClicked}>게시글</a></li>
@@ -78,7 +78,7 @@ const ClientMain = ({userObj}) => {
               </footer>
           </div>
         <div className="ClientMain">
-          {["재학생랭킹","역대랭킹","학번별랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode}/>}
+          {["재학생랭킹","전체랭킹","학번별랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode}/>}
           {contentMode==="선수상세정보" && <UserInfo allUsers={allUsers}/>}
           {contentMode==="게시글" && <Post allUsers={allUsers}/>}
         </div>

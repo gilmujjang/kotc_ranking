@@ -1,17 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const RankingContent = ({allUsers}) => {
-    
-    const onScrollTarget = useRef();
-    const onScrollAction = (e) => {
-        const rankingContainer = e.target
-        if(
-            rankingContainer.scrollTop + rankingContainer.clientHeight
-            >= rankingContainer.scrollHeight) {
-        }
-    }
+const RankingContent = ({allUsers, allGame, contentMode}) => {
+  const stduenRanking = allUsers.filter(user => user.status==="재학");
+  const studentidRanking = allUsers.filter(user => user.studentid==16);
+  const [showRanking, setShowRanking] = useState(stduenRanking);
 
-    const userRankingList = allUsers.map((user,index) => (
+  useEffect(() => {
+    if(contentMode==="재학생랭킹"){
+      setShowRanking(stduenRanking)
+    } else if(contentMode==="전체랭킹"){
+      setShowRanking(allUsers)
+    } else if(contentMode==="학번별랭킹"){
+      setShowRanking(studentidRanking)
+    }
+  }, [contentMode,allUsers])
+
+  const onScrollTarget = useRef();
+  const onScrollAction = (e) => {
+    const rankingContainer = e.target
+    if(
+      rankingContainer.scrollTop + rankingContainer.clientHeight
+      >= rankingContainer.scrollHeight) {
+    }
+  }
+
+    const userRankingList = showRanking.map((user,index) => (
           <div className="ranking" key={index}>
             <div className="item--left grade">{index+1}</div>
             <div>{user.attachmentUrl
