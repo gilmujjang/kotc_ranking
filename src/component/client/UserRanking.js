@@ -2,15 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { dbService } from '../../fbase'
 
 const UserRanking = () => {
-    const LOAD_COUNT = 1;
 
-    const [loadCount, setLoadCount] = useState(LOAD_COUNT)
+    const [loadCount, setLoadCount] = useState(9);
     const [users, setUsers] = useState([]);
 
     // 02 재학생만 가져오기
     const onScrollTarget = useRef();
     const getRanking = async () => {
-        await dbService.collection('user').where('status', '==', '재학').get() //.orderBy('rating') 나중에 색인 다시 만들어야 함
+        await dbService.collection('user').where('status', '==', '재학').orderBy('rating').get() //.orderBy('rating') 나중에 색인 다시 만들어야 함
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // 03 setUsers()로 항목 추가
@@ -40,18 +39,16 @@ const UserRanking = () => {
         users[i].grade = i + 1;
     }
 
-    console.log(users);
-
     // 06 rankingContainer 스크롤 했을 때
-
     const onScrollAction = (e) => {
-        const rankingContainer = e.target
+        // const rankingContainer = e.target
         
-        if(
-            rankingContainer.scrollTop + rankingContainer.clientHeight
-            >= rankingContainer.scrollHeight) {
-                console.log('he');
-        }
+        // if(
+        //     rankingContainer.scrollTop + rankingContainer.clientHeight
+        //     >= rankingContainer.scrollHeight) {
+        //         setLoadCount(loadCount + 5)
+        //         console.log(loadCount);
+        // }
     }
 
     return (

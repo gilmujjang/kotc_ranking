@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Nav from '../component/client/Nav';
 import UserRanking from '../component/client/UserRanking';
 import '../css/client.css';
 
 const ClientMain = () => {
   
-
   return (
     <div className="App">
       <div className="client-container">

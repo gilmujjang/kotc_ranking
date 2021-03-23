@@ -15,10 +15,10 @@ const Nav = () => {
     return (
         <div id="nav">
             <ul>
-                <li><a href="/client/">재학생 랭킹</a></li>
-                <li><a href="/client/">신입생 랭킹</a></li>
-                <li><a href="/client/">찍먹파</a></li>
-                <li><a href="/client/">부먹파</a></li>
+                <li>재학생 랭킹</li>
+                <li>전체 랭킹</li>
+                <li>전체 유저</li>
+                <li>게시판</li>
             </ul>
             {signedUser &&
                 <div className="signedUser">
