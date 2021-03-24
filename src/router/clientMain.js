@@ -48,45 +48,46 @@ const ClientMain = ({userObj}) => {
   }, [])
 
   const listOnClicked = e => {
-    e.preventDefault();
     setContentMode(e.target.id)
   }
   
   return (
     <div className="App">
       <div className="client-container">
-        <div id="nav">
-              <ul>
-                <li><a id="재학생랭킹" onClick={listOnClicked}>재학생 랭킹</a></li>
-                <li><a id="전체랭킹" onClick={listOnClicked}>전체 랭킹</a></li>
-                <li><a id="학번별랭킹" onClick={listOnClicked}>학번별 랭킹</a></li>
-                <li><a id="선수상세정보" onClick={listOnClicked}>선수 상세정보</a></li>
-                <li><a id="게시글" onClick={listOnClicked}>게시글</a></li>
-              </ul>
-              {userObj &&
-                  <div className="signedUser">
-                  <img className="signedUser--img" src={userObj.photoURL} alt=""></img>
-                  <div className="signedUser--txt">
-                      <p className="signedUser__name">{userObj.displayName}</p>
-                      <p className="signedUser__email">{userObj.email}</p>
-                  </div>
-                  </div>
-              }
-              <footer>
-                  <p className="footer--top">&copy; 2021, Built by</p>
-                  <p className="footer--bot">gilmujjang & Hyeon-Gwang</p>
-              </footer>
-          </div>
+        <div class="nav">
+          <ul>
+            <li id="재학생랭킹" onClick={listOnClicked}>재학생 랭킹</li>
+            <li id="전체랭킹" onClick={listOnClicked}>전체 랭킹</li>
+            <li id="학번별랭킹" onClick={listOnClicked}>학번별 랭킹</li>
+            <li id="선수상세정보" onClick={listOnClicked}>선수 상세정보</li>
+            <li id="게시글" onClick={listOnClicked}>게시글</li>
+          </ul>
+          {/* 로그인 유저 정보, 로그인 개설 시 전환 */}
+          {/* {
+          userObj &&
+            <div className="signedUser">
+              <img className="signedUser--img" src={userObj.photoURL} alt=""></img>
+              <div className="signedUser--txt">
+                <p className="signedUser__name">{userObj.displayName}</p>
+                <p className="signedUser__email">{userObj.email}</p>
+              </div>
+            </div>
+          } */}
+          <footer>
+              <p className="footer--top">&copy; 2021, Built by</p>
+              <p className="footer--bot">gilmujjang & Hyeon-Gwang</p>
+          </footer>
+        </div>
         <div className="ClientMain">
           {["재학생랭킹","전체랭킹","학번별랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode}/>}
           {contentMode==="선수상세정보" && <UserInfo allUsers={allUsers}/>}
           {contentMode==="게시글" && <Post allUsers={allUsers}/>}
         </div>
-        <div id="aside1">
+        <div className="aside1">
           {/* 최근 경기 */}
           <h2>aside1</h2>
         </div>
-        <div id="aside2">
+        <div className="aside2">
           <h2>aside2</h2>
         </div>
       </div>
