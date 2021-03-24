@@ -4,6 +4,7 @@ import Post from '../component/client/Post';
 import RankingContent from '../component/client/RankingContent';
 import UserInfo from '../component/client/UserInfo';
 import '../css/client.css';
+import '../css/client_mugil.css';
 
 const ClientMain = ({userObj}) => {
   const [allUsers, setAllUsers] = useState([]);
