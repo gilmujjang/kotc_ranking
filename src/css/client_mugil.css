@@ -4,3 +4,4 @@
 .usersInformation .userInfo .userInfoRightSide .userInfoUpSide{display: flex; justify-content: space-between; padding: 8px;}
 .usersInformation .userInfo .userInfoRightSide .userInfoBottomSide{display: flex; justify-content: space-between; padding: 8px;}
 .win_lose {display: flex;}
+.userStatus {}

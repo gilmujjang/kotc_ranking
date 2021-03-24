@@ -1,10 +1,11 @@
 import React from 'react';
 
 const UserInfo = ({allUsers, allGame, contentMode}) => {
-
-    const allUsersByTime = allUsers.sort(function(a,b){
-        return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
-    })
+  
+  const allUsersByTime = allUsers;
+  allUsersByTime.sort(function(a,b){
+    return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
+  })
 
     const userInfo = allUsersByTime.map((user,index) => (
         <div className="userInfo" key={index}>
@@ -15,7 +16,12 @@ const UserInfo = ({allUsers, allGame, contentMode}) => {
             </div>
             <div className="userInfoRightSide">
               <div className="userInfoUpSide">
-                <div className="studentName">{user.name}</div>
+                <div>
+                  <span className="studentName">{user.name}</span>
+                  <span> . . . </span>
+                  <span className="userStatus">{user.status}</span>
+                </div>
+                
                 <div className="win_lose">
                   <div className="department">{user.game_win}승</div>
                   <div className="department">{user.game_lose}패</div>
