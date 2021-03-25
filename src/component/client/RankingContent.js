@@ -10,7 +10,6 @@ const RankingContent = ({allUsers, allGame, contentMode}) => {
   useEffect(() => {
     if(contentMode === "재학생랭킹"){
       setShowRanking(studentRanking.slice(0, loadState.end))
-      console.log(studentRanking);
     } else if(contentMode === "전체랭킹"){
       setShowRanking(allUsers)
     } else if(contentMode === "학번별랭킹"){
