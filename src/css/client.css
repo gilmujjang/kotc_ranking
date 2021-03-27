@@ -64,12 +64,12 @@ address, em, i {font-style: normal;}
 .nav .footer--bot{letter-spacing: 1.1px;}
 
 /* MAIN */
-.ClientMain {padding: 100px 80px 100px 120px;}
+.ClientMain {margin: 100px 80px 100px 120px; position: relative;}
 
-/* RankingContent webpack 오류 수정 필요 */
-.rankingContainer{width: 100%; height: 100%; overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
-.ranking{display: flex; align-items: center; height: 100px; margin: 28px 20px 28px 0; position: relative; cursor: pointer;}
-.ranking .grade{width: 120px; margin-left: 10px; font-size: 84px; font-weight: 500; text-align: center;}
+/* RankingContent */
+.rankingContainer{width: 100%; height: 100%; position: absolute; top: 0; overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
+.ranking{display: flex; align-items: center; height: 100px; margin: 28px 20px 28px 10px; position: relative; cursor: pointer;}
+.ranking .grade{width: 120px; font-size: 84px; font-weight: 500; text-align: center;}
 
 .ranking .item--img{width: 80px; height: 80px; position: absolute; left: 150px;}
 .ranking .item--img img{width: 100%; height: 100%; border-radius: 50%; box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 6px;}
@@ -80,3 +80,14 @@ address, em, i {font-style: normal;}
 .ranking .item--right > div .studentName{width: 100%; font-size: 36px; text-align: center; position: absolute; top: 8px;}
 .ranking .item--right > div .studentId{position: absolute; bottom: 16px; left: 8px;}
 .ranking .item--right > div .department{position: absolute; bottom: 16px; right: 8px;}
+
+/* rankingContent DROPBOX */
+.dropdown{width: 100px;  position: absolute; top: -60px; right: 160px; cursor: pointer;}
+.dropdown:hover .dropdown--list{opacity: 1;visibility: visible;}
+.dropdown .dropdown--selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px;}
+.dropdown .dropdown--list{background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
+.dropdown .dropdown--list .dropdown--list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500;}
+.dropdown .dropdown--list .dropdown--list__item:hover{background-color: rgba(180, 180, 180, 0.8);}
+
+/* rankingContent INPUT */
+.rankingContent-input{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}

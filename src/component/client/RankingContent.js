@@ -1,26 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const RankingContent = ({allUsers, allGame, contentMode}) => {
-
-  const [loadState, setLoadState] = useState({ end: 9 })
+const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
   const studentRanking = allUsers.filter(user => user.status === "재학");
-  const studentidRanking = allUsers.filter(user => user.studentid == 16);
+  const studentidRanking = allUsers.filter(user => user.studentid === 16);
+  const [loadState, setLoadState] = useState({ end: 9 });
   const [showRanking, setShowRanking] = useState([]);
-  
+  const [currentType, setCurrentType] = useState('전체');
+  const [typeContent, setTypeContent] = useState('');
+
   useEffect(() => {
     if(contentMode === "재학생랭킹"){
       setShowRanking(studentRanking.slice(0, loadState.end))
-      console.log(studentRanking);
     } else if(contentMode === "전체랭킹"){
-      setShowRanking(allUsers)
-    } else if(contentMode === "학번별랭킹"){
-      setShowRanking(studentidRanking)
+      // setShowRanking(allUsers)
+      switch(currentType) {
+        case '전체':
+          setShowRanking(allUsers.slice(0, loadState.end))
+          break;
+        case '학번':
+          setShowRanking(allUsers.filter(el => el.studentid === 16))
+          break;
+        default:
+          break;
+      }
     }
-  }, [contentMode, allUsers, loadState])
+    
+    
+    // else if(contentMode === "학번별랭킹"){
+    //   setShowRanking(studentidRanking)
+    // }
+  }, [contentMode, allUsers, loadState, currentType, typeContent])
 
   // infinite 스크롤
-  const onScrollTarget = useRef();
-  const onScrollAction = (e) => {
+  function onScrollAction(e) {
     const rankingContainer = e.target;
     if(
         rankingContainer.scrollTop + rankingContainer.clientHeight
@@ -69,10 +83,40 @@ const RankingContent = ({allUsers, allGame, contentMode}) => {
     </div>
   ))
 
+
+  function onChangeAction(e) {
+    setTypeContent(e.target.value)
+  }
+
+  function onClickAction(e) {
+    const target = e.target.id;
+
+    setCurrentType(target)
+  }
+
+  const rankingContentFilter = (
+    <>
+      <div className="dropdown">
+        <div className="dropdown--selected">
+          <span className="selected">{currentType}</span>
+          <FontAwesomeIcon icon={faCaretDown}/>
+        </div>
+        <ul className="dropdown--list">
+          <li id="전체" className="dropdown--list__item" onClick={onClickAction}>전체</li>
+          <li id="학번" className="dropdown--list__item" onClick={onClickAction}>학번</li>
+        </ul>
+      </div>
+      <input type="text" className="rankingContent-input" placeholder="text me..." onChange={onChangeAction} />
+    </>
+  )
+
   return (
-    <div className="rankingContainer" ref={onScrollTarget} onScroll={onScrollAction}>
-      {userRankingList}
-    </div>
+    <>
+      {contentMode === "전체랭킹" && rankingContentFilter}
+      <div className="rankingContainer" onScroll={onScrollAction}>
+        {userRankingList}
+      </div>
+    </>
   )
 };
 
