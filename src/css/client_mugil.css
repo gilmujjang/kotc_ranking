@@ -9,6 +9,12 @@
 .userImage{width:84px; height: 108px; border-radius: 40%;}
 /* Post */
 .postMain{width: 100%; height: 100%;}
-.PostList{overflow: scroll; width: 100%; height: 100%;}
-.postHeader{display: flex; padding: 12px; margin: 12px;}
+.postList{overflow: scroll; width: 100%; height: 100%;}
+.postHeader{display: flex; padding: 12px; margin: 12px; padding: 12px;}
 .post{padding: 12px; margin: 12px;}
+.writeHidden { visibility: hidden; max-height: 0px;}
+.writeMode {height: auto;}
+.postMaker {width: 100%; height: 100%; margin: 0;}
+.titleInput { width: 100%; height: 40px;}
+.submitButton { width: 64px; height: 24px; font-size: 16px; border: none; background: white; border-radius: 5px; margin-top: 12px;}
+.ck.ck-editor__editable:not(.ck-editor__nested-editable) {width: 100%; min-height: 300px; }
