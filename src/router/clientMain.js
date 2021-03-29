@@ -20,7 +20,6 @@ const ClientMain = ({userObj, allUsers, allGame}) => {
               <ul>
                 <li id="재학생랭킹" onClick={listOnClicked}>재학생 랭킹</li>
                 <li id="전체랭킹" onClick={listOnClicked}>전체 랭킹</li>
-                <li id="학번별랭킹" onClick={listOnClicked}>학번별 랭킹</li>
                 <li id="선수상세정보" onClick={listOnClicked}>선수 상세정보</li>
                 <li id="게시글" onClick={listOnClicked}>게시글</li>
               </ul>

@@ -21,7 +21,12 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
           setShowRanking(allUsers.slice(0, loadState.end))
           break;
         case '학번':
-          setShowRanking(allUsers.filter(el => el.studentid === 16))
+          if(typeContent) {
+            setShowRanking(allUsers.filter(el => el.studentid === parseInt(typeContent)))
+          } else{
+            setShowRanking(allUsers)
+          }
+          
           break;
         default:
           break;
