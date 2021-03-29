@@ -38,10 +38,10 @@ address, em, i {font-style: normal;}
     background: linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));  
     display: grid;
     grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: 140px 140px repeat(10, 1fr);
+    grid-template-columns: 130px 130px repeat(8, 1fr) 170px 170px;
     grid-template-areas: 
-    "nav nav main main main main main main main aside1 aside1 asdie1"
-    "nav nav main main main main main main main aside2 aside2 asdie2";
+    "nav nav main main main main main main main main aside1 asdie1"
+    "nav nav main main main main main main main main aside2 asdie2";
 }
 .nav{grid-area: nav;}
 .ClientMain{grid-area: main;}

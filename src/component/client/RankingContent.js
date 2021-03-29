@@ -18,7 +18,7 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
       // setShowRanking(allUsers)
       switch(currentType) {
         case '전체':
-          setShowRanking(allUsers.slice(0, loadState.end))
+          setShowRanking(allUsers)
           break;
         case '학번':
           if(typeContent) {
@@ -26,17 +26,12 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
           } else{
             setShowRanking(allUsers)
           }
-          
           break;
         default:
+          setShowRanking(allUsers)
           break;
       }
     }
-    
-    
-    // else if(contentMode === "학번별랭킹"){
-    //   setShowRanking(studentidRanking)
-    // }
   }, [contentMode, allUsers, loadState, currentType, typeContent])
 
   // infinite 스크롤
@@ -96,7 +91,6 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
 
   function onClickAction(e) {
     const target = e.target.id;
-
     setCurrentType(target)
   }
 
