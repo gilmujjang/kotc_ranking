@@ -6,6 +6,7 @@
   margin: 0;padding: 0;
   font-family: 'Noto Sans KR', 'Roboto', sans-serif; color: #2d2d2d; line-height: 1.6;
   box-sizing: border-box; outline: none;
+  fill: inherit;
 }
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, tbody, tfoot, thead, tr, th, td{margin:0;padding:0;}
@@ -40,8 +41,8 @@ address, em, i {font-style: normal;}
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: 130px 130px repeat(8, 1fr) 170px 170px;
     grid-template-areas: 
-    "nav nav main main main main main main main main aside1 asdie1"
-    "nav nav main main main main main main main main aside2 asdie2";
+    "nav nav main main main main main main main main aside1 aside1"
+    "nav nav main main main main main main main main aside2 aside2";
 }
 .nav{grid-area: nav;}
 .ClientMain{grid-area: main;}
@@ -91,3 +92,27 @@ address, em, i {font-style: normal;}
 
 /* rankingContent INPUT */
 .rankingContent-input{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
+
+/* RECENT GAMES */
+
+.aside1{margin: 16px 8px 16px 0; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin;}
+/* .gameContainer{height: 100%; margin-top: 8px; margin-bottom: 8px; } */
+.games{margin-top: 8px;}
+ .game{margin-right: 16px; padding: 8px; background-color: rgba(255, 255, 255, .9); border-radius: 4px;}
+ .games .game{margin-bottom: 16px;}
+ .games .game .top{margin-bottom: 4px; font-size: 12px;}
+ .games .game .bot .winner > span{display: block; width: 100%; font-size: 12px;}
+ .games .game .bot .winner .winnerInfo{display: flex; margin-bottom: 4px;}
+ .games .game .bot .winner .winnerInfo .winnerNames{display: flex; flex-direction: column; width: 220px; min-width: 100px; margin-left: 8px;}
+ .games .game .bot .winner .winnerInfo .winnerRatings{display: flex; flex-direction: column;}
+ .games .game .bot .winner .winnerInfo .winnerRatings .icon--win{margin-left: 8px; fill: #2ed573;}
+
+ .games .game .bot .loser > span{display: block; width: 100%; font-size: 12px;}
+ .games .game .bot .loser .loserInfo{display: flex;}
+ .games .game .bot .loser .loserInfo .loserNames{display: flex; flex-direction: column; width: 220px; min-width: 100px; margin-left: 8px;}
+ .games .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
+ .games .game .bot .loser .loserInfo .loserRatings .icon--lose{margin-left: 8px; fill: #ff4757;}
+
+.asdie2{height: 100%;}
+
+

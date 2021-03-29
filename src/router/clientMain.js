@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../component/client/Post';
 import RankingContent from '../component/client/RankingContent';
+import RecentGame from '../component/client/RecentGame';
 import UserInfo from '../component/client/UserInfo';
 import '../css/client.css';
 import '../css/client_mugil.css';
@@ -44,8 +45,7 @@ const ClientMain = ({userObj, allUsers, allGame}) => {
           {contentMode==="게시글" && <Post/>}
         </div>
         <div className="aside1">
-          {/* 최근 경기 */}
-          <h2>aside1</h2>
+          <RecentGame allGame={allGame}/>
         </div>
         <div className="aside2">
           <h2>aside2</h2>
