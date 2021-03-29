@@ -25,13 +25,7 @@ const Post = () => {
     })
   }, [])
 
-  const postMake = e => {
-    e.preventDefault();
-    setWriteMode(!writeMode)
-  }
-
   const submitReview = ()=>{
-    setWriteMode(!writeMode)
     console.log(post.title)
     console.log(post.content)
     console.log(writeMode)
@@ -45,11 +39,14 @@ const Post = () => {
     })
   };
 
+  const writeModeBtn = () => {
+    setWriteMode(!writeMode)
+  }
+
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div classNames="postTitle">{post.title}</div>
       <div classNames="postDate">{post.date}</div>
-      <div classNames="postContent">{post.content}</div>
     </div>
   ))
   const postMaker = (
@@ -71,24 +68,33 @@ const Post = () => {
             })
           }}
         />
-        <button className="submitButton" onClick={submitReview}>
-          작성
-        </button>
+        <div className="buttons">
+          <button className="writeModeBtn" onClick={writeModeBtn}>
+            취소
+          </button>
+          <button className="writeModeBtn" onClick={submitReview}>
+            작성
+          </button>
+        </div>
       </div>
   )
 
     return (
         <div className="postMain">
-          {postMaker}
-          <div className="postHeader">
-            <div>작성</div>
-            <div>수정</div>
-            <div>읽기</div>
-            <div>뭐라도하겠지</div>
-          </div>
-          <div className="postList">
-            {PostList}
-          </div>
+          {writeMode
+            ? <>{postMaker}</>
+            : <><button className="writeModeBtn" onClick={writeModeBtn}>
+                  작성
+                </button>
+              </>
+          }
+          {writeMode
+            ? <></>
+            : <div className="postList">
+                {PostList}
+              </div>
+          }
+          
         </div>
     )
 };

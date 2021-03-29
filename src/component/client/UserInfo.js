@@ -2,7 +2,7 @@ import React from 'react';
 
 const UserInfo = ({allUsers, allGame, contentMode}) => {
   
-  const allUsersByTime = allUsers;
+  const allUsersByTime = [...allUsers];
   allUsersByTime.sort(function(a,b){
     return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
   })
