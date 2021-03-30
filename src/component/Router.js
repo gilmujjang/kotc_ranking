@@ -48,7 +48,6 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
   }, [])
   return(
     <Router>
-      {isLoggedIn}
       <Route exact path = "/">
         <ClientMain allUsers={allUsers} allGame={allGame}/>
       </Route>
