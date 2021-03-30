@@ -23,6 +23,17 @@ function App() {
   }, [])
 
   const user = authService.currentUser;
+  if(user==null){
+    authService.signInAnonymously()
+      .then(() => {
+        setInit(true);
+      })
+      .catch((error) => {
+        console.log(error.code)
+        console.log(error.message)
+      })
+  }
+
   const refreshUser = () => {
     setUserObj(authService.currentUser);
     setUserObj({
