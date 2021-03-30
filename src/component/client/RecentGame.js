@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const RecentGame = ({ allGame }) => {
 
-    const recentGames =  allGame.slice(0, 4).map((el, index) => (
+    const recentGames =  allGame.slice(0, 5).map((el, index) => (
         <div className="game" key={index}>
             <div className="top">{el.date.slice(0, 4)}년 {el.date.slice(4, 6)}월 {el.date.slice(6)}일</div>
             <div className="bot">

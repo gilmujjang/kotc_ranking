@@ -40,16 +40,21 @@ const ClientMain = ({userObj, allUsers, allGame}) => {
               </footer>
           </div>
         <div className="ClientMain">
-          {["재학생랭킹","전체랭킹","학번별랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode} setContentMode={setContentMode}/>}
+          {["재학생랭킹","전체랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode} setContentMode={setContentMode}/>}
           {contentMode==="선수상세정보" && <UserInfo allUsers={allUsers}/>}
           {contentMode==="게시글" && <Post/>}
         </div>
-        <div className="aside1">
-          <RecentGame allGame={allGame}/>
+        {
+        !['선수상세정보', '게시글'].includes(contentMode) &&
+        <div className="aside">
+          <div className="aside1">
+            <RecentGame allGame={allGame}/>
+          </div>
+          <div className="aside2">
+            <h2>aside2</h2>
+          </div>
         </div>
-        <div className="aside2">
-          <h2>aside2</h2>
-        </div>
+        }
       </div>
     </div>
   );

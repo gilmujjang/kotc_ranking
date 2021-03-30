@@ -34,23 +34,24 @@ address, em, i {font-style: normal;}
 
 /* GRID */
 .client-container{
-    height: 100%;
-    background: -webkit-linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));
-    background: linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));  
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: 130px 130px repeat(8, 1fr) 170px 170px;
-    grid-template-areas: 
-    "nav nav main main main main main main main main aside1 aside1"
-    "nav nav main main main main main main main main aside2 aside2";
+  display: flex;
+  height: 100%;
+  background: -webkit-linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));
+  background: linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));  
+  /* display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: 130px 130px repeat(8, 1fr) 170px 170px;
+  grid-template-areas: 
+  "nav nav main main main main main main main main aside1 aside1"
+  "nav nav main main main main main main main main aside2 aside2"; */
 }
-.nav{grid-area: nav;}
+/* .nav{grid-area: nav;}
 .ClientMain{grid-area: main;}
 .aside1{grid-area: aside1;}
-.aside2{grid-area: aside2;}
+.aside2{grid-area: aside2;} */
 
 /* NAV */
-.nav{max-width: 280px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
+.nav{min-width: 260px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
 .nav ul{margin-top: 12px; width: 100%;}
 .nav ul li{display: block; height: 40px; padding-left: 12px; font-size: 18px; line-height: 40px; transition: .2s ease-in-out; cursor: pointer;}
 .nav ul li:hover{background-color: #2d2d2d; color: #fff; text-decoration: none;}
@@ -65,10 +66,10 @@ address, em, i {font-style: normal;}
 .nav .footer--bot{letter-spacing: 1.1px;}
 
 /* MAIN */
-.ClientMain {margin: 100px 80px 100px 120px; position: relative;}
+.ClientMain {width: 100%; margin: 100px 80px 100px 120px; position: relative;}
 
 /* RankingContent */
-.rankingContainer{width: 100%; height: 100%; position: absolute; top: 0; overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
+.rankingContainer{width: 100%; max-height: 100%;   overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
 .ranking{display: flex; align-items: center; height: 100px; margin: 28px 20px 28px 10px; position: relative; cursor: pointer;}
 .ranking .grade{width: 120px; font-size: 84px; font-weight: 500; text-align: center;}
 
@@ -93,25 +94,30 @@ address, em, i {font-style: normal;}
 /* rankingContent INPUT */
 .rankingContent-input{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
 
+
+/* ASIDE */
+/* ASIDE */
+.aside{min-width: 280px; height: 100%;}
+
+/* ASIDE1 */
 /* RECENT GAMES */
+.aside1{height: 50%; margin: 16px 8px 16px 0; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin;}
 
-.aside1{margin: 16px 8px 16px 0; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin;}
-/* .gameContainer{height: 100%; margin-top: 8px; margin-bottom: 8px; } */
-.games{margin-top: 8px;}
- .game{margin-right: 16px; padding: 8px; background-color: rgba(255, 255, 255, .9); border-radius: 4px;}
- .games .game{margin-bottom: 16px;}
- .games .game .top{margin-bottom: 4px; font-size: 12px;}
- .games .game .bot .winner > span{display: block; width: 100%; font-size: 12px;}
- .games .game .bot .winner .winnerInfo{display: flex; margin-bottom: 4px;}
- .games .game .bot .winner .winnerInfo .winnerNames{display: flex; flex-direction: column; width: 220px; min-width: 100px; margin-left: 8px;}
- .games .game .bot .winner .winnerInfo .winnerRatings{display: flex; flex-direction: column;}
- .games .game .bot .winner .winnerInfo .winnerRatings .icon--win{margin-left: 8px; fill: #2ed573;}
+.games{margin-top: 8px; margin-right: 16px;}
+.games .game{margin-bottom: 16px; padding: 8px; background-color: rgba(255, 255, 255, .9); border-radius: 4px;}
+.games .game .top{margin-bottom: 4px; font-size: 12px;}
 
- .games .game .bot .loser > span{display: block; width: 100%; font-size: 12px;}
- .games .game .bot .loser .loserInfo{display: flex;}
- .games .game .bot .loser .loserInfo .loserNames{display: flex; flex-direction: column; width: 220px; min-width: 100px; margin-left: 8px;}
- .games .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
- .games .game .bot .loser .loserInfo .loserRatings .icon--lose{margin-left: 8px; fill: #ff4757;}
+.games .game .bot .winner > span{display: block; width: 100%; font-size: 12px;}
+.games .game .bot .winner .winnerInfo{display: flex; justify-content: space-between; margin-bottom: 4px;}
+.games .game .bot .winner .winnerInfo .winnerNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
+.games .game .bot .winner .winnerInfo .winnerRatings{display: flex; flex-direction: column;}
+.games .game .bot .winner .winnerInfo .winnerRatings .icon--win{margin-left: 8px; fill: #2ed573;}
+
+.games .game .bot .loser > span{display: block; width: 100%; font-size: 12px;}
+.games .game .bot .loser .loserInfo{display: flex; justify-content: space-between;}
+.games .game .bot .loser .loserInfo .loserNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
+.games .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
+.games .game .bot .loser .loserInfo .loserRatings .icon--lose{margin-left: 8px; fill: #ff4757;}
 
 .asdie2{height: 100%;}
 
