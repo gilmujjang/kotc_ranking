@@ -42,7 +42,7 @@ const ClientMain = ({userObj, allUsers, allGame}) => {
         <div className="ClientMain">
           {["재학생랭킹","전체랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode} setContentMode={setContentMode}/>}
           {contentMode==="선수상세정보" && <UserInfo allUsers={allUsers}/>}
-          {contentMode==="게시글" && <Post/>}
+          {contentMode==="게시글" && <Post userObj={userObj}/>}
         </div>
         {
         !['선수상세정보', '게시글'].includes(contentMode) &&

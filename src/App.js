@@ -5,7 +5,6 @@ import { authService } from "./fbase";
 
 
 function App() {
-  console.log("App 실행")
   const user = authService.currentUser;
   const [init, setInit] = useState(false);
   const [userObj, setUserObj] = useState({displayName: null});

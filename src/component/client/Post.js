@@ -3,7 +3,7 @@ import { dbService } from '../../fbase'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-const Post = () => {
+const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
   const [everyPost, setEveryPost] = useState([])
   const [post, setPost] = useState({
@@ -11,6 +11,7 @@ const Post = () => {
     content: ''
   })
   useEffect(() => {
+    setEveryPost([])
     dbService.collection("post").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const postObject = {
@@ -25,10 +26,52 @@ const Post = () => {
     })
   }, [])
 
-  const submitReview = ()=>{
-    console.log(post.title)
-    console.log(post.content)
-    console.log(writeMode)
+  const submitReview = async(e) =>{
+    e.preventDefault();
+    if(post.title === ''){
+      alert("제목을 입력하세요")
+      return;
+    }
+    if(post.content === ''){
+      alert("내용을 입력하세요")
+      return;
+    }
+    let now = new Date();   
+    let year = now.getFullYear(); // 년도
+    let month = now.getMonth() + 1;  // 월
+    if(month<10){
+      month = 0+''+month
+    }
+    let date = now.getDate();  // 날짜
+    if(date<10){
+      date = 0+''+date
+    }
+    let hours = now.getHours(); // 시
+    if(hours<10){
+      hours = 0+''+hours
+    }
+    let minutes = now.getMinutes();  // 분
+    if(minutes<10){
+      minutes = 0+''+minutes
+    }
+    let seconds = now.getSeconds();  // 초
+    if(seconds<10){
+      seconds = 0+''+seconds
+    }
+    const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
+
+    const postObject = {
+      date: time,
+      title: post.title,
+      content: post.content,
+      writer: userObj.displayName,
+    }
+    await dbService.collection("post").doc(time).set(postObject);
+    setPost({
+      title: '',
+      content:''
+    })
+    setWriteMode(!writeMode)
   };
 
   const getValue = e => {
@@ -46,7 +89,7 @@ const Post = () => {
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div classNames="postTitle">{post.title}</div>
-      <div classNames="postDate">{post.date}</div>
+      <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
     </div>
   ))
   const postMaker = (
@@ -81,20 +124,20 @@ const Post = () => {
 
     return (
         <div className="postMain">
-          {writeMode
-            ? <>{postMaker}</>
-            : <><button className="writeModeBtn" onClick={writeModeBtn}>
-                  작성
-                </button>
-              </>
-          }
-          {writeMode
-            ? <></>
-            : <div className="postList">
-                {PostList}
-              </div>
+          {userObj.displayName
+            ? <>{writeMode
+              ? <>{postMaker}</>
+              : <><button className="writeModeBtn" onClick={writeModeBtn}>
+                    작성
+                  </button>
+                </>
+            }</>
+            : <div>로그인을 하면 글을 작성할수 있습니다</div>
           }
           
+          <div className="postList">
+            {PostList}
+          </div>
         </div>
     )
 };
