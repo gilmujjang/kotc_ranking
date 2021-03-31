@@ -5,9 +5,11 @@ import { authService } from "./fbase";
 
 
 function App() {
+  console.log("App 실행")
+  const user = authService.currentUser;
   const [init, setInit] = useState(false);
-  const [userObj, setUserObj] = useState(null);
-  useEffect(() => {
+  const [userObj, setUserObj] = useState({displayName: null});
+  useEffect( () => {
     authService.onAuthStateChanged((user) => {
       if(user) {
         setUserObj({
@@ -17,21 +19,15 @@ function App() {
         });
       } else {
         authService.signInAnonymously()
-          .then(() => {
-            setInit(true);
-          })
-          .catch((error) => {
-            console.log(error.code)
-            console.log(error.message)
-          })
+        .catch((error) => {
+          console.log(error.code)
+          console.log(error.message)
+        })
       }
       setInit(true);
     });
   }, [])
 
-  const user = authService.currentUser;
-
-  console.log(userObj)
 
   const refreshUser = () => {
     setUserObj(authService.currentUser);

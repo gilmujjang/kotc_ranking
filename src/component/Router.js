@@ -8,6 +8,8 @@ import { dbService } from '../fbase'
 
 
 const AppRouter = ({ isLoggedIn, userObj }) => {
+  console.log("Router 실행")
+  console.log(userObj)
   const [allUsers, setAllUsers] = useState([]);
   const [allGame, setAllGame] = useState([]);
   useEffect(() => {
@@ -52,7 +54,7 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
         <ClientMain allUsers={allUsers} allGame={allGame}/>
       </Route>
       <Switch>
-        {isLoggedIn ? (
+        {userObj.displayName ? (
         <Route path="/admin">
           <AdminMain userObj={userObj}  allUsers={allUsers} allGame={allGame}/>
         </Route>
