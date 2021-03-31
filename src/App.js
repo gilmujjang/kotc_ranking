@@ -16,23 +16,22 @@ function App() {
           updateProfile: (args) => user.updateProfile(args),
         });
       } else {
-        setUserObj(null);
+        authService.signInAnonymously()
+          .then(() => {
+            setInit(true);
+          })
+          .catch((error) => {
+            console.log(error.code)
+            console.log(error.message)
+          })
       }
       setInit(true);
     });
   }, [])
 
   const user = authService.currentUser;
-  if(user==null){
-    authService.signInAnonymously()
-      .then(() => {
-        setInit(true);
-      })
-      .catch((error) => {
-        console.log(error.code)
-        console.log(error.message)
-      })
-  }
+
+  console.log(userObj)
 
   const refreshUser = () => {
     setUserObj(authService.currentUser);
