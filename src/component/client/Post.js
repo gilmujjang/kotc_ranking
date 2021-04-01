@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { dbService } from '../../fbase'
+import { dbService,authService,firebaseInstance } from '../../fbase'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -12,7 +12,7 @@ const Post = ({userObj}) => {
   })
   useEffect(() => {
     setEveryPost([])
-    dbService.collection("post").limit(10).get().then(snapshot => {
+    dbService.collection("post").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const postObject = {
           title: doc.data().title,
@@ -25,6 +25,16 @@ const Post = ({userObj}) => {
       })
     })
   }, [])
+
+  const onSocialClick = async(event) => {
+    const {target:{name},
+    } = event;
+    let provider;
+    if(name === "google") {
+      provider = new firebaseInstance.auth.GoogleAuthProvider();
+    }
+    await authService.signInWithPopup(provider);
+  };
 
   const submitReview = async(e) =>{
     e.preventDefault();
@@ -92,6 +102,7 @@ const Post = ({userObj}) => {
       <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
     </div>
   ))
+
   const postMaker = (
       <div className='postMaker'>
         <input className="titleInput"
@@ -122,24 +133,39 @@ const Post = ({userObj}) => {
       </div>
   )
 
-    return (
-        <div className="postMain">
-          {userObj.displayName
-            ? <>{writeMode
-              ? <>{postMaker}</>
-              : <><button className="writeModeBtn" onClick={writeModeBtn}>
+  return (
+    <>
+      {userObj.displayName
+        ? <>
+            {writeMode
+              ? <>
+                <div className="postMain">
+                  {postMaker}
+                </div>
+                </>
+              : <>
+                  <button className="writeModeBtn" onClick={writeModeBtn}>
                     작성
                   </button>
+                  <div className="postmain">
+                    <div className="postList">
+                      {PostList}
+                    </div>
+                  </div>
                 </>
-            }</>
-            : <div>로그인을 하면 글을 작성할수 있습니다</div>
-          }
-          
-          <div className="postList">
-            {PostList}
-          </div>
-        </div>
-    )
+            }
+          </>
+        : <>
+            <button onClick={onSocialClick} name="google" className="writeModeBtn">
+              구글 로그인
+            </button>
+            <div className="postMain">
+              {PostList}
+            </div>
+          </>
+        }
+    </>
+  )
 };
 
 export default Post;
