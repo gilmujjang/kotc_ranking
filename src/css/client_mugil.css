@@ -21,10 +21,6 @@
 /* UserDetail */
 /* .detailContainer{position: absolute; top: 50px; left: 50px; bottom: 50px; right: 50px; background-color: burlywood;} */
 
-
-
-
-
 .usersInformation {width: 100%; height: 100%; overflow: auto;}
 .userList {display: flex; flex-wrap: wrap;}
 .usersInformation .userInfo {width: 45%; margin:12px; padding: 4px;border-radius: 12px; display: flex; background-color: rgba(255,255,255,0.1);}
@@ -36,12 +32,16 @@
 .userImage{width:84px; height: 108px; border-radius: 40%;}
 
 /* Post */
-.postList{height: 100%; overflow: scroll; width: 100%; background-color: white;}
-.post{margin-left: 12px; margin-right: 12px; padding: 10px; display: flex; justify-content: space-between; border-bottom: 1px solid black;}
+.postMain{height: 100%;}
+.postList{height: 100%; overflow: scroll; width: 60%; background-color: rgba(240,240,240,1); transition: 0.5s;}
+.postList.active {opacity: 0.1;pointer-events: none;user-select: none; transition: 0.5s;}
+.post{margin: 16px;padding: 10px; background-color: white; box-shadow : 2px 2px 5px #999;}
 .writeHidden { visibility: hidden; max-height: 0px;}
 .writeMode {height: 5%;}
-.postMaker {width: 100%; height: auto; margin: 0; display: flex; flex-direction: column; align-items: center;}
+.postMaker {position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 60%; height: auto; margin: 0; display: flex; flex-direction: column; align-items: center;}
+.postMaker.active { visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1}
 .titleInput { margin:8px; width: 70%; height: 40px;}
 .submitButton { width: 64px; height: 24px; font-size: 16px; border: none; background: white; border-radius: 5px; margin-top: 12px;}
 .ck.ck-editor__editable:not(.ck-editor__nested-editable) {width: 100%; min-height: 300px; }
-.writeModeBtn {height: 5%; width: 5vw; margin: 8px; border-radius: 10%;}
+.writeModeBtn {height: 5%; width: auto; margin: 8px; padding-right: 6px; padding-left: 6px; border-radius: 10%;}
+.postMakeBtn{ margin: 16px; padding:10px;background-color: white; box-shadow : 2px 2px 5px #999; display: flex; align-items: center; justify-content: space-between;}
