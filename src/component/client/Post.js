@@ -70,12 +70,12 @@ const Post = ({userObj}) => {
 
     if(attachment.length !== 0){
       let i = 0;
-      await attachment.map(async(file) => {
+      attachment.map(async(file) => {
         i = i+1;
         let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
         let response = await attachmentRef.putString(file, "data_url");
         let url = await response.ref.getDownloadURL();
-        setAttachmentUrl(attachmentUrl => [...attachmentUrl, url])
+        setAttachmentUrl(attachmentUrl.concat(url))
       })
     }
 
