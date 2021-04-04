@@ -9,6 +9,7 @@
 .chartSample {width: 800px; height: 400px; background-color: white;}
 .userImage{width:84px; height: 108px; border-radius: 40%;}
 
+
 /* Post */
 .postMain{height: 100%;}
 .postList{height: 100%; overflow: scroll; width: 60%; background-color: rgba(240,240,240,1); transition: 0.5s;}

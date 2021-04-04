@@ -2,7 +2,7 @@ import React from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const UserDetail = ({ allUsers, setIsUserDetailOn }) => {
+const UserDetail = ({ allUsers, setIsDetailOn }) => {
     
     const info = () => {
         <>
@@ -17,12 +17,12 @@ const UserDetail = ({ allUsers, setIsUserDetailOn }) => {
         </>
     }
 
-    function onClickAction(e) {
-        setIsUserDetailOn(false)
+    function closeDetail(e) {
+        setIsDetailOn(false)
     }
 
     return (
-        <div className="detailContainer" onClick={onClickAction}>
+        <div className="detailContainer">
             <div className="top">
                 <div className="top--left">
                     {info}
@@ -35,7 +35,7 @@ const UserDetail = ({ allUsers, setIsUserDetailOn }) => {
             <div className="bottom">
                 {/* 그래프 */}
             </div>
-            <FontAwesomeIcon icon={faTimes}/>
+            <FontAwesomeIcon icon={faTimes} className="close" onClick={closeDetail}/>
         </div>
     );
 }
