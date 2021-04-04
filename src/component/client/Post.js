@@ -11,14 +11,15 @@ const Post = ({userObj}) => {
 
   useEffect(() => {
     setEveryPost([])
-    console.log("useEffect 실행")
     dbService.collection("post").orderBy("date","desc").limit(30).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const postObject = {
           content: doc.data().content,
           writer: doc.data().writer,
+          writerprofile: doc.data().writerprofile,
           date: doc.data().date,
-          recent_fix: doc.data().recent_fix
+          recent_fix: doc.data().recent_fix,
+          imageurl: doc.data().imageurl
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -69,13 +70,12 @@ const Post = ({userObj}) => {
 
     if(attachment.length !== 0){
       let i = 0;
-      attachment.map(async(file) => {
+      await attachment.map(async(file) => {
         i = i+1;
         let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
         let response = await attachmentRef.putString(file, "data_url");
         let url = await response.ref.getDownloadURL();
-        setAttachmentUrl(attachmentUrl.concat(url))
-        console.log(attachmentUrl)
+        setAttachmentUrl(attachmentUrl => [...attachmentUrl, url])
       })
     }
 
@@ -84,6 +84,8 @@ const Post = ({userObj}) => {
       recent_fix: time,
       content: content,
       writer: userObj.displayName,
+      writerprofile: userObj.photoUrl,
+      imageurl: attachmentUrl,
     }
     await dbService.collection("post").doc(time).set(postObject);
     setContent('')
@@ -120,7 +122,7 @@ const Post = ({userObj}) => {
     <div className="post">
       <div className="postHeader">
         <div className="postHeaderLeft">
-          <img className="userProfile" src={userObj.photoUrl}></img>
+          <img className="userProfile" src={post.writerprofile}></img>
         </div>
         <div className="postHeaderRight">
           <div classNames="userName">{post.writer}</div>
@@ -128,7 +130,14 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postContent">
-        {post.content}
+        <div>{post.content}</div>
+        <div>
+          {post.imageurl && (
+            post.imageurl.map(url => ( 
+              <img src={url} className="postImage"/>
+            ))
+          )}
+        </div>
       </div>
     </div>
   ))
