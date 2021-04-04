@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { dbService,authService,firebaseInstance } from '../../fbase'
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import ReactHtmlParser from 'react-html-parser'
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
@@ -98,7 +95,7 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postContent">
-        {ReactHtmlParser(post.content)}
+        {post.content}
       </div>
     </div>
   ))
@@ -106,7 +103,7 @@ const Post = ({userObj}) => {
   const postMaker = (
       <div className={writeMode ? 'postMaker active' : 'postMaker'}>
         <div className="postMakeHeader"> 게시물 만들기 </div>
-        <input className="makePost" onChange={handleChange} value={content} placeholder={`What's on your mind, ${userObj.displayName}?`}></input>
+        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`What's on your mind, ${userObj.displayName}?`}></textarea>
         <div className="buttons">
           <button className="writeModeBtn" onClick={writeModeBtn}>
             취소

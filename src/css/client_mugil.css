@@ -38,11 +38,8 @@
 .post{margin: 16px;padding: 10px; background-color: white; box-shadow : 2px 2px 5px #999;}
 .writeHidden { visibility: hidden; max-height: 0px;}
 .writeMode {height: 5%;}
-.postMaker {position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 60%; height: 100%; height: auto; margin: 0; display: flex; flex-direction: column; align-items: center;}
-.postMaker.active {height: 40%; visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1;}
 .titleInput { margin:8px; width: 70%; height: 40px;}
 .submitButton { width: 64px; height: 24px; font-size: 16px; border: none; background: white; border-radius: 5px; margin-top: 12px;}
-.ck.ck-editor__editable:not(.ck-editor__nested-editable) {width: 100%; min-height: 300px; }
 .writeModeBtn {height: 70%; width: auto; margin: 8px; padding-right: 6px; padding-left: 6px; border-radius: 10%;}
 .postMakeBtn{ margin: 16px; padding:10px;background-color: white; box-shadow : 2px 2px 5px #999; display: flex; align-items: center; justify-content: space-between;}
 .userProfile{width: 48px; height: 48px; border-radius: 50%;}
@@ -51,5 +48,7 @@
 .postHeaderRight{margin: 8px;}
 .postDate{font-size: large;}
 .postContent{margin: 12px;}
-.makePost{ margin-top: 30px;background-color: white;border-radius: 15px;box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);width: 100%; height: 100%;}
-.postMakeHeader{border-bottom: 1px black solid; opacity: 0.5; margin: 12px;}
+.makePost{padding: 12px; border: none; box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);width: 100%; height: 100%;}
+.postMaker {background-color: white;position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 60%; height: 40%; margin: 0; display: flex; flex-direction: column; align-items: center; border: 1px solid black; border-radius: 16px;}
+.postMaker.active { height: 40%; visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1;}
+.postMakeHeader{border-bottom: 1px solid gray; padding: 12px; width: 100%; text-align: center; font-size:large; font-weight: 400;}
