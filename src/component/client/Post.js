@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useRef } from 'react';
-import { dbService,authService,firebaseInstance } from '../../fbase'
+import { dbService,authService,firebaseInstance,storageService } from '../../fbase'
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
@@ -7,6 +7,7 @@ const Post = ({userObj}) => {
   const [everyPost, setEveryPost] = useState([]);
   const [content, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
+  const [attachmentUrl, setAttachmentUrl] = useState([]);
 
   useEffect(() => {
     setEveryPost([])
@@ -40,6 +41,8 @@ const Post = ({userObj}) => {
       alert("내용을 입력하세요")
       return;
     }
+
+    // 시간 관련 부분
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
@@ -64,6 +67,18 @@ const Post = ({userObj}) => {
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
+    if(attachment.length !== 0){
+      let i = 0;
+      attachment.map(async(file) => {
+        i = i+1;
+        let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
+        let response = await attachmentRef.putString(file, "data_url");
+        let url = await response.ref.getDownloadURL();
+        setAttachmentUrl(attachmentUrl.concat(url))
+        console.log(attachmentUrl)
+      })
+    }
+
     const postObject = {
       date: time,
       recent_fix: time,
@@ -74,6 +89,8 @@ const Post = ({userObj}) => {
     setContent('')
     setWriteMode(!writeMode)
     setRefresh(!refresh)
+    setAttachment([])
+    setAttachmentUrl([])
   };
 
   const writeModeBtn = () => {
