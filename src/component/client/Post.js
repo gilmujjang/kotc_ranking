@@ -81,11 +81,21 @@ const Post = ({userObj}) => {
     setWriteMode(!writeMode)
   }
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    setContent(e.target.value)
+  }
+
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div className="postHeader">
-        <div classNames="userName">{post.writer}</div>
-        <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
+        <div className="postHeaderLeft">
+          <img className="userProfile" src={userObj.photoUrl}></img>
+        </div>
+        <div className="postHeaderRight">
+          <div classNames="userName">{post.writer}</div>
+          <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
+        </div>
       </div>
       <div className="postContent">
         {ReactHtmlParser(post.content)}
@@ -95,14 +105,8 @@ const Post = ({userObj}) => {
 
   const postMaker = (
       <div className={writeMode ? 'postMaker active' : 'postMaker'}>
-        <CKEditor
-          editor={ClassicEditor}
-          data="내용을 입력하세용!"
-          onChange={(event, editor) => {
-            const data = editor.getData();
-            setContent(data)
-          }}
-        />
+        <div className="postMakeHeader"> 게시물 만들기 </div>
+        <input className="makePost" onChange={handleChange} value={content} placeholder={`What's on your mind, ${userObj.displayName}?`}></input>
         <div className="buttons">
           <button className="writeModeBtn" onClick={writeModeBtn}>
             취소
@@ -130,7 +134,7 @@ const Post = ({userObj}) => {
   )
 
   return (
-    <postMakeBtn>
+    <>
       <div className="postMain">
         {postMaker}
         <div className={writeMode ? 'postList active' : 'postList'}>
@@ -141,7 +145,7 @@ const Post = ({userObj}) => {
           {PostList}
         </div>
       </div>
-    </postMakeBtn>
+    </>
   )
 };
 
