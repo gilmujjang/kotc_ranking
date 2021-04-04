@@ -1,26 +1,4 @@
 /* UserInfo */
-/*
-.usersInformation {display: flex; flex-wrap: wrap; width: 90%; height: 100%; margin: 0 auto; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin}
-
-.userInfo {width: 300px; margin: 16px auto; padding: 4px; border-radius: 4px; display: flex; background-color: rgba(255,255,255,0.5);}
-.userInfo .userImage{width:84px; height: 108px; border-radius: 40%; cursor: pointer;}
-
-.userInfo .userInfoRightSide{padding: 16px; width:100%; display: flex; flex-direction: column; justify-content: space-between;}
-.userInfo .userInfoRightSide .userInfoUpSide{display: flex; justify-content: space-between;}
-.userInfo .userInfoRightSide .userInfoUpside .userStatus{margin-left: 4px; padding: 0 2px; background-color: #02343F; border-radius: 2px; font-size: 11px; color: #F0EDCC;}
-
-.userInfo .userInfoRightSide .userInfoUpSide .win_lose {display: flex; border-bottom: 1px solid #A4193D;}
-.userInfo .userInfoRightSide .userInfoUpSide .win_lose .department:last-child{margin-left: 4px;}
-
-.userInfo .userInfoRightSide .userInfoBottomSide{display: flex; justify-content: space-between; align-items: baseline;}
-.userInfo .userInfoRightSide .userInfoBottomSide .rating{font-size: 18px;}
-.userInfo .userInfoRightSide .userInfoBottomSide .department{font-size: 12px;}
-*/
-
-
-/* UserDetail */
-/* .detailContainer{position: absolute; top: 50px; left: 50px; bottom: 50px; right: 50px; background-color: burlywood;} */
-
 .usersInformation {width: 100%; height: 100%; overflow: auto;}
 .userList {display: flex; flex-wrap: wrap;}
 .usersInformation .userInfo {width: 45%; margin:12px; padding: 4px;border-radius: 12px; display: flex; background-color: rgba(255,255,255,0.1);}
@@ -39,8 +17,9 @@
 .writeHidden { visibility: hidden; max-height: 0px;}
 .writeMode {height: 5%;}
 .titleInput { margin:8px; width: 70%; height: 40px;}
+.buttons{width: 100%; text-align: center; border-top: 1px black solid;}
 .submitButton { width: 64px; height: 24px; font-size: 16px; border: none; background: white; border-radius: 5px; margin-top: 12px;}
-.writeModeBtn {height: 70%; width: auto; margin: 8px; padding-right: 6px; padding-left: 6px; border-radius: 10%;}
+.writeModeBtn {height: 70%; width: auto; margin: 8px; padding-right: 12px; padding-left: 12px; border-radius: 10%;}
 .postMakeBtn{ margin: 16px; padding:10px;background-color: white; box-shadow : 2px 2px 5px #999; display: flex; align-items: center; justify-content: space-between;}
 .userProfile{width: 48px; height: 48px; border-radius: 50%;}
 .postHeader{display: flex;}
@@ -49,6 +28,10 @@
 .postDate{font-size: large;}
 .postContent{margin: 12px;}
 .makePost{padding: 12px; border: none; box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);width: 100%; height: 100%;}
-.postMaker {background-color: white;position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 60%; height: 40%; margin: 0; display: flex; flex-direction: column; align-items: center; border: 1px solid black; border-radius: 16px;}
-.postMaker.active { height: 40%; visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1;}
+.postMaker {background-color: white;position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 40%; height: 50%; margin: 0; display: flex; flex-direction: column; align-items: center; border: 1px solid black; border-radius: 16px;}
+.postMaker.active { height: 60%; visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1;}
 .postMakeHeader{border-bottom: 1px solid gray; padding: 12px; width: 100%; text-align: center; font-size:large; font-weight: 400;}
+.file{width: 100%; height: 40%; padding: 8px;}
+.fileHeader{margin-bottom:8px;}
+.fileInput{display: none;}
+.images{width: 20%; height: auto}

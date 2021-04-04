@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { dbService,authService,firebaseInstance } from '../../fbase'
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [everyPost, setEveryPost] = useState([])
-  const [content, setContent] = useState('')
+  const [everyPost, setEveryPost] = useState([]);
+  const [content, setContent] = useState('');
+  const [attachment, setAttachment] = useState([]);
+
   useEffect(() => {
     setEveryPost([])
     console.log("useEffect 실행")
@@ -83,6 +85,20 @@ const Post = ({userObj}) => {
     setContent(e.target.value)
   }
 
+  const onFileChange = (event) => {
+    const {target:{files},
+    } = event;
+    const theFile = files[0];
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: {result},
+      } = finishedEvent;
+      setAttachment(attachment.concat(result))
+    }
+    reader.readAsDataURL(theFile);
+  };
+
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div className="postHeader">
@@ -103,7 +119,26 @@ const Post = ({userObj}) => {
   const postMaker = (
       <div className={writeMode ? 'postMaker active' : 'postMaker'}>
         <div className="postMakeHeader"> 게시물 만들기 </div>
-        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`What's on your mind, ${userObj.displayName}?`}></textarea>
+        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
+        <div className="file">
+          <div className="fileHeader">
+            <input type="file" id="fileInput" className="fileInput" multiple={true} onChange={onFileChange}/>
+            <label htmlFor="fileInput">
+              <span>이미지 추가하기</span>
+              <i class="fas fa-images fa-2x"></i>
+            </label>
+          </div>
+          {attachment.length < 6 && (
+            attachment.map(image => (
+              <img className="images" src={image} alt="photo"/>
+            ))
+          )}
+          {attachment.length >= 6 && (
+            attachment.map(image => (
+              <img className="images" src={image} alt="photo"/>
+            ))
+          )}
+        </div>
         <div className="buttons">
           <button className="writeModeBtn" onClick={writeModeBtn}>
             취소
