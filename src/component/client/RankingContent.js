@@ -106,7 +106,7 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
           <li id="학번" className="dropdown--list__item" onClick={onClickAction}>학번</li>
         </ul>
       </div>
-      <input type="text" className="rankingContent-input" placeholder="text me..." onChange={onChangeAction} />
+      <input type="text" className="filter--rangkingContent" placeholder="text me..." onChange={onChangeAction} />
     </>
   )
 
