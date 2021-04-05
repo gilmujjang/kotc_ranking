@@ -124,7 +124,12 @@ const RegiMatch = ({allUsers}) => {
     }
     const percentage = (1/(1+(Math.pow(10,(loserAverageRating-winnerAverageRating)/400)))).toFixed(2)
     const reversePercentage = (1-percentage).toFixed(2)
-    const RatingChange = Math.round(reversePercentage*32)
+    let RatingChange=0
+    if(winnersRating.length==2){
+      RatingChange = Math.round(reversePercentage*16)
+    } else {
+      RatingChange = Math.round(reversePercentage*32)
+    }
     if(winners.length===0){
       alert('승자를 입력하세요');
       return;

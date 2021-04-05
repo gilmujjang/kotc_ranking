@@ -75,7 +75,7 @@ const Post = ({userObj}) => {
         let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
         let response = await attachmentRef.putString(file, "data_url");
         let url = await response.ref.getDownloadURL();
-        setAttachmentUrl(attachmentUrl.concat(url))
+        await setAttachmentUrl(attachmentUrl.concat(url))
       })
     }
 
