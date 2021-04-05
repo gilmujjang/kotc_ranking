@@ -11,7 +11,7 @@ const Post = ({userObj}) => {
 
   useEffect(() => {
     setEveryPost([])
-    dbService.collection("post").orderBy("date","desc").limit(30).get().then(snapshot => {
+    dbService.collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const postObject = {
           content: doc.data().content,
@@ -19,7 +19,6 @@ const Post = ({userObj}) => {
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
-          imageurl: doc.data().imageurl
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -118,6 +117,13 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
+  const postImage = async(post) => {
+    const postimage = await storageService.ref().child('post/').child(String(post.date)).child('1');
+    const imageaddress = await postimage.getDownloadURL();
+    console.log(imageaddress)
+    // return (<img src={postimage}></img>)
+  }
+
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div className="postHeader">
@@ -132,11 +138,7 @@ const Post = ({userObj}) => {
       <div className="postContent">
         <div>{post.content}</div>
         <div>
-          {post.imageurl && (
-            post.imageurl.map(url => ( 
-              <img src={url} className="postImage"/>
-            ))
-          )}
+          {postImage(post)}
         </div>
       </div>
     </div>
