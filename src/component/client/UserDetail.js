@@ -2,20 +2,20 @@ import React from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const UserDetail = ({ allUsers, setIsDetailOn }) => {
+const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     
-    const info = () => {
+    const info = (
         <>
-            <div className="사진">
-                {/* <img src={} alt="detail profile"></img> */}
+            <div className="detail--profile">
+                <img src={allUsersByTime[userKey].attachmentUrl} alt="detail profile" />
             </div>
             <div>
-                {/* 이름 */}
-                {/* 학과 */}
-                {/* 학번 */}
+                <span className="detail__name">{allUsersByTime[userKey].name}</span>
+                <span className="detail__department">{allUsersByTime[userKey].department}과</span>
+                <span className="detail__status">{allUsersByTime[userKey].studentid}학번 / {allUsersByTime[userKey].status}</span>
             </div>
         </>
-    }
+    )
 
     function closeDetail(e) {
         setIsDetailOn(false)

@@ -3,24 +3,26 @@ import { ResponsiveLine  } from '@nivo/line'
 import UserDetail from './UserDetail';
 
 const UserInfo = ({ allUsers, allGame }) => {
-  const [isDetailOn, setIsDetailOn] = useState(false)
-  const [filterName, setFilterName] = useState('')
-  const [userList, setUserList] = ([])
-  // const [userDetail, setUserDetail] = useState({})
-
   const allUsersByTime = [...allUsers];
   allUsersByTime.sort(function(a,b){
     return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
   })
+  const [mapList, setMapList] = useState([])
+  const [isDetailOn, setIsDetailOn] = useState(false)
+  const [filterName, setFilterName] = useState('')
+  const [userKey, setUserKey] = useState(0)
+  // const [userDetail, setUserDetail] = useState({})
 
-  function showDetail(user) {
+
+  function showDetail(e) {
     setIsDetailOn(true)
+    setUserKey(e.target.dataset.num)
   }
 
-  const userInfo = allUsersByTime.map((user,index) => (
-    <div className="userInfo" key={index} onClick={showDetail} detail={user}>
-      <div className="userProfile">
-        <img className="userImage" src={user.attachmentUrl} alt="profile--detail"/>
+  const userInfo = mapList.map((user,index) => (
+    <div className="userInfo" key={index}>
+      <div>
+        <img className="userImage" src={user.attachmentUrl} onClick={showDetail} data-num={index} key={index} alt="profile--detail"/>
       </div>
       <div className="userInfoRightSide">
         <div className="userInfoUpSide">
@@ -35,7 +37,6 @@ const UserInfo = ({ allUsers, allGame }) => {
         </div>
         <div className="userInfoBottomSide">
           <span className="rating">레이팅: {user.rating}</span>
-          <span className="studentId">{user.studentId}</span>
           <span className="department">{user.department}</span>
           {/* <span className="department">승률: {Math.round(((user.game_win)/(user.game_all))*100)}%</span> */}
         </div>
@@ -47,18 +48,24 @@ const UserInfo = ({ allUsers, allGame }) => {
     setFilterName(e.target.value)
   }
 
-  // useEffect(() => {
-  //   setUserList()
-  // }, [])
+  useEffect(() => {
+    if(filterName) {
+      setMapList(allUsersByTime.filter(el => el.name === filterName))
+    } else {
+      setMapList(allUsersByTime.sort(function(a,b){
+        return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
+      }))
+    }
+  }, [filterName])
 
   return (
     <>
-      <input type="text" className="input--filter" placeholder="text name..." onChange={onChangeAction} />
+      <input type="text" className="filter--info" placeholder="text name..." onChange={onChangeAction} />
       <div className="usersInformation">
         <div className="userList">
           {userInfo}
         </div>
-        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} />}
+        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userKey={userKey} />}
       </div>
     </>
   )
