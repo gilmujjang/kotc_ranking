@@ -9,7 +9,6 @@ function App() {
   const [userObj, setUserObj] = useState({displayName: null});
   useEffect( () => {
     authService.onAuthStateChanged((user) => {
-      console.log(user)
       if(user) {
         setUserObj({
           displayName: user.displayName,

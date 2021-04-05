@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { dbService,authService,firebaseInstance } from '../../fbase'
+import React, { useEffect, useState,useRef } from 'react';
+import { dbService,authService,firebaseInstance,storageService } from '../../fbase'
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [everyPost, setEveryPost] = useState([])
-  const [content, setContent] = useState('')
+  const [everyPost, setEveryPost] = useState([]);
+  const [content, setContent] = useState('');
+  const [attachment, setAttachment] = useState([]);
+  const [attachmentUrl, setAttachmentUrl] = useState([]);
+
   useEffect(() => {
     setEveryPost([])
-    console.log("useEffect 실행")
     dbService.collection("post").orderBy("date","desc").limit(30).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const postObject = {
           content: doc.data().content,
           writer: doc.data().writer,
+          writerprofile: doc.data().writerprofile,
           date: doc.data().date,
-          recent_fix: doc.data().recent_fix
+          recent_fix: doc.data().recent_fix,
+          imageurl: doc.data().imageurl
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -38,6 +42,8 @@ const Post = ({userObj}) => {
       alert("내용을 입력하세요")
       return;
     }
+
+    // 시간 관련 부분
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
@@ -62,16 +68,31 @@ const Post = ({userObj}) => {
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
+    if(attachment.length !== 0){
+      let i = 0;
+      attachment.map(async(file) => {
+        i = i+1;
+        let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
+        let response = await attachmentRef.putString(file, "data_url");
+        let url = await response.ref.getDownloadURL();
+        setAttachmentUrl(attachmentUrl.concat(url))
+      })
+    }
+
     const postObject = {
       date: time,
       recent_fix: time,
       content: content,
       writer: userObj.displayName,
+      writerprofile: userObj.photoUrl,
+      imageurl: attachmentUrl,
     }
     await dbService.collection("post").doc(time).set(postObject);
     setContent('')
     setWriteMode(!writeMode)
     setRefresh(!refresh)
+    setAttachment([])
+    setAttachmentUrl([])
   };
 
   const writeModeBtn = () => {
@@ -83,11 +104,25 @@ const Post = ({userObj}) => {
     setContent(e.target.value)
   }
 
+  const onFileChange = (event) => {
+    const {target:{files},
+    } = event;
+    const theFile = files[0];
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: {result},
+      } = finishedEvent;
+      setAttachment(attachment.concat(result))
+    }
+    reader.readAsDataURL(theFile);
+  };
+
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div className="postHeader">
         <div className="postHeaderLeft">
-          <img className="userProfile" src={userObj.photoUrl}></img>
+          <img className="userProfile" src={post.writerprofile}></img>
         </div>
         <div className="postHeaderRight">
           <div classNames="userName">{post.writer}</div>
@@ -95,7 +130,14 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postContent">
-        {post.content}
+        <div>{post.content}</div>
+        <div>
+          {post.imageurl && (
+            post.imageurl.map(url => ( 
+              <img src={url} className="postImage"/>
+            ))
+          )}
+        </div>
       </div>
     </div>
   ))
@@ -103,7 +145,26 @@ const Post = ({userObj}) => {
   const postMaker = (
       <div className={writeMode ? 'postMaker active' : 'postMaker'}>
         <div className="postMakeHeader"> 게시물 만들기 </div>
-        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`What's on your mind, ${userObj.displayName}?`}></textarea>
+        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
+        <div className="file">
+          <div className="fileHeader">
+            <input type="file" id="fileInput" className="fileInput" multiple={true} onChange={onFileChange}/>
+            <label htmlFor="fileInput">
+              <span>이미지 추가하기</span>
+              <i class="fas fa-images fa-2x"></i>
+            </label>
+          </div>
+          {attachment.length < 6 && (
+            attachment.map(image => (
+              <img className="images" src={image} alt="photo"/>
+            ))
+          )}
+          {attachment.length >= 6 && (
+            attachment.map(image => (
+              <img className="images" src={image} alt="photo"/>
+            ))
+          )}
+        </div>
         <div className="buttons">
           <button className="writeModeBtn" onClick={writeModeBtn}>
             취소

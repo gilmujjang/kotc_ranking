@@ -48,7 +48,7 @@ const CreateUser = () => {
     }
     let attachmentUrl = "";
     if(attachment !== ""){
-      const attachmentRef = storageService.ref().child(name);
+      const attachmentRef = storageService.ref().child('userprofile').child(name);
       const response = await attachmentRef.putString(attachment, "data_url");
       attachmentUrl = await response.ref.getDownloadURL();
     }
