@@ -7,7 +7,6 @@ const Post = ({userObj}) => {
   const [everyPost, setEveryPost] = useState([]);
   const [content, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
-  const [attachmentUrl, setAttachmentUrl] = useState([]);
 
   useEffect(() => {
     setEveryPost([])
@@ -67,17 +66,26 @@ const Post = ({userObj}) => {
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
-    if(attachment.length !== 0){
+    let attachmentUrl = [];
+    console.log("1")
+
+    async function sendData(){
       let i = 0;
-      attachment.map(async(file) => {
+      const promises = attachment.map(async(file) => {
         i = i+1;
         let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
         let response = await attachmentRef.putString(file, "data_url");
         let url = await response.ref.getDownloadURL();
-        await setAttachmentUrl(attachmentUrl.concat(url))
+        await console.log('2')
+        await console.log(url)
+        await attachmentUrl.push(url)
       })
+      await Promise.all(promises)
+      console.log('3')
+      console.log(attachmentUrl)
     }
-
+    await sendData();
+    
     const postObject = {
       date: time,
       recent_fix: time,
@@ -86,12 +94,12 @@ const Post = ({userObj}) => {
       writerprofile: userObj.photoUrl,
       imageurl: attachmentUrl,
     }
+
     await dbService.collection("post").doc(time).set(postObject);
     setContent('')
     setWriteMode(!writeMode)
     setRefresh(!refresh)
     setAttachment([])
-    setAttachmentUrl([])
   };
 
   const writeModeBtn = () => {
@@ -138,7 +146,7 @@ const Post = ({userObj}) => {
       <div className="postContent">
         <div>{post.content}</div>
         <div>
-          {postImage(post)}
+          {/* {postImage(post)} */}
         </div>
       </div>
     </div>
