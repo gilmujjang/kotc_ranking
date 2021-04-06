@@ -7,11 +7,10 @@ const Post = ({userObj}) => {
   const [everyPost, setEveryPost] = useState([]);
   const [content, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
-  const [attachmentUrl, setAttachmentUrl] = useState([]);
 
   useEffect(() => {
     setEveryPost([])
-    dbService.collection("post").orderBy("date","desc").limit(30).get().then(snapshot => {
+    dbService.collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const postObject = {
           content: doc.data().content,
@@ -19,7 +18,7 @@ const Post = ({userObj}) => {
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
-          imageurl: doc.data().imageurl
+          imagelist: doc.data().imageurl,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -68,17 +67,22 @@ const Post = ({userObj}) => {
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
-    if(attachment.length !== 0){
+    let attachmentUrl = [];
+
+    async function sendData(){
       let i = 0;
-      attachment.map(async(file) => {
+      const promises = attachment.map(async(file) => {
         i = i+1;
         let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
         let response = await attachmentRef.putString(file, "data_url");
         let url = await response.ref.getDownloadURL();
-        setAttachmentUrl(attachmentUrl.concat(url))
+        return url
       })
+      const results =  await Promise.all(promises)
+      results.forEach(data => attachmentUrl.push(data) )
     }
-
+    await sendData();
+    
     const postObject = {
       date: time,
       recent_fix: time,
@@ -87,12 +91,12 @@ const Post = ({userObj}) => {
       writerprofile: userObj.photoUrl,
       imageurl: attachmentUrl,
     }
+
     await dbService.collection("post").doc(time).set(postObject);
     setContent('')
     setWriteMode(!writeMode)
     setRefresh(!refresh)
     setAttachment([])
-    setAttachmentUrl([])
   };
 
   const writeModeBtn = () => {
@@ -118,6 +122,43 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
+  const postImageOne = (post) => (
+    post.map(url => ( 
+      <img src={url} className="imageOne"/>
+    ))
+  )
+  const postImageTwo = (post) => (
+    post.map(url => ( 
+      <img src={url} className="imageTwo"/>
+    ))
+  )
+  const postImageThree = (post) => (
+    <>
+      <div><img src={post[0]} className="imageThreeBig"/></div>
+      <div>
+        <img src={post[1]} className="imageThreeSmall"/>
+        <img src={post[2]} className="imageThreeSmall"/>
+      </div>
+    </>
+  )
+  const postImageFour = (post) => (
+    post.map(url => ( 
+      <img src={url} className="imageFour"/>
+    ))
+  )
+  const postImages = (post) => (
+    <div className="postImages">
+      <div className="imageFour"><img src={post[0]} className="fullimage"/></div>
+      <div className="imageFour"><img src={post[1]} className="fullimage"/></div>
+      <div className="imageFour"><img src={post[2]} className="fullimage"/></div>
+      <div className="imageFour">
+        <div className="moreimages"/>
+        <div className="showmoreimages">더보기+</div>
+        <img src={post[3]} className="fullimage"/>
+        </div>
+    </div>
+  )
+
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div className="postHeader">
@@ -130,13 +171,13 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postContent">
-        <div>{post.content}</div>
-        <div>
-          {post.imageurl && (
-            post.imageurl.map(url => ( 
-              <img src={url} className="postImage"/>
-            ))
-          )}
+        <div className="postText">{post.content}</div>
+        <div className="postImages">
+          {post.imagelist.length == 1 && postImageOne(post.imagelist)}
+          {post.imagelist.length == 2 && postImageTwo(post.imagelist)}
+          {post.imagelist.length == 3 && postImageThree(post.imagelist)}
+          {post.imagelist.length == 4 && postImageFour(post.imagelist)}
+          {post.imagelist.length >4 && postImages(post.imagelist)}
         </div>
       </div>
     </div>
