@@ -12,7 +12,7 @@
 
 /* Post */
 .postMain{height: 100%;}
-.postList{height: 100%; overflow: scroll; width: 60%; background-color: rgba(240,240,240,1); transition: 0.5s;}
+.postList{height: 100%; overflow: scroll; width: 40%; background-color: rgba(240,240,240,1); transition: 0.5s;}
 .postList.active {opacity: 0.1;pointer-events: none;user-select: none; transition: 0.5s;}
 .post{margin: 16px;padding: 10px; background-color: white; box-shadow : 2px 2px 5px #999;}
 .writeHidden { visibility: hidden; max-height: 0px;}
@@ -36,4 +36,5 @@
 .fileHeader{margin-bottom:8px; border-bottom: 1px solid gray;}
 .fileInput{display: none;}
 .images{width: 20%; height: auto}
-.postImage{width: 100px;}
+.postImages{display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));grid-gap: 1em;}
+.postImage{width: 100%; height: auto;}

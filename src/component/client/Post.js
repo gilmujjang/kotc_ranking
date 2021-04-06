@@ -18,6 +18,7 @@ const Post = ({userObj}) => {
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
+          imagelist: doc.data().imageurl,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -67,7 +68,6 @@ const Post = ({userObj}) => {
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
 
     let attachmentUrl = [];
-    console.log("1")
 
     async function sendData(){
       let i = 0;
@@ -76,13 +76,10 @@ const Post = ({userObj}) => {
         let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
         let response = await attachmentRef.putString(file, "data_url");
         let url = await response.ref.getDownloadURL();
-        await console.log('2')
-        await console.log(url)
-        await attachmentUrl.push(url)
+        return url
       })
-      await Promise.all(promises)
-      console.log('3')
-      console.log(attachmentUrl)
+      const results =  await Promise.all(promises)
+      results.forEach(data => attachmentUrl.push(data) )
     }
     await sendData();
     
@@ -125,12 +122,11 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
-  const postImage = async(post) => {
-    const postimage = await storageService.ref().child('post/').child(String(post.date)).child('1');
-    const imageaddress = await postimage.getDownloadURL();
-    console.log(imageaddress)
-    // return (<img src={postimage}></img>)
-  }
+  const postImage = (post) => (
+    post.map(url => ( 
+      <img src={url} className="postImage"/>
+    ))
+  )
 
   const PostList = everyPost.map(post =>(
     <div className="post">
@@ -144,9 +140,9 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postContent">
-        <div>{post.content}</div>
-        <div>
-          {/* {postImage(post)} */}
+        <div className="postText">{post.content}</div>
+        <div className="postImages">
+          {post.imagelist && postImage(post.imagelist)}
         </div>
       </div>
     </div>
