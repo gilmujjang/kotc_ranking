@@ -122,10 +122,41 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
-  const postImage = (post) => (
+  const postImageOne = (post) => (
     post.map(url => ( 
-      <img src={url} className="postImage"/>
+      <img src={url} className="imageOne"/>
     ))
+  )
+  const postImageTwo = (post) => (
+    post.map(url => ( 
+      <img src={url} className="imageTwo"/>
+    ))
+  )
+  const postImageThree = (post) => (
+    <>
+      <div><img src={post[0]} className="imageThreeBig"/></div>
+      <div>
+        <img src={post[1]} className="imageThreeSmall"/>
+        <img src={post[2]} className="imageThreeSmall"/>
+      </div>
+    </>
+  )
+  const postImageFour = (post) => (
+    post.map(url => ( 
+      <img src={url} className="imageFour"/>
+    ))
+  )
+  const postImages = (post) => (
+    <div className="postImages">
+      <div className="imageFour"><img src={post[0]} className="fullimage"/></div>
+      <div className="imageFour"><img src={post[1]} className="fullimage"/></div>
+      <div className="imageFour"><img src={post[2]} className="fullimage"/></div>
+      <div className="imageFour">
+        <div className="moreimages"/>
+        <div className="showmoreimages">더보기+</div>
+        <img src={post[3]} className="fullimage"/>
+        </div>
+    </div>
   )
 
   const PostList = everyPost.map(post =>(
@@ -142,7 +173,11 @@ const Post = ({userObj}) => {
       <div className="postContent">
         <div className="postText">{post.content}</div>
         <div className="postImages">
-          {post.imagelist && postImage(post.imagelist)}
+          {post.imagelist.length == 1 && postImageOne(post.imagelist)}
+          {post.imagelist.length == 2 && postImageTwo(post.imagelist)}
+          {post.imagelist.length == 3 && postImageThree(post.imagelist)}
+          {post.imagelist.length == 4 && postImageFour(post.imagelist)}
+          {post.imagelist.length >4 && postImages(post.imagelist)}
         </div>
       </div>
     </div>
