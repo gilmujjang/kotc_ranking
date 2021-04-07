@@ -8,6 +8,9 @@ const Post = ({userObj}) => {
   const [content, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
+  const [whatImage, setWhatImage] = useState([]);
+  const [test, setTest] = useState([]);
+
 
   useEffect(() => {
     setEveryPost([])
@@ -123,20 +126,37 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
+  const imgClicked = (e,post) => {
+    setTest(post)
+    console.log(post)
+    setShowImage(true);
+    if(e.target.src == undefined){
+      setWhatImage(e.target.id)
+    } else {
+      setWhatImage(e.target.src)
+    }
+  }
+
+  const closeClick = () => {
+    setShowImage(false);
+    setWhatImage('');
+  }
+
   const postImageOne = (post) => (
     post.map(url => ( 
-      <img src={url} className="imageOne"/>
+      <img onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageOne"/>
     ))
   )
   const postImageTwo = (post) => (
     post.map(url => ( 
-      <img src={url} className="imageTwo"/>
+      <img onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageTwo"/>
     ))
   )
+
   const postImageThree = (post) => (
     <>
-      <div><img src={post[0]} className="imageThreeBig"/></div>
-      <div>
+      <div onClick={(e) => {imgClicked(e,{post})}}><img src={post[0]} className="imageThreeBig"/></div>
+      <div onClick={(e) => {imgClicked(e,{post})}}>
         <img src={post[1]} className="imageThreeSmall"/>
         <img src={post[2]} className="imageThreeSmall"/>
       </div>
@@ -144,49 +164,27 @@ const Post = ({userObj}) => {
   )
   const postImageFour = (post) => (
     post.map(url => ( 
-      <img src={url} className="imageFour"/>
+      <img onClick={imgClicked} onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageFour"/>
     ))
   )
 
-  const imgClicked = (e) => {
-    console.log(e.target.id)
-    const ad = e.target.id;
-    const modal = document.getElementById(ad.slice(3))
-    console.log(modal)
-    modal[0].style.display = "block";
-  }
-
-  const closeClick = (e) => {
-    const modal = document.getElementById(e.currentTarget.id)
-    modal[0].style.display = "none";
-  }
-
   const postImages = (post) => (
     <div className="postImages">
-      <div className="imageFour" onClick={imgClicked}><img id="img01" src={post[0]} className="fullimage"/></div>
-      <div className="modal">
-        <span className="close" onClick={closeClick}>&times;</span>
-        <img className="modal-content" id="01" src={post[0]}/>
+      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className="fullimage"/></div>
+      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="1" src={post[1]} className="fullimage"/></div>
+      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="2" src={post[2]} className="fullimage"/></div>
+      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}>
+        <div className="moreimages" id={post[3]}/>
+        <div className="showmoreimages" id={post[3]}>더보기+</div>
+        <img id="3" src={post[3]} className="fullimage"/>
       </div>
-      <div className="imageFour" id="img02" onClick={imgClicked}><img src={post[1]} className="fullimage"/></div>
-      <div className="modal" id="02">
-        <span className="close" onClick={closeClick}>&times;</span>
-        <img className="modal-content" src={post[1]}/>
-      </div>
-      <div className="imageFour" id="img03" onClick={imgClicked}><img src={post[2]} className="fullimage"/></div>
-      <div className="modal" id="03">
-        <span className="close" onClick={closeClick}>&times;</span>
-        <img className="modal-content" src={post[2]}/>
-      </div>
-      <div className="imageFour" id="img04" onClick={imgClicked}>
-        <div className="moreimages"/>
-        <div className="showmoreimages">더보기+</div>
-        <img src={post[3]} className="fullimage"/>
-      </div>
-      <div className="modal" id="04">
-        <span className="close" onClick={closeClick}>&times;</span>
-        <img className="modal-content" src={post[3]}/>
-      </div>
+    </div>
+  )
+
+  const modal = (
+    <div className={showImage ? 'modal show' : 'modal'}>
+      <span className="close" onClick={closeClick}>&times;</span>
+      <img className="modal-content" src={whatImage}/>
     </div>
   )
 
@@ -203,12 +201,12 @@ const Post = ({userObj}) => {
       </div>
       <div className="postContent">
         <div className="postText">{post.content}</div>
-        <div className="postImages">
+        <div className="postImage">
           {post.imagelist.length == 1 && postImageOne(post.imagelist)}
           {post.imagelist.length == 2 && postImageTwo(post.imagelist)}
           {post.imagelist.length == 3 && postImageThree(post.imagelist)}
           {post.imagelist.length == 4 && postImageFour(post.imagelist)}
-          {post.imagelist.length >4 && postImages(post.imagelist)}
+          {post.imagelist.length > 4 && postImages(post.imagelist)}
         </div>
       </div>
       <div className="postFooter">
@@ -270,6 +268,7 @@ const Post = ({userObj}) => {
   return (
     <>
       <div className="postMain">
+        {modal}
         {postMaker}
         <div className={writeMode ? 'postList active' : 'postList'}>
           {userObj.displayName

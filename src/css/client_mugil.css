@@ -17,7 +17,7 @@
 .postDate{font-size: large;}
 .postContent{margin: 8px;}
 .makePost{padding: 12px; border: none; box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);width: 100%; height: 100%; min-height: 200px;}
-.postMaker {background-color: white;position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 40%; height: 50%; margin: 0; display: flex; flex-direction: column; align-items: center; border: 1px solid black; border-radius: 16px;}
+.postMaker {background-color: white;position: fixed; top: 0; left: 20%;visibility: hidden; opacity: 0; transition: 0.5s; width: 40%; height: auto; margin: 0; display: flex; flex-direction: column; align-items: center; border: 1px solid black; border-radius: 16px;}
 .postMaker.active {height: auto;  max-height: 90%; visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1;}
 .postMakeHeader{border-bottom: 1px solid gray; padding: 12px; width: 100%; text-align: center; font-size:large; font-weight: 400;}
 .file{width: 100%; height: auto; padding: 8px;}
@@ -37,60 +37,10 @@
 .postFooter{display: flex; justify-content: space-between; margin: 8px;}
 .postLike{border: 1px black solid; width: 50%; text-align: center;}
 .postComment{border: 1px black solid; width: 50%; text-align: center;}
-
 .imageFour:hover {opacity: 0.7;}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
-
-/* Modal Content (image) */
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-}
-
-/* Caption of Modal Image */
-#caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
-}
-
-
-/* The Close Button */
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
-
+.modal {display: none;position: fixed;z-index: 100;padding-top: 100px;left: 0;top: 0;width: 100vw; height: 100vh;overflow: auto;background-color: rgba(0,0,0,0.9);}
+.show{display: block;}
+.modal-content {margin: auto;display: block;width: 80%;max-width: 700px;height: 90%;object-fit: contain;background-color: rgba(0,0,0,0);}
+.close {position: absolute;top: 15px;right: 35px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.close:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
+.relative{position: relative;}
