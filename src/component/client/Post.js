@@ -7,6 +7,7 @@ const Post = ({userObj}) => {
   const [everyPost, setEveryPost] = useState([]);
   const [content, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
+  const [showImage, setShowImage] = useState(false);
 
   useEffect(() => {
     setEveryPost([])
@@ -146,16 +147,46 @@ const Post = ({userObj}) => {
       <img src={url} className="imageFour"/>
     ))
   )
+
+  const imgClicked = (e) => {
+    console.log(e.target.id)
+    const ad = e.target.id;
+    const modal = document.getElementById(ad.slice(3))
+    console.log(modal)
+    modal[0].style.display = "block";
+  }
+
+  const closeClick = (e) => {
+    const modal = document.getElementById(e.currentTarget.id)
+    modal[0].style.display = "none";
+  }
+
   const postImages = (post) => (
     <div className="postImages">
-      <div className="imageFour"><img src={post[0]} className="fullimage"/></div>
-      <div className="imageFour"><img src={post[1]} className="fullimage"/></div>
-      <div className="imageFour"><img src={post[2]} className="fullimage"/></div>
-      <div className="imageFour">
+      <div className="imageFour" onClick={imgClicked}><img id="img01" src={post[0]} className="fullimage"/></div>
+      <div className="modal">
+        <span className="close" onClick={closeClick}>&times;</span>
+        <img className="modal-content" id="01" src={post[0]}/>
+      </div>
+      <div className="imageFour" id="img02" onClick={imgClicked}><img src={post[1]} className="fullimage"/></div>
+      <div className="modal" id="02">
+        <span className="close" onClick={closeClick}>&times;</span>
+        <img className="modal-content" src={post[1]}/>
+      </div>
+      <div className="imageFour" id="img03" onClick={imgClicked}><img src={post[2]} className="fullimage"/></div>
+      <div className="modal" id="03">
+        <span className="close" onClick={closeClick}>&times;</span>
+        <img className="modal-content" src={post[2]}/>
+      </div>
+      <div className="imageFour" id="img04" onClick={imgClicked}>
         <div className="moreimages"/>
         <div className="showmoreimages">더보기+</div>
         <img src={post[3]} className="fullimage"/>
-        </div>
+      </div>
+      <div className="modal" id="04">
+        <span className="close" onClick={closeClick}>&times;</span>
+        <img className="modal-content" src={post[3]}/>
+      </div>
     </div>
   )
 
@@ -179,6 +210,10 @@ const Post = ({userObj}) => {
           {post.imagelist.length == 4 && postImageFour(post.imagelist)}
           {post.imagelist.length >4 && postImages(post.imagelist)}
         </div>
+      </div>
+      <div className="postFooter">
+        <div className="postLike">좋아요</div>
+        <div className="postComment">댓글</div>
       </div>
     </div>
   ))
