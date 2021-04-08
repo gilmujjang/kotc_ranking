@@ -8,8 +8,8 @@ const Post = ({userObj}) => {
   const [content, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
-  const [whatImage, setWhatImage] = useState([]);
-  const [test, setTest] = useState([]);
+  const [postimage, setPostImage] = useState([]);
+  const [imageid, setImageId] = useState(0);
 
 
   useEffect(() => {
@@ -126,20 +126,23 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
+  const moveleft = () => {
+    setImageId(imageid+1)
+  }
+  const moveright = () => {
+    setImageId(imageid-1)
+  }
+
   const imgClicked = (e,post) => {
-    setTest(post)
-    console.log(post)
+    setPostImage(post.post)
+    setImageId(parseInt(e.target.id))
     setShowImage(true);
-    if(e.target.src == undefined){
-      setWhatImage(e.target.id)
-    } else {
-      setWhatImage(e.target.src)
-    }
   }
 
   const closeClick = () => {
+    setPostImage([])
+    setImageId('')
     setShowImage(false);
-    setWhatImage('');
   }
 
   const postImageOne = (post) => (
@@ -174,17 +177,19 @@ const Post = ({userObj}) => {
       <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="1" src={post[1]} className="fullimage"/></div>
       <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="2" src={post[2]} className="fullimage"/></div>
       <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}>
-        <div className="moreimages" id={post[3]}/>
-        <div className="showmoreimages" id={post[3]}>더보기+</div>
+        <div className="moreimages" id="3"/>
+        <div className="showmoreimages" id="3">더보기+</div>
         <img id="3" src={post[3]} className="fullimage"/>
       </div>
     </div>
   )
 
   const modal = (
-    <div className={showImage ? 'modal show' : 'modal'}>
+    <div className='modal'>
       <span className="close" onClick={closeClick}>&times;</span>
-      <img className="modal-content" src={whatImage}/>
+      <span className="left" onClick={moveleft}>&gt;</span>
+      <span className="right" onClick={moveright}>&lt;</span>
+      <img className="modal-content" src={postimage[imageid]}/>
     </div>
   )
 
@@ -268,7 +273,7 @@ const Post = ({userObj}) => {
   return (
     <>
       <div className="postMain">
-        {modal}
+        {showImage && modal}
         {postMaker}
         <div className={writeMode ? 'postList active' : 'postList'}>
           {userObj.displayName

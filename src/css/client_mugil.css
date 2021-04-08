@@ -38,9 +38,12 @@
 .postLike{border: 1px black solid; width: 50%; text-align: center;}
 .postComment{border: 1px black solid; width: 50%; text-align: center;}
 .imageFour:hover {opacity: 0.7;}
-.modal {display: none;position: fixed;z-index: 100;padding-top: 100px;left: 0;top: 0;width: 100vw; height: 100vh;overflow: auto;background-color: rgba(0,0,0,0.9);}
-.show{display: block;}
+.modal {display: block;position: fixed;z-index: 100;padding-top: 100px;left: 0;top: 0;width: 100vw; height: 100vh;overflow: auto;background-color: rgba(0,0,0,0.9);}
 .modal-content {margin: auto;display: block;width: 80%;max-width: 700px;height: 90%;object-fit: contain;background-color: rgba(0,0,0,0);}
 .close {position: absolute;top: 15px;right: 35px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
 .close:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
+.left {position: absolute;top: 45vh;right: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.left:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
+.right {position: absolute;top: 45vh; left: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.right:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
 .relative{position: relative;}
