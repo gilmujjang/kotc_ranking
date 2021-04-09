@@ -18,7 +18,7 @@ const Post = ({userObj}) => {
       snapshot.docs.map(doc => {
         const postObject = {
           content: doc.data().content,
-          writer: doc.data().writer,
+          writername: doc.data().writername,
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
@@ -91,9 +91,11 @@ const Post = ({userObj}) => {
       date: time,
       recent_fix: time,
       content: content,
-      writer: userObj.displayName,
+      writername: userObj.displayName,
+      writerid: userObj.uid,
       writerprofile: userObj.photoUrl,
       imageurl: attachmentUrl,
+      like: 0,
     }
 
     await dbService.collection("post").doc(time).set(postObject);
@@ -129,6 +131,7 @@ const Post = ({userObj}) => {
   const moveleft = () => {
     setImageId(imageid-1)
   }
+
   const moveright = () => {
     setImageId(imageid+1)
   }
@@ -148,6 +151,7 @@ const Post = ({userObj}) => {
   const postImageOne = (post) => (
       <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageOne"/>
   )
+
   const postImageTwo = (post) => (
     <div className="postImages">
       <div onClick={(e) => {imgClicked(e,{post})}}>
@@ -168,6 +172,7 @@ const Post = ({userObj}) => {
       </div>
     </>
   )
+
   const postImageFour = (post) => (
     <div className="postImages">
       <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
@@ -214,7 +219,7 @@ const Post = ({userObj}) => {
           <img className="userProfile" src={post.writerprofile}></img>
         </div>
         <div className="postHeaderRight">
-          <div classNames="userName">{post.writer}</div>
+          <div classNames="userName">{post.writername}</div>
           <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
         </div>
       </div>
@@ -229,7 +234,7 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postFooter">
-        <div className="postLike">좋아요</div>
+        <div className="postLike"><i class="fas fa-heart"></i></div>
         <div className="postComment">댓글</div>
       </div>
     </div>
