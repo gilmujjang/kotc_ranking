@@ -42,8 +42,8 @@
 .modal-content {margin: auto;display: block;width: 80%;max-width: 700px;height: 90%;object-fit: contain;background-color: rgba(0,0,0,0);}
 .close {position: absolute;top: 15px;right: 35px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
 .close:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
-.left {position: absolute;top: 45vh;right: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.left {position: absolute;top: 45vh;left: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
 .left:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
-.right {position: absolute;top: 45vh; left: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.right {position: absolute;top: 45vh; right: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
 .right:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
 .relative{position: relative;}

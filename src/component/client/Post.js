@@ -127,10 +127,10 @@ const Post = ({userObj}) => {
   };
 
   const moveleft = () => {
-    setImageId(imageid+1)
+    setImageId(imageid-1)
   }
   const moveright = () => {
-    setImageId(imageid-1)
+    setImageId(imageid+1)
   }
 
   const imgClicked = (e,post) => {
@@ -146,29 +146,43 @@ const Post = ({userObj}) => {
   }
 
   const postImageOne = (post) => (
-    post.map(url => ( 
-      <img onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageOne"/>
-    ))
+      <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageOne"/>
   )
   const postImageTwo = (post) => (
-    post.map(url => ( 
-      <img onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageTwo"/>
-    ))
+    <div className="postImages">
+      <div onClick={(e) => {imgClicked(e,{post})}}>
+        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageTwo"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}}>
+        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className="imageTwo"/>
+      </div>
+    </div>
   )
 
   const postImageThree = (post) => (
     <>
-      <div onClick={(e) => {imgClicked(e,{post})}}><img src={post[0]} className="imageThreeBig"/></div>
+      <div onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className="imageThreeBig"/></div>
       <div onClick={(e) => {imgClicked(e,{post})}}>
-        <img src={post[1]} className="imageThreeSmall"/>
-        <img src={post[2]} className="imageThreeSmall"/>
+        <img id="1" src={post[1]} className="imageThreeSmall"/>
+        <img id="2" src={post[2]} className="imageThreeSmall"/>
       </div>
     </>
   )
   const postImageFour = (post) => (
-    post.map(url => ( 
-      <img onClick={imgClicked} onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageFour"/>
-    ))
+    <div className="postImages">
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="fullimage"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className="fullimage"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="2" onClick={(e) => {imgClicked(e,{post})}} src={post[2]} className="fullimage"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="3" onClick={(e) => {imgClicked(e,{post})}} src={post[3]} className="fullimage"/>
+      </div>
+    </div>
   )
 
   const postImages = (post) => (
@@ -187,8 +201,8 @@ const Post = ({userObj}) => {
   const modal = (
     <div className='modal'>
       <span className="close" onClick={closeClick}>&times;</span>
-      <span className="left" onClick={moveleft}>&gt;</span>
-      <span className="right" onClick={moveright}>&lt;</span>
+      {imageid != 0 && <span className="left" onClick={moveleft}>&lt;</span>}
+      {postimage.length-1 !== imageid && <span className="right" onClick={moveright}>&gt;</span>}
       <img className="modal-content" src={postimage[imageid]}/>
     </div>
   )
