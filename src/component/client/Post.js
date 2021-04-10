@@ -1,5 +1,6 @@
 import React, { useEffect, useState,useRef } from 'react';
 import { dbService,authService,firebaseInstance,storageService } from '../../fbase'
+import firebase from 'firebase/app';
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
@@ -10,6 +11,8 @@ const Post = ({userObj}) => {
   const [showImage, setShowImage] = useState(false);
   const [postimage, setPostImage] = useState([]);
   const [imageid, setImageId] = useState(0);
+  const increment = firebase.firestore.FieldValue.increment(1);
+
 
 
   useEffect(() => {
@@ -23,6 +26,7 @@ const Post = ({userObj}) => {
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
           imagelist: doc.data().imageurl,
+          likenum: doc.data().like,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -39,14 +43,7 @@ const Post = ({userObj}) => {
     await authService.signInWithPopup(provider);
   };
 
-  const submitReview = async(e) =>{
-    e.preventDefault();
-    if(content === ''){
-      alert("내용을 입력하세요")
-      return;
-    }
-
-    // 시간 관련 부분
+  function rightNow() {
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
@@ -70,7 +67,16 @@ const Post = ({userObj}) => {
       seconds = 0+''+seconds
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
+    return time
+  }
 
+  const submitReview = async(e) =>{
+    e.preventDefault();
+    if(content === ''){
+      alert("내용을 입력하세요")
+      return;
+    }
+    const time = rightNow();
     let attachmentUrl = [];
 
     async function sendData(){
@@ -96,6 +102,7 @@ const Post = ({userObj}) => {
       writerprofile: userObj.photoUrl,
       imageurl: attachmentUrl,
       like: 0,
+      comment: 0,
     }
 
     await dbService.collection("post").doc(time).set(postObject);
@@ -203,6 +210,21 @@ const Post = ({userObj}) => {
     </div>
   )
 
+  const likeClicked = async(e,post) => {
+    e.preventDefault();
+    console.log(post.post)
+    const likeinfo = {
+      name: userObj.displayName,
+      userid: userObj.uid,
+      time: rightNow(),
+    }
+    await dbService.collection("post").doc(post.post.date).update({
+      like: increment,
+    })
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.displayName).set(likeinfo)
+    // setRefresh(!refresh)
+    }
+
   const modal = (
     <div className='modal'>
       <span className="close" onClick={closeClick}>&times;</span>
@@ -234,7 +256,7 @@ const Post = ({userObj}) => {
         </div>
       </div>
       <div className="postFooter">
-        <div className="postLike"><i class="fas fa-heart"></i></div>
+        <div className="postLike" onClick={(e) => {likeClicked(e,{post})}}><div>{post.likenum}</div><i class="fas fa-heart"></i></div>
         <div className="postComment">댓글</div>
       </div>
     </div>

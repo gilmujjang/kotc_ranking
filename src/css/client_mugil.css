@@ -47,3 +47,4 @@
 .right {position: absolute;top: 45vh; right: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
 .right:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
 .relative{position: relative;}
+img {cursor: pointer;}
