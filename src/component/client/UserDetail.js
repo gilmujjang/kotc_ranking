@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     const canvasRef = useRef()
-
+    // const mmrRanking = 
     const info = (
         <>
             <div className="detail--profile">
@@ -65,6 +65,38 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
         ctx.stroke()
     }
 
+    function sortRanking(arr) {
+        return arr.concat().sort(function(a, b) {return b.rating - a.rating})
+    }
+
+    function rankingRate() {
+        const sortedArr = sortRanking(allUsersByTime)
+
+        const target = sortedArr.filter(el => el.name === allUsersByTime[userKey].name)
+        const ranking = sortedArr.indexOf(target[0]) + 1
+        
+        // 본인 순위 / 전체 인원
+        return ( ranking / allUsersByTime.length )
+    }
+
+    function drawRanking(ctx) {
+        // 360 * 상위 퍼센티지 만큼
+        ctx.beginPath()
+        ctx.lineWidth = 6
+        ctx.strokeStyle = '#e74c3c'
+        ctx.arc(360, 90, 76, degToRad(359), degToRad(360.5 - 360 * rankingRate()), true)
+        ctx.stroke()
+    }
+
+    function drawRankingBase(ctx) {
+        // 나머지 공간 채우기
+        ctx.beginPath()
+        ctx.lineWidth = 6
+        ctx.strokeStyle = '#2EC4B6'
+        ctx.arc(360, 90, 76, degToRad(1), degToRad(359.5 - 360 * rankingRate()))
+        ctx.stroke()
+    }
+
     // 글자는 보류
 
     useEffect(() => {
@@ -74,6 +106,9 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
         drawCircle(ctx)
         drawWin(ctx)
         drawLose(ctx)
+
+        drawRanking(ctx)
+        drawRankingBase(ctx)
     }, [])
 
     return (
