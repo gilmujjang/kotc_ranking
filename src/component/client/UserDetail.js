@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import UserChart from './UserChart';
 
 const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     const canvasRef = useRef()
@@ -97,6 +98,8 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
         ctx.stroke()
     }
 
+    
+
     // 글자는 보류
 
     useEffect(() => {
@@ -113,16 +116,21 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
 
     return (
         <div className="detailContainer">
-            <div className="top clearfix">
-                <div className="top--left float--left">
+            <div className="top">
+                <div className="top--left">
                     {info}
                 </div>
-                <div className="top--right float--right">
+                <div className="top--right">
                     <canvas width="500" height="180" ref={canvasRef} className="canvas"></canvas>
                 </div>
             </div>
             <div className="bottom">
-                {/* 그래프 */}
+                <div className="bottom--left">
+                    <UserChart />
+                </div>
+                <div className="bottom--right">
+                    {/* 최근 경기 */}
+                </div>
             </div>
             <FontAwesomeIcon icon={faTimes} className="close" onClick={closeDetail}/>
         </div>
