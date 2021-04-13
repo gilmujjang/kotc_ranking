@@ -6,19 +6,27 @@ const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [everyPost, setEveryPost] = useState([]);
-  const [content, setContent] = useState('');
+  const [contentmake, setContent] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [postimage, setPostImage] = useState([]);
   const [imageid, setImageId] = useState(0);
   const increment = firebase.firestore.FieldValue.increment(1);
 
-
-
   useEffect(() => {
     setEveryPost([])
     dbService.collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
-      snapshot.docs.map(doc => {
+      snapshot.docs.map(async(doc) => {
+        let likelistname = [];
+        let likelistuserid = [];
+        let likenum = 0;
+        await dbService.collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
+          likelist.docs.map(like => {
+            likenum += 1;
+            likelistname.push(like.data().name);
+            likelistuserid.push(like.data().userid);
+          })
+        })
         const postObject = {
           content: doc.data().content,
           writername: doc.data().writername,
@@ -26,7 +34,9 @@ const Post = ({userObj}) => {
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
           imagelist: doc.data().imageurl,
-          likenum: doc.data().like,
+          likenum: likenum,
+          likelistname: likelistname,
+          likelistuserid: likelistuserid,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -72,7 +82,7 @@ const Post = ({userObj}) => {
 
   const submitReview = async(e) =>{
     e.preventDefault();
-    if(content === ''){
+    if(contentmake === ''){
       alert("내용을 입력하세요")
       return;
     }
@@ -96,7 +106,7 @@ const Post = ({userObj}) => {
     const postObject = {
       date: time,
       recent_fix: time,
-      content: content,
+      content: contentmake,
       writername: userObj.displayName,
       writerid: userObj.uid,
       writerprofile: userObj.photoUrl,
@@ -210,20 +220,69 @@ const Post = ({userObj}) => {
     </div>
   )
 
+  const unlikeClicked = async(e,post) => {
+    e.preventDefault();
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const likelistbyname = page.likelistname;
+        const likelistbyuserid = page.likelistuserid;
+        const namelist = likelistbyname.filter((name) => name !== userObj.displayName);
+        const idlist = likelistbyuserid.filter((uid) => uid !== userObj.uid);
+
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum - 1,
+          likelistname: namelist,
+          likelistuserid: idlist,
+        }
+        page = postObject;
+      }
+      return page
+    })
+     setEveryPost(neweverypost);  
+    }
+
   const likeClicked = async(e,post) => {
     e.preventDefault();
-    console.log(post.post)
     const likeinfo = {
       name: userObj.displayName,
       userid: userObj.uid,
       time: rightNow(),
     }
-    await dbService.collection("post").doc(post.post.date).update({
-      like: increment,
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const likelistbyname = page.likelistname;
+        const likelistbyuserid = page.likelistuserid;
+        likelistbyname.push(userObj.displayName);
+        likelistbyuserid.push(userObj.uid);
+
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum + 1,
+          likelistname: likelistbyname,
+          likelistuserid: likelistbyuserid,
+        }
+        page = postObject;
+      }
+      return page
     })
-    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.displayName).set(likeinfo)
-    // setRefresh(!refresh)
-    }
+     setEveryPost(neweverypost);    
+  }
+
 
   const modal = (
     <div className='modal'>
@@ -255,8 +314,13 @@ const Post = ({userObj}) => {
           {post.imagelist.length > 4 && postImages(post.imagelist)}
         </div>
       </div>
+      <i className="fas fa-heart"></i>
+      {post.likenum}
       <div className="postFooter">
-        <div className="postLike" onClick={(e) => {likeClicked(e,{post})}}><div>{post.likenum}</div><i class="fas fa-heart"></i></div>
+        {post.likelistuserid.includes(userObj.uid)
+          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i></div>
+          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i></div>
+        }
         <div className="postComment">댓글</div>
       </div>
     </div>
@@ -265,7 +329,7 @@ const Post = ({userObj}) => {
   const postMaker = (
       <div className={writeMode ? 'postMaker active' : 'postMaker'}>
         <div className="postMakeHeader"> 게시물 만들기 </div>
-        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
+        <textarea className="makePost" onChange={handleChange} value={contentmake} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
         <div className="file">
           <div className="fileHeader">
             <input type="file" id="fileInput" className="fileInput" multiple={true} onChange={onFileChange}/>

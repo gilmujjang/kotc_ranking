@@ -48,3 +48,4 @@
 .right:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
 .relative{position: relative;}
 img {cursor: pointer;}
+.heart{cursor: pointer; padding: 4px;color: red;}
