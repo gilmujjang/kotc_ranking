@@ -99,7 +99,7 @@ address, em, i {font-style: normal;}
 .filter--rangkingContent{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
 
 /* UserInfo */
-.usersInformation {width: 90%; height: 100%; margin: 0 auto; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin}
+.usersInformation {width: 90%; height: 100%; margin: 0 auto; position: relative; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin}
 /* .userList{float: left;} */
 .userList {display: flex; flex-wrap: wrap;}
 
@@ -120,27 +120,27 @@ address, em, i {font-style: normal;}
 .filter--info{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 80px;}
 
 /* UserDetail */
-.detailContainer{position: absolute; top: 50px; left: 50px; bottom: 50px; right: 50px; padding: 24px 36px; border-radius: 6px; background-color: #DCE2F0;}
+.detailContainer{position: fixed; top: 100px; left: 250px; bottom: 50px; right: 150px; padding: 24px 36px; border-radius: 6px; background-color: #DCE2F0;}
 .detailContainer .close{position: absolute; top: 12px; right: 12px; font-size: 32px; transition: .4s; cursor: pointer;}
 .detailContainer .close:hover{transform: rotate(-180deg); fill: #e74c3c;}
 
-.detailContainer .top{}
-.detailContainer .top .top--left{display: flex; width: 50%; margin-left: 60px;}
-.detailContainer .top .top--left div:nth-child(2){width: calc(100% - 180px); position: relative;}
+.detailContainer .top{width: 100%; height: 180px; position: relative;}
+.detailContainer .top .top--left{display: flex;margin-left: 60px; position: absolute; left: 0;}
 .detailContainer .top .top--left .detail--profile{width: 180px; height: 180px; margin-right: 24px;}
 .detailContainer .top .top--left .detail--profile img{width: 100%; height: 100%;}
+.detailContainer .top .top--left div:nth-child(2){display: flex; flex-direction: column; justify-content: space-between;}
 
-.detailContainer .top .top--left .detail__name{position: absolute; top: 0%; font-size: 48px; letter-spacing: 5px;}
-.detailContainer .top .top--left .detail__department{position: absolute; top: 60%; transform: translateY(-50%); font-size: 24px; letter-spacing: 2px;}
-.detailContainer .top .top--left .detail__status{position: absolute; bottom: 0; font-size: 16px;}
+.detailContainer .top .top--left .detail__name{font-size: 48px; letter-spacing: 5px;}
+.detailContainer .top .top--left .detail__department{font-size: 24px; letter-spacing: 2px;}
+.detailContainer .top .top--left .detail__status{font-size: 16px;}
 
-.detailContainer .top .top--right{margin-right: 60px;}
+.detailContainer .top .top--right{margin-right: 60px; position: absolute; right: 0;}
 
 /* UserDetail -- canvas */
 /* .canvas{background-color: rgba(255, 255, 255, .3); border-radius: 8px;} */
 
-
-
+.detailContainer .bottom{width: 100%; height: calc(100% - 244px); margin-top: 64px;}
+.detailContainer .bottom .bottom--left{width: 65%; height: 100%;}
 
 
 
