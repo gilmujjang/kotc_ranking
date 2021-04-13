@@ -11,8 +11,6 @@ const UserInfo = ({ allUsers, allGame }) => {
   const [isDetailOn, setIsDetailOn] = useState(false)
   const [filterName, setFilterName] = useState('')
   const [userKey, setUserKey] = useState(0)
-  // const [userDetail, setUserDetail] = useState({})
-
 
   function showDetail(e) {
     setIsDetailOn(true)
@@ -22,7 +20,7 @@ const UserInfo = ({ allUsers, allGame }) => {
   const userInfo = mapList.map((user,index) => (
     <div className="userInfo" key={index}>
       <div>
-        <img className="userImage" src={user.attachmentUrl} onClick={showDetail} data-num={index} key={index} alt="profile--detail"/>
+        <img className="userImage" src={user.attachmentUrl} onClick={showDetail} data-num={index} alt="profile--detail"/>
       </div>
       <div className="userInfoRightSide">
         <div className="userInfoUpSide">
