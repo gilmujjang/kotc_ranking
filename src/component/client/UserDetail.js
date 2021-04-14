@@ -1,9 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UserChart from './UserChart';
 
 const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
+    const [chartMode, setChartMode] = useState('점수')
+    const [period, setPeriod] = useState('1주')
+
     const canvasRef = useRef()
     // const mmrRanking = 
     const info = (
@@ -98,7 +102,30 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
         ctx.stroke()
     }
 
-    
+    function onClickAction(e) {
+        setChartMode(e.target.id)
+    }
+
+    const periodFilter = (
+        <>
+        <div className="button button--userDetail">일</div>
+        <div className="button button--userDetail">주</div>
+        <div className="button button--userDetail">월</div>
+        </>
+    )
+
+    const chartFilter = (
+        <div className="dropdown dropdown--userDetail">
+          <div className="dropdown--selected">
+            <span className="selected">{chartMode}</span>
+            <FontAwesomeIcon icon={faCaretDown}/>
+          </div>
+          <ul className="dropdown--list">
+            <li id="점수" className="dropdown--list__item" onClick={onClickAction}>점수</li>
+            <li id="순위" className="dropdown--list__item" onClick={onClickAction}>순위</li>
+          </ul>
+        </div>
+    )
 
     // 글자는 보류
 
@@ -126,6 +153,8 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
             </div>
             <div className="bottom">
                 <div className="bottom--left">
+                    {periodFilter}
+                    {chartFilter}
                     <UserChart />
                 </div>
                 <div className="bottom--right">

@@ -90,13 +90,12 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
   }
 
   function onClickAction(e) {
-    const target = e.target.id;
-    setCurrentType(target)
+    setCurrentType(e.target.id)
   }
 
   const rankingContentFilter = (
     <>
-      <div className="dropdown">
+      <div className="dropdown dropdown--rankingContainer">
         <div className="dropdown--selected">
           <span className="selected">{currentType}</span>
           <FontAwesomeIcon icon={faCaretDown}/>
