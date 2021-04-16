@@ -7,6 +7,7 @@ const Post = ({userObj}) => {
   const [refresh, setRefresh] = useState(false);
   const [everyPost, setEveryPost] = useState([]);
   const [contentmake, setContent] = useState('');
+  const [commentmake, setComment] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [postimage, setPostImage] = useState([]);
@@ -20,11 +21,26 @@ const Post = ({userObj}) => {
         let likelistname = [];
         let likelistuserid = [];
         let likenum = 0;
+        let commentslist = [];
         await dbService.collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
           likelist.docs.map(like => {
             likenum += 1;
             likelistname.push(like.data().name);
             likelistuserid.push(like.data().userid);
+          })
+        })
+        let commentsnum = 0;
+        await dbService.collection("post").doc(doc.data().date).collection("comments").get().then(commentslist => {
+          commentslist.docs.map(comment => {
+            commentsnum += 1;
+            const commentObject = {
+              writerid: comment.data().writerid,
+              writername: comment.data().writername,
+              text: comment.data().text,
+              writedate: comment.data().writedate,
+              recentfix: comment.data().recentfix,
+            }
+            commentslist.push(commentObject);
           })
         })
         const postObject = {
@@ -37,6 +53,8 @@ const Post = ({userObj}) => {
           likenum: likenum,
           likelistname: likelistname,
           likelistuserid: likelistuserid,
+          commentsnum: commentsnum,
+          commentslist: commentslist,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -80,6 +98,89 @@ const Post = ({userObj}) => {
     return time
   }
 
+  const submitComment = async(e,post) =>{
+    e.preventDefault();
+    if(commentmake === ''){
+      alert("내용을 입력하세요");
+      return;
+    }
+    const time = rightNow();
+    // async function sendData(){
+
+    // }
+    const commnetinfo = {
+      text: commentmake,
+      writedate: time,
+      recentfix: time,
+      writername: userObj.displayName,
+      writerid: userObj.uid,
+    }
+    await dbService.collection("post").doc(post.post.date).collection("comments").doc(userObj.uid).set(commnetinfo)
+    setComment('');
+  };
+
+  const unlikeClicked = async(e,post) => {
+    e.preventDefault();
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const likelistbyname = page.likelistname;
+        const likelistbyuserid = page.likelistuserid;
+        const namelist = likelistbyname.filter((name) => name !== userObj.displayName);
+        const idlist = likelistbyuserid.filter((uid) => uid !== userObj.uid);
+
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum - 1,
+          likelistname: namelist,
+          likelistuserid: idlist,
+        }
+        page = postObject;
+      }
+      return page
+    })
+     setEveryPost(neweverypost);  
+    }
+
+  const likeClicked = async(e,post) => {
+    e.preventDefault();
+    const likeinfo = {
+      name: userObj.displayName,
+      userid: userObj.uid,
+      time: rightNow(),
+    }
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const likelistbyname = page.likelistname;
+        const likelistbyuserid = page.likelistuserid;
+        likelistbyname.push(userObj.displayName);
+        likelistbyuserid.push(userObj.uid);
+
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum + 1,
+          likelistname: likelistbyname,
+          likelistuserid: likelistbyuserid,
+        }
+        page = postObject;
+      }
+      return page
+    })
+     setEveryPost(neweverypost);    
+  }
   const submitReview = async(e) =>{
     e.preventDefault();
     if(contentmake === ''){
@@ -129,6 +230,11 @@ const Post = ({userObj}) => {
   const handleChange = (e) => {
     e.preventDefault();
     setContent(e.target.value)
+  }
+
+  const commentChange = (e) => {
+    e.preventDefault();
+    setComment(e.target.value)
   }
 
   const onFileChange = (event) => {
@@ -220,70 +326,6 @@ const Post = ({userObj}) => {
     </div>
   )
 
-  const unlikeClicked = async(e,post) => {
-    e.preventDefault();
-    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
-
-    const neweverypost = everyPost.map(page => {
-      if(page.date == post.post.date){
-        const likelistbyname = page.likelistname;
-        const likelistbyuserid = page.likelistuserid;
-        const namelist = likelistbyname.filter((name) => name !== userObj.displayName);
-        const idlist = likelistbyuserid.filter((uid) => uid !== userObj.uid);
-
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum - 1,
-          likelistname: namelist,
-          likelistuserid: idlist,
-        }
-        page = postObject;
-      }
-      return page
-    })
-     setEveryPost(neweverypost);  
-    }
-
-  const likeClicked = async(e,post) => {
-    e.preventDefault();
-    const likeinfo = {
-      name: userObj.displayName,
-      userid: userObj.uid,
-      time: rightNow(),
-    }
-    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
-
-    const neweverypost = everyPost.map(page => {
-      if(page.date == post.post.date){
-        const likelistbyname = page.likelistname;
-        const likelistbyuserid = page.likelistuserid;
-        likelistbyname.push(userObj.displayName);
-        likelistbyuserid.push(userObj.uid);
-
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum + 1,
-          likelistname: likelistbyname,
-          likelistuserid: likelistbyuserid,
-        }
-        page = postObject;
-      }
-      return page
-    })
-     setEveryPost(neweverypost);    
-  }
-
-
   const modal = (
     <div className='modal'>
       <span className="close" onClick={closeClick}>&times;</span>
@@ -292,6 +334,11 @@ const Post = ({userObj}) => {
       <img className="modal-content" src={postimage[imageid]}/>
     </div>
   )
+
+  const Comments = (post) => {
+    <>
+    </>
+  }
 
   const PostList = everyPost.map(post =>(
     <div className="post">
@@ -322,6 +369,14 @@ const Post = ({userObj}) => {
           : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i></div>
         }
         <div className="postComment">댓글</div>
+      </div>
+      <div className="comments">
+        <div>
+          <img class="userProfile" src={userObj.photoUrl}></img>
+          <input className="" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
+          <button className="writeModeBtn" onClick={(e) => {submitComment(e,{post})}}>보내기</button>  
+        </div>
+        {Comments(post)}
       </div>
     </div>
   ))
