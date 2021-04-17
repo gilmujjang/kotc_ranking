@@ -21,7 +21,7 @@ const Post = ({userObj}) => {
         let likelistname = [];
         let likelistuserid = [];
         let likenum = 0;
-        let commentslist = [];
+        let commentslists = [];
         await dbService.collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
           likelist.docs.map(like => {
             likenum += 1;
@@ -30,8 +30,8 @@ const Post = ({userObj}) => {
           })
         })
         let commentsnum = 0;
-        await dbService.collection("post").doc(doc.data().date).collection("comments").get().then(commentslist => {
-          commentslist.docs.map(comment => {
+        await dbService.collection("post").doc(doc.data().date).collection("comments").get().then(comment => {
+          comment.docs.map(comment => {
             commentsnum += 1;
             const commentObject = {
               writerid: comment.data().writerid,
@@ -40,7 +40,7 @@ const Post = ({userObj}) => {
               writedate: comment.data().writedate,
               recentfix: comment.data().recentfix,
             }
-            commentslist.push(commentObject);
+            commentslists.unshift(commentObject);
           })
         })
         const postObject = {
@@ -54,7 +54,7 @@ const Post = ({userObj}) => {
           likelistname: likelistname,
           likelistuserid: likelistuserid,
           commentsnum: commentsnum,
-          commentslist: commentslist,
+          commentslist: commentslists,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -115,7 +115,7 @@ const Post = ({userObj}) => {
       writername: userObj.displayName,
       writerid: userObj.uid,
     }
-    await dbService.collection("post").doc(post.post.date).collection("comments").doc(userObj.uid).set(commnetinfo)
+    await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commnetinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
     setComment('');
   };
 
@@ -335,11 +335,6 @@ const Post = ({userObj}) => {
     </div>
   )
 
-  const Comments = (post) => {
-    <>
-    </>
-  }
-
   const PostList = everyPost.map(post =>(
     <div className="post">
       <div className="postHeader">
@@ -370,13 +365,19 @@ const Post = ({userObj}) => {
         }
         <div className="postComment">댓글</div>
       </div>
-      <div className="comments">
-        <div>
+      <div className="commentsBox">
+        <div className="commentmaker">
           <img class="userProfile" src={userObj.photoUrl}></img>
           <input className="" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
           <button className="writeModeBtn" onClick={(e) => {submitComment(e,{post})}}>보내기</button>  
         </div>
-        {Comments(post)}
+        {post.commentslist.map(comment => (
+            <div className="comments">
+              <div>{comment.writername}</div>
+              <div>{comment.text}</div>
+              <div>{comment.writedate}</div>
+            </div>
+          ))}
       </div>
     </div>
   ))

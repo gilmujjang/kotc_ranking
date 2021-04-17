@@ -49,3 +49,6 @@
 .relative{position: relative;}
 img {cursor: pointer;}
 .heart{cursor: pointer; padding: 4px;color: red;}
+.commentsBox{}
+.commentmaker{}
+.comments{display: flex; justify-content: space-between; padding: 4px; margin: 4px;}
