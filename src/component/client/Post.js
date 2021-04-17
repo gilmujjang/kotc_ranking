@@ -367,9 +367,9 @@ const Post = ({userObj}) => {
       </div>
       <div className="commentsBox">
         <div className="commentmaker">
-          <img class="userProfile" src={userObj.photoUrl}></img>
-          <input className="" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
-          <button className="writeModeBtn" onClick={(e) => {submitComment(e,{post})}}>보내기</button>  
+          <img class="commentUserProfile" src={userObj.photoUrl}></img>
+          <input className="commentwrite" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
+          {commentmake ? <button className="commentsubmitbtn" onClick={(e) => {submitComment(e,{post})}}><p>보내기</p></button> : <div className="btnunactive"><p>보내기</p></div>}
         </div>
         {post.commentslist.map(comment => (
             <div className="comments">

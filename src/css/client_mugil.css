@@ -49,6 +49,10 @@
 .relative{position: relative;}
 img {cursor: pointer;}
 .heart{cursor: pointer; padding: 4px;color: red;}
-.commentsBox{}
-.commentmaker{}
-.comments{display: flex; justify-content: space-between; padding: 4px; margin: 4px;}
+.commentsBox{background-color:rgba(0,0,0,0.05); padding: 4px;}
+.commentmaker{display: flex;}
+.commentwrite{margin: 4px; width: 70%;}
+.commentsubmitbtn{height:36px; width: 15%; margin: 4px; padding-right: 6px; padding-left: 6px; border-radius: 10%; background-color: white;}
+.btnunactive{display: flex; justify-content: center; align-items: center; height: 36px; width: 15%; margin: 4px;padding:2px; padding-right: 6px; padding-left: 6px; border-radius: 10%; background-color: rgba(0,0,0,0.2);}
+.commentUserProfile{margin: 4px; margin-right: 10px;width: 36px; height: 36px; border-radius: 50%;}
+.comments{display: flex; justify-content: space-between; padding: 4px; margin: 4px; border: 1px solid black; border-radius: 8px;}
