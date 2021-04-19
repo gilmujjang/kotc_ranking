@@ -6,7 +6,7 @@ import UserChart from './UserChart';
 
 const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     const [chartMode, setChartMode] = useState('점수')
-    const [period, setPeriod] = useState('1주')
+    const [period, setPeriod] = useState('week')
 
     const canvasRef = useRef()
     // const mmrRanking = 
@@ -102,27 +102,31 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
         ctx.stroke()
     }
 
-    function onClickAction(e) {
-        setChartMode(e.target.id)
+    function periodHandler(e) {
+        setPeriod(e.target.dataset.period)
+    }
+
+    function chartModeHandler(e) {
+        setChartMode(e.target.dataset.mode)
     }
 
     const periodFilter = (
         <>
-        <div className="button button--userDetail">일</div>
-        <div className="button button--userDetail">주</div>
-        <div className="button button--userDetail">월</div>
+        <div className="button button--userDetail" onClick={periodHandler} data-period="day">일</div>
+        <div className="button button--userDetail" onClick={periodHandler} data-period="week">주</div>
+        <div className="button button--userDetail" onClick={periodHandler} data-period="month">월</div>
         </>
     )
 
     const chartFilter = (
         <div className="dropdown dropdown--userDetail">
           <div className="dropdown--selected">
-            <span className="selected">{chartMode}</span>
+            <span className="selected">{chartMode === 'rating' ? '점수' : '순위'}</span>
             <FontAwesomeIcon icon={faCaretDown}/>
           </div>
           <ul className="dropdown--list">
-            <li id="점수" className="dropdown--list__item" onClick={onClickAction}>점수</li>
-            <li id="순위" className="dropdown--list__item" onClick={onClickAction}>순위</li>
+            <li className="dropdown--list__item" onClick={chartModeHandler} data-mode="rating">점수</li>
+            <li className="dropdown--list__item" onClick={chartModeHandler} data-mode="ranking">순위</li>
           </ul>
         </div>
     )
@@ -155,7 +159,7 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
                 <div className="bottom--left">
                     {periodFilter}
                     {chartFilter}
-                    <UserChart />
+                    <UserChart chartMode={chartMode} period={period}/>
                 </div>
                 <div className="bottom--right">
                     {/* 최근 경기 */}
