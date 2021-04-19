@@ -55,6 +55,7 @@ const Post = ({userObj}) => {
           likelistuserid: likelistuserid,
           commentsnum: commentsnum,
           commentslist: commentslists,
+          commentshow: false,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -174,13 +175,17 @@ const Post = ({userObj}) => {
           likenum: page.likenum + 1,
           likelistname: likelistbyname,
           likelistuserid: likelistbyuserid,
+          commentsnum: page.commentsnum,
+          commentslist: page.commentslists,
+          commentshow: page.commentshow,
         }
         page = postObject;
       }
       return page
     })
-     setEveryPost(neweverypost);    
+    setEveryPost(neweverypost);    
   }
+
   const submitReview = async(e) =>{
     e.preventDefault();
     if(contentmake === ''){
@@ -271,6 +276,31 @@ const Post = ({userObj}) => {
     setShowImage(false);
   }
 
+  const showcomment = (e,post) => {
+    e.preventDefault();
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum,
+          likelistname: page.likelistname,
+          likelistuserid: page.likelistuserid,
+          commentsnum: page.commentsnum,
+          commentslist: page.commentslist,
+          commentshow: !page.commentshow,
+        }
+        page = postObject;
+      }
+      return page
+    })
+    setEveryPost(neweverypost);   
+  }
+
   const postImageOne = (post) => (
       <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageOne"/>
   )
@@ -356,29 +386,40 @@ const Post = ({userObj}) => {
           {post.imagelist.length > 4 && postImages(post.imagelist)}
         </div>
       </div>
-      <i className="fas fa-heart"></i>
-      {post.likenum}
+      <div className="heartandcomment">
+        <div className="getheart">
+          <i className="hearticon fas fa-heart"></i>
+          {post.likenum}
+        </div>
+        <div className="getcomment">
+          <i class="commenticon fas fa-comment"></i>
+          {post.commentsnum}
+        </div>
+      </div>
+      
       <div className="postFooter">
         {post.likelistuserid.includes(userObj.uid)
           ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i></div>
           : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i></div>
         }
-        <div className="postComment">댓글</div>
+        <div onClick={(e) => {showcomment(e,{post})}} className="postComment">댓글 쓰기</div>
       </div>
-      <div className="commentsBox">
-        <div className="commentmaker">
-          <img class="commentUserProfile" src={userObj.photoUrl}></img>
-          <input className="commentwrite" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
-          {commentmake ? <button className="commentsubmitbtn" onClick={(e) => {submitComment(e,{post})}}><p>보내기</p></button> : <div className="btnunactive"><p>보내기</p></div>}
+      {post.commentshow && (  //댓글작성, 보기
+        <div className="commentsBox">
+          <div className="commentmaker">
+            <img class="commentUserProfile" src={userObj.photoUrl}></img>
+            <input className="commentwrite" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
+            {commentmake ? <button className="commentsubmitbtn" onClick={(e) => {submitComment(e,{post})}}><p>보내기</p></button> : <div className="btnunactive"><p>보내기</p></div>}
+          </div>
+          {post.commentslist.map(comment => (
+              <div className="comments">
+                <div>{comment.writername}</div>
+                <div>{comment.text}</div>
+                <div>{comment.writedate}</div>
+              </div>
+            ))}
         </div>
-        {post.commentslist.map(comment => (
-            <div className="comments">
-              <div>{comment.writername}</div>
-              <div>{comment.text}</div>
-              <div>{comment.writedate}</div>
-            </div>
-          ))}
-      </div>
+      )}
     </div>
   ))
 
