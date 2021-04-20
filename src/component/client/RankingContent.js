@@ -4,6 +4,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
+  const allUsersList = allUsers.filter(user => user.status ==="재학" || user.status ==="졸업")
   const studentRanking = allUsers.filter(user => user.status === "재학");
   const studentidRanking = allUsers.filter(user => user.studentid === 16);
   const [loadState, setLoadState] = useState({ end: 9 });
@@ -18,17 +19,17 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
       // setShowRanking(allUsers)
       switch(currentType) {
         case '전체':
-          setShowRanking(allUsers)
+          setShowRanking(allUsersList)
           break;
         case '학번':
           if(typeContent) {
-            setShowRanking(allUsers.filter(el => el.studentid === parseInt(typeContent)))
+            setShowRanking(allUsersList.filter(el => el.studentid === parseInt(typeContent)))
           } else{
-            setShowRanking(allUsers)
+            setShowRanking(allUsersList)
           }
           break;
         default:
-          setShowRanking(allUsers)
+          setShowRanking(allUsersList)
           break;
       }
     }
@@ -90,13 +91,12 @@ const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
   }
 
   function onClickAction(e) {
-    const target = e.target.id;
-    setCurrentType(target)
+    setCurrentType(e.target.id)
   }
 
   const rankingContentFilter = (
     <>
-      <div className="dropdown">
+      <div className="dropdown dropdown--rankingContainer">
         <div className="dropdown--selected">
           <span className="selected">{currentType}</span>
           <FontAwesomeIcon icon={faCaretDown}/>

@@ -54,6 +54,19 @@ address, em, i {font-style: normal;}
 .float--left{float: left;}
 .float--right{float: right;}
 .clearfix::after{content: ''; clear: both; display: block;}
+
+/* BUTTON */
+.button{display: inline-flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px; cursor: pointer;}
+.button:hover{background-color: rgba(180, 180, 180, 0.8);}
+
+/* DROPDOWN */
+.dropdown{width: 100px; cursor: pointer;}
+.dropdown:hover .dropdown--list{opacity: 1; visibility: visible;}
+.dropdown .dropdown--selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px;}
+.dropdown .dropdown--list{background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
+.dropdown .dropdown--list .dropdown--list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500;}
+.dropdown .dropdown--list .dropdown--list__item:hover{background-color: rgba(180, 180, 180, 0.8);}
+
 /* NAV */
 .nav{min-width: 260px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
 .nav ul{margin-top: 12px; width: 100%;}
@@ -88,18 +101,13 @@ address, em, i {font-style: normal;}
 .ranking .item--right > div .department{position: absolute; bottom: 16px; right: 8px;}
 
 /* rankingContent DROPBOX */
-.dropdown{width: 100px;  position: absolute; top: -60px; right: 160px; cursor: pointer;}
-.dropdown:hover .dropdown--list{opacity: 1; visibility: visible;}
-.dropdown .dropdown--selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px;}
-.dropdown .dropdown--list{background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
-.dropdown .dropdown--list .dropdown--list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500;}
-.dropdown .dropdown--list .dropdown--list__item:hover{background-color: rgba(180, 180, 180, 0.8);}
+.dropdown.dropdown--rankingContainer{position: absolute; top: -60px; right: 160px;}
 
 /* INPUT in rankingContent */
 .filter--rangkingContent{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
 
 /* UserInfo */
-.usersInformation {width: 90%; height: 100%; margin: 0 auto; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin}
+.usersInformation {width: 90%; height: 100%; margin: 0 auto; position: relative; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin}
 /* .userList{float: left;} */
 .userList {display: flex; flex-wrap: wrap;}
 
@@ -120,31 +128,36 @@ address, em, i {font-style: normal;}
 .filter--info{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 80px;}
 
 /* UserDetail */
-.detailContainer{position: absolute; top: 50px; left: 50px; bottom: 50px; right: 50px; padding: 24px 36px; border-radius: 6px; background-color: #DCE2F0;}
+.detailContainer{position: fixed; top: 100px; left: 250px; bottom: 50px; right: 150px; padding: 24px 36px; border-radius: 6px; background-color: #DCE2F0;}
 .detailContainer .close{position: absolute; top: 12px; right: 12px; font-size: 32px; transition: .4s; cursor: pointer;}
 .detailContainer .close:hover{transform: rotate(-180deg); fill: #e74c3c;}
 
-.detailContainer .top{}
-.detailContainer .top .top--left{display: flex; width: 50%; margin-left: 60px;}
-.detailContainer .top .top--left div:nth-child(2){width: calc(100% - 180px); position: relative;}
+.detailContainer .top{width: 100%; height: 180px; position: relative;}
+.detailContainer .top .top--left{display: flex;margin-left: 60px; position: absolute; left: 0;}
 .detailContainer .top .top--left .detail--profile{width: 180px; height: 180px; margin-right: 24px;}
 .detailContainer .top .top--left .detail--profile img{width: 100%; height: 100%;}
+.detailContainer .top .top--left div:nth-child(2){display: flex; flex-direction: column; justify-content: space-between;}
 
-.detailContainer .top .top--left .detail__name{position: absolute; top: 0%; font-size: 48px; letter-spacing: 5px;}
-.detailContainer .top .top--left .detail__department{position: absolute; top: 60%; transform: translateY(-50%); font-size: 24px; letter-spacing: 2px;}
-.detailContainer .top .top--left .detail__status{position: absolute; bottom: 0; font-size: 16px;}
+.detailContainer .top .top--left .detail__name{font-size: 48px; letter-spacing: 5px;}
+.detailContainer .top .top--left .detail__department{font-size: 24px; letter-spacing: 2px;}
+.detailContainer .top .top--left .detail__status{font-size: 16px;}
 
-.detailContainer .top .top--right{margin-right: 60px;}
+.detailContainer .top .top--right{margin-right: 60px; position: absolute; right: 0;}
 
-/* UserDetail -- canvas */
+.detailContainer .bottom{width: 100%; height: calc(100% - 244px); margin-top: 64px;}
+.detailContainer .bottom .bottom--left{width: 65%; height: 100%; position: relative;}
+
+/* UserDetail__canvas */
 /* .canvas{background-color: rgba(255, 255, 255, .3); border-radius: 8px;} */
 
+/* UserDetail__Buttons */
+.button--userDetail{position: absolute; top: -40px;}
+.button--userDetail:nth-child(2){right: 130px;}
+.button--userDetail:nth-child(3){right: 190px;}
+.button--userDetail:nth-child(4){right: 250px;}
 
-
-
-
-
-
+/* UserDetail__Dropdwon */
+.dropdown--userDetail{position: absolute; top: -40px; right: 20px;}
 
 
 

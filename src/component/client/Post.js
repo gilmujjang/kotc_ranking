@@ -1,28 +1,62 @@
 import React, { useEffect, useState,useRef } from 'react';
 import { dbService,authService,firebaseInstance,storageService } from '../../fbase'
+import firebase from 'firebase/app';
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [everyPost, setEveryPost] = useState([]);
-  const [content, setContent] = useState('');
+  const [contentmake, setContent] = useState('');
+  const [commentmake, setComment] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
-  const [whatImage, setWhatImage] = useState([]);
-  const [test, setTest] = useState([]);
-
+  const [postimage, setPostImage] = useState([]);
+  const [imageid, setImageId] = useState(0);
+  const increment = firebase.firestore.FieldValue.increment(1);
 
   useEffect(() => {
     setEveryPost([])
     dbService.collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
-      snapshot.docs.map(doc => {
+      snapshot.docs.map(async(doc) => {
+        let likelistname = [];
+        let likelistuserid = [];
+        let likenum = 0;
+        let commentslists = [];
+        await dbService.collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
+          likelist.docs.map(like => {
+            likenum += 1;
+            likelistname.push(like.data().name);
+            likelistuserid.push(like.data().userid);
+          })
+        })
+        let commentsnum = 0;
+        await dbService.collection("post").doc(doc.data().date).collection("comments").get().then(comment => {
+          comment.docs.map(comment => {
+            commentsnum += 1;
+            const commentObject = {
+              writerid: comment.data().writerid,
+              writername: comment.data().writername,
+              text: comment.data().text,
+              writedate: comment.data().writedate,
+              recentfix: comment.data().recentfix,
+              writerphoto: comment.data().writerphoto,
+            }
+            commentslists.unshift(commentObject);
+          })
+        })
         const postObject = {
           content: doc.data().content,
-          writer: doc.data().writer,
+          writername: doc.data().writername,
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
           imagelist: doc.data().imageurl,
+          likenum: likenum,
+          likelistname: likelistname,
+          likelistuserid: likelistuserid,
+          commentsnum: commentsnum,
+          commentslist: commentslists,
+          commentshow: false,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -39,14 +73,7 @@ const Post = ({userObj}) => {
     await authService.signInWithPopup(provider);
   };
 
-  const submitReview = async(e) =>{
-    e.preventDefault();
-    if(content === ''){
-      alert("내용을 입력하세요")
-      return;
-    }
-
-    // 시간 관련 부분
+  function rightNow() {
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
@@ -70,7 +97,107 @@ const Post = ({userObj}) => {
       seconds = 0+''+seconds
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
+    return time
+  }
 
+  const submitComment = async(e,post) =>{
+    e.preventDefault();
+    if(commentmake === ''){
+      alert("내용을 입력하세요");
+      return;
+    }
+    const time = rightNow();
+    // async function sendData(){
+
+    // }
+    const commnetinfo = {
+      text: commentmake,
+      writedate: time,
+      recentfix: time,
+      writername: userObj.displayName,
+      writerid: userObj.uid,
+      writerphoto: userObj.photoUrl,
+    }
+    await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commnetinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
+    setComment('');
+  };
+
+  const unlikeClicked = async(e,post) => {
+    e.preventDefault();
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const likelistbyname = page.likelistname;
+        const likelistbyuserid = page.likelistuserid;
+        const namelist = likelistbyname.filter((name) => name !== userObj.displayName);
+        const idlist = likelistbyuserid.filter((uid) => uid !== userObj.uid);
+
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum - 1,
+          likelistname: namelist,
+          likelistuserid: idlist,
+          commentsnum: page.commentsnum,
+          commentslist: page.commentslist,
+          commentshow: page.commentshow,
+        }
+        page = postObject;
+      }
+      return page
+    })
+     setEveryPost(neweverypost);  
+    }
+
+  const likeClicked = async(e,post) => {
+    e.preventDefault();
+    const likeinfo = {
+      name: userObj.displayName,
+      userid: userObj.uid,
+      time: rightNow(),
+    }
+    await dbService.collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const likelistbyname = page.likelistname;
+        const likelistbyuserid = page.likelistuserid;
+        likelistbyname.push(userObj.displayName);
+        likelistbyuserid.push(userObj.uid);
+
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum + 1,
+          likelistname: likelistbyname,
+          likelistuserid: likelistbyuserid,
+          commentsnum: page.commentsnum,
+          commentslist: page.commentslist,
+          commentshow: page.commentshow,
+        }
+        page = postObject;
+      }
+      return page
+    })
+    setEveryPost(neweverypost);    
+  }
+
+  const submitReview = async(e) =>{
+    e.preventDefault();
+    if(contentmake === ''){
+      alert("내용을 입력하세요")
+      return;
+    }
+    const time = rightNow();
     let attachmentUrl = [];
 
     async function sendData(){
@@ -90,10 +217,13 @@ const Post = ({userObj}) => {
     const postObject = {
       date: time,
       recent_fix: time,
-      content: content,
-      writer: userObj.displayName,
+      content: contentmake,
+      writername: userObj.displayName,
+      writerid: userObj.uid,
       writerprofile: userObj.photoUrl,
       imageurl: attachmentUrl,
+      like: 0,
+      comment: 0,
     }
 
     await dbService.collection("post").doc(time).set(postObject);
@@ -112,6 +242,11 @@ const Post = ({userObj}) => {
     setContent(e.target.value)
   }
 
+  const commentChange = (e) => {
+    e.preventDefault();
+    setComment(e.target.value)
+  }
+
   const onFileChange = (event) => {
     const {target:{files},
     } = event;
@@ -126,46 +261,91 @@ const Post = ({userObj}) => {
     reader.readAsDataURL(theFile);
   };
 
+  const moveleft = () => {
+    setImageId(imageid-1)
+  }
+
+  const moveright = () => {
+    setImageId(imageid+1)
+  }
+
   const imgClicked = (e,post) => {
-    setTest(post)
-    console.log(post)
+    setPostImage(post.post)
+    setImageId(parseInt(e.target.id))
     setShowImage(true);
-    if(e.target.src == undefined){
-      setWhatImage(e.target.id)
-    } else {
-      setWhatImage(e.target.src)
-    }
   }
 
   const closeClick = () => {
+    setPostImage([])
+    setImageId('')
     setShowImage(false);
-    setWhatImage('');
+  }
+
+  const showcomment = (e,post) => {
+    e.preventDefault();
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const postObject = {
+          content: page.content,
+          writername: page.writername,
+          writerprofile: page.writerprofile,
+          date: page.date,
+          recent_fix: page.recent_fix,
+          imagelist: page.imagelist,
+          likenum: page.likenum,
+          likelistname: page.likelistname,
+          likelistuserid: page.likelistuserid,
+          commentsnum: page.commentsnum,
+          commentslist: page.commentslist,
+          commentshow: !page.commentshow,
+        }
+        page = postObject;
+      }
+      return page
+    })
+    setEveryPost(neweverypost);   
   }
 
   const postImageOne = (post) => (
-    post.map(url => ( 
-      <img onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageOne"/>
-    ))
+      <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageOne"/>
   )
+
   const postImageTwo = (post) => (
-    post.map(url => ( 
-      <img onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageTwo"/>
-    ))
+    <div className="postImages">
+      <div onClick={(e) => {imgClicked(e,{post})}}>
+        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageTwo"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}}>
+        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className="imageTwo"/>
+      </div>
+    </div>
   )
 
   const postImageThree = (post) => (
     <>
-      <div onClick={(e) => {imgClicked(e,{post})}}><img src={post[0]} className="imageThreeBig"/></div>
+      <div onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className="imageThreeBig"/></div>
       <div onClick={(e) => {imgClicked(e,{post})}}>
-        <img src={post[1]} className="imageThreeSmall"/>
-        <img src={post[2]} className="imageThreeSmall"/>
+        <img id="1" src={post[1]} className="imageThreeSmall"/>
+        <img id="2" src={post[2]} className="imageThreeSmall"/>
       </div>
     </>
   )
+
   const postImageFour = (post) => (
-    post.map(url => ( 
-      <img onClick={imgClicked} onClick={(e) => {imgClicked(e,{post})}} src={url} className="imageFour"/>
-    ))
+    <div className="postImages">
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="fullimage"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className="fullimage"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="2" onClick={(e) => {imgClicked(e,{post})}} src={post[2]} className="fullimage"/>
+      </div>
+      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
+        <img id="3" onClick={(e) => {imgClicked(e,{post})}} src={post[3]} className="fullimage"/>
+      </div>
+    </div>
   )
 
   const postImages = (post) => (
@@ -174,17 +354,19 @@ const Post = ({userObj}) => {
       <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="1" src={post[1]} className="fullimage"/></div>
       <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="2" src={post[2]} className="fullimage"/></div>
       <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}>
-        <div className="moreimages" id={post[3]}/>
-        <div className="showmoreimages" id={post[3]}>더보기+</div>
+        <div className="moreimages" id="3"/>
+        <div className="showmoreimages" id="3">더보기+</div>
         <img id="3" src={post[3]} className="fullimage"/>
       </div>
     </div>
   )
 
   const modal = (
-    <div className={showImage ? 'modal show' : 'modal'}>
+    <div className='modal'>
       <span className="close" onClick={closeClick}>&times;</span>
-      <img className="modal-content" src={whatImage}/>
+      {imageid != 0 && <span className="left" onClick={moveleft}>&lt;</span>}
+      {postimage.length-1 !== imageid && <span className="right" onClick={moveright}>&gt;</span>}
+      <img className="modal-content" src={postimage[imageid]}/>
     </div>
   )
 
@@ -195,7 +377,7 @@ const Post = ({userObj}) => {
           <img className="userProfile" src={post.writerprofile}></img>
         </div>
         <div className="postHeaderRight">
-          <div classNames="userName">{post.writer}</div>
+          <div classNames="userName">{post.writername}</div>
           <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
         </div>
       </div>
@@ -209,17 +391,50 @@ const Post = ({userObj}) => {
           {post.imagelist.length > 4 && postImages(post.imagelist)}
         </div>
       </div>
-      <div className="postFooter">
-        <div className="postLike">좋아요</div>
-        <div className="postComment">댓글</div>
+      <div className="heartandcomment">
+        <div className="getheart">
+          <i className="hearticon fas fa-heart"></i>
+          {post.likenum}
+        </div>
+        <div className="getcomment">
+          <i class="commenticon fas fa-comment"></i>
+          {post.commentsnum}
+        </div>
       </div>
+      
+      <div className="postFooter">
+        {post.likelistuserid.includes(userObj.uid)
+          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i></div>
+          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i></div>
+        }
+        <div onClick={(e) => {showcomment(e,{post})}} className="postComment">댓글 쓰기</div>
+      </div>
+      {post.commentshow && (  //댓글작성, 보기
+        <div className="commentsBox">
+          <div className="commentmaker">
+            <img class="commentUserProfile" src={userObj.photoUrl}></img>
+            <input className="commentwrite" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
+            {commentmake ? <button className="commentsubmitbtn" onClick={(e) => {submitComment(e,{post})}}><p>보내기</p></button> : <div className="btnunactive"><p>보내기</p></div>}
+          </div>
+          {post.commentslist.map(comment => (
+              <div className="comments">
+                <div><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
+                <div>
+                  <div className="commentwriter">{comment.writername}</div>
+                  <div>{comment.text}</div>
+                  <div className="commentwritedate">{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   ))
 
   const postMaker = (
       <div className={writeMode ? 'postMaker active' : 'postMaker'}>
         <div className="postMakeHeader"> 게시물 만들기 </div>
-        <textarea className="makePost" onChange={handleChange} value={content} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
+        <textarea className="makePost" onChange={handleChange} value={contentmake} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
         <div className="file">
           <div className="fileHeader">
             <input type="file" id="fileInput" className="fileInput" multiple={true} onChange={onFileChange}/>
@@ -268,7 +483,7 @@ const Post = ({userObj}) => {
   return (
     <>
       <div className="postMain">
-        {modal}
+        {showImage && modal}
         {postMaker}
         <div className={writeMode ? 'postList active' : 'postList'}>
           {userObj.displayName
