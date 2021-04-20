@@ -39,6 +39,7 @@ const Post = ({userObj}) => {
               text: comment.data().text,
               writedate: comment.data().writedate,
               recentfix: comment.data().recentfix,
+              writerphoto: comment.data().writerphoto,
             }
             commentslists.unshift(commentObject);
           })
@@ -115,6 +116,7 @@ const Post = ({userObj}) => {
       recentfix: time,
       writername: userObj.displayName,
       writerid: userObj.uid,
+      writerphoto: userObj.photoUrl,
     }
     await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commnetinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
     setComment('');
@@ -416,9 +418,12 @@ const Post = ({userObj}) => {
           </div>
           {post.commentslist.map(comment => (
               <div className="comments">
-                <div>{comment.writername}</div>
-                <div>{comment.text}</div>
-                <div>{comment.writedate}</div>
+                <div><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
+                <div>
+                  <div className="commentwriter">{comment.writername}</div>
+                  <div>{comment.text}</div>
+                  <div className="commentwritedate">{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
+                </div>
               </div>
             ))}
         </div>
