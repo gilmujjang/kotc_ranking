@@ -141,6 +141,9 @@ const Post = ({userObj}) => {
           likenum: page.likenum - 1,
           likelistname: namelist,
           likelistuserid: idlist,
+          commentsnum: page.commentsnum,
+          commentslist: page.commentslists,
+          commentshow: page.commentshow,
         }
         page = postObject;
       }
