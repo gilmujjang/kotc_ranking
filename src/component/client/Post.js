@@ -142,7 +142,7 @@ const Post = ({userObj}) => {
           likelistname: namelist,
           likelistuserid: idlist,
           commentsnum: page.commentsnum,
-          commentslist: page.commentslists,
+          commentslist: page.commentslist,
           commentshow: page.commentshow,
         }
         page = postObject;
@@ -179,7 +179,7 @@ const Post = ({userObj}) => {
           likelistname: likelistbyname,
           likelistuserid: likelistbyuserid,
           commentsnum: page.commentsnum,
-          commentslist: page.commentslists,
+          commentslist: page.commentslist,
           commentshow: page.commentshow,
         }
         page = postObject;
