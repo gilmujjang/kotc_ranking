@@ -198,8 +198,6 @@ const Post = ({userObj}) => {
       writerid: userObj.uid,
       writerprofile: userObj.photoUrl,
       imageurl: attachmentUrl,
-      like: 0,
-      comment: 0,
     }
 
     await dbService.collection("post").doc(time).set(postObject);
@@ -261,21 +259,7 @@ const Post = ({userObj}) => {
     e.preventDefault();
     const neweverypost = everyPost.map(page => {
       if(page.date == post.post.date){
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum,
-          likelistname: page.likelistname,
-          likelistuserid: page.likelistuserid,
-          commentsnum: page.commentsnum,
-          commentslist: page.commentslist,
-          commentshow: !page.commentshow,
-        }
-        page = postObject;
+        page.commentshow = !page.commentshow;
       }
       return page
     })
@@ -350,8 +334,10 @@ const Post = ({userObj}) => {
     console.log(post.post)
   }
 
-  const Postdelete = (e,post) => {
-    console.log(post.post)
+  const Postdelete = async(e,post) => {
+    alert("삭제했습니다! 되돌릴수 없습니다!!")
+    await dbService.collection("post").doc(post.post.date).delete()
+    setRefresh(!refresh)
   }
 
   const Postmenushow = (e, post) => {
