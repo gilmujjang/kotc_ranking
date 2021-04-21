@@ -61,3 +61,7 @@ img {cursor: pointer;}
 .hearticon{padding: 4px;color: red;}
 .commentwriter{font-size: 14px; font-weight: 800;}
 .commentwritedate{font-size: 12px;}
+.getheart{position: relative;}
+.likelistshow{opacity: 0; padding:2px; font-size: 14px; position: absolute;  top: 24px; background-color: gray; border-radius: 15%; width: 3rem;}
+.getheart:hover > .likelistshow{opacity: 1;}
+.likeuser{color: white;}

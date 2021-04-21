@@ -395,6 +395,7 @@ const Post = ({userObj}) => {
         <div className="getheart">
           <i className="hearticon fas fa-heart"></i>
           {post.likenum}
+          <div className="likelistshow">{post.likelistname.map(username => <div classNames="likeuser">{username}</div>)}</div>
         </div>
         <div className="getcomment">
           <i class="commenticon fas fa-comment"></i>
