@@ -47,6 +47,7 @@ const Post = ({userObj}) => {
         const postObject = {
           content: doc.data().content,
           writername: doc.data().writername,
+          writerid: doc.data().writerid,
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
@@ -57,6 +58,7 @@ const Post = ({userObj}) => {
           commentsnum: commentsnum,
           commentslist: commentslists,
           commentshow: false,
+          moremenushow: false,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -132,22 +134,9 @@ const Post = ({userObj}) => {
         const likelistbyuserid = page.likelistuserid;
         const namelist = likelistbyname.filter((name) => name !== userObj.displayName);
         const idlist = likelistbyuserid.filter((uid) => uid !== userObj.uid);
-
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum - 1,
-          likelistname: namelist,
-          likelistuserid: idlist,
-          commentsnum: page.commentsnum,
-          commentslist: page.commentslist,
-          commentshow: page.commentshow,
-        }
-        page = postObject;
+        page.likenum = page.likenum -1;
+        page.likelistname = namelist;
+        page.likelistuserid = idlist;
       }
       return page
     })
@@ -169,22 +158,9 @@ const Post = ({userObj}) => {
         const likelistbyuserid = page.likelistuserid;
         likelistbyname.push(userObj.displayName);
         likelistbyuserid.push(userObj.uid);
-
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum + 1,
-          likelistname: likelistbyname,
-          likelistuserid: likelistbyuserid,
-          commentsnum: page.commentsnum,
-          commentslist: page.commentslist,
-          commentshow: page.commentshow,
-        }
-        page = postObject;
+        page.likenum = page.likenum + 1;
+        page.likelistname = likelistbyname;
+        page.likelistuserid = likelistbyuserid;
       }
       return page
     })
@@ -370,8 +346,35 @@ const Post = ({userObj}) => {
     </div>
   )
 
+  const Postfix = (e, post) => {
+    console.log(post.post)
+  }
+
+  const Postdelete = (e,post) => {
+    console.log(post.post)
+  }
+
+  const Postmenushow = (e, post) => {
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        page.moremenushow = !page.moremenushow
+      }
+      return page
+    })
+    setEveryPost(neweverypost);   
+  }
+
   const PostList = everyPost.map(post =>(
     <div className="post">
+      {post.writerid == userObj.uid && (
+        <div className="moremenu" onClick={(e) => {Postmenushow(e,{post})}}>
+          <i className="moremenuicon fas fa-ellipsis-h"/>
+          <div className={post.moremenushow ? "moremenuactive" : "moremenuicons"}>
+            <div className="postfix" onClick={(e) => {Postfix(e,{post})}}>수정</div>
+            <div className="postdelete" onClick={(e) => {Postdelete(e,{post})}}>삭제</div>
+          </div>
+        </div>
+      )}
       <div className="postHeader">
         <div className="postHeaderLeft">
           <img className="userProfile" src={post.writerprofile}></img>
@@ -401,8 +404,7 @@ const Post = ({userObj}) => {
           <i class="commenticon fas fa-comment"></i>
           {post.commentsnum}
         </div>
-      </div>
-      
+      </div>     
       <div className="postFooter">
         {post.likelistuserid.includes(userObj.uid)
           ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i></div>

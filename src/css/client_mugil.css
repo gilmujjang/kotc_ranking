@@ -1,4 +1,5 @@
 /* Post */
+.post{position: relative;}
 .postMain{height: 100%;}
 .postList{height: 100%; overflow: scroll; width: 40%; background-color: rgba(240,240,240,1); transition: 0.5s;}
 .postList.active {opacity: 0.1;pointer-events: none;user-select: none; transition: 0.5s;}
@@ -62,6 +63,11 @@ img {cursor: pointer;}
 .commentwriter{font-size: 14px; font-weight: 800;}
 .commentwritedate{font-size: 12px;}
 .getheart{position: relative;}
-.likelistshow{opacity: 0; padding:2px; font-size: 14px; position: absolute;  top: 24px; background-color: gray; border-radius: 15%; width: 3rem;}
+.likelistshow{opacity: 0; padding:2px; font-size: 14px; position: absolute;  top: 24px; background-color: rgba(200,200,200,1); border-radius: 15%; width: 3rem;}
 .getheart:hover > .likelistshow{opacity: 1;}
-.likeuser{color: white;}
+.likeuser{}
+.moremenu{position: absolute; right: 24px; padding: 4px; font-size: large;}
+.moremenuactive{opacity: 1; transition: 0.5s;font-size: 14px;}
+.moremenuicons{opacity: 0; transition: 0.5s;font-size: 14px;}
+.postfix:hover{background-color: yellow;}
+.postdelete:hover {background-color: skyblue;}
