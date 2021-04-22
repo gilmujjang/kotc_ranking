@@ -332,12 +332,14 @@ const Post = ({userObj}) => {
 
   const Postfix = (e, post) => {
     console.log(post.post)
+    //수정은 어려워서 나중에 할래
   }
 
   const Postdelete = async(e,post) => {
-    alert("삭제했습니다! 되돌릴수 없습니다!!")
-    await dbService.collection("post").doc(post.post.date).delete()
-    setRefresh(!refresh)
+    if(window.confirm("ㄹㅇ 지움?")) {
+      await dbService.collection("post").doc(post.post.date).delete()
+      setRefresh(!refresh)
+    }
   }
 
   const Postmenushow = (e, post) => {
@@ -386,17 +388,17 @@ const Post = ({userObj}) => {
           {post.likenum}
           <div className="likelistshow">{post.likelistname.map(username => <div classNames="likeuser">{username}</div>)}</div>
         </div>
-        <div className="getcomment">
+        <div onClick={(e) => {showcomment(e,{post})}} className="getcomment">
           <i class="commenticon fas fa-comment"></i>
           {post.commentsnum}
         </div>
       </div>     
       <div className="postFooter">
         {post.likelistuserid.includes(userObj.uid)
-          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i></div>
-          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i></div>
+          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i>좋아요</div>
+          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i>좋아요</div>
         }
-        <div onClick={(e) => {showcomment(e,{post})}} className="postComment">댓글 쓰기</div>
+        <div onClick={(e) => {showcomment(e,{post})}} className="postComment"><i class="commenticon fas fa-comment-dots"></i>댓글 쓰기</div>
       </div>
       {post.commentshow && (  //댓글작성, 보기
         <div className="commentsBox">
