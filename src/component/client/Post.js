@@ -112,7 +112,7 @@ const Post = ({userObj}) => {
     // async function sendData(){
 
     // }
-    const commnetinfo = {
+    const commentinfo = {
       text: commentmake,
       writedate: time,
       recentfix: time,
@@ -120,8 +120,18 @@ const Post = ({userObj}) => {
       writerid: userObj.uid,
       writerphoto: userObj.photoUrl,
     }
-    await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commnetinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
+    await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commentinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
     setComment('');
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const commentslists = page.commentslist;
+        commentslists.unshift(commentinfo);
+        page.commentslist = commentslists;
+      }
+      return page
+    })
+    setEveryPost(neweverypost); 
   };
 
   const unlikeClicked = async(e,post) => {
@@ -140,7 +150,7 @@ const Post = ({userObj}) => {
       }
       return page
     })
-     setEveryPost(neweverypost);  
+    setEveryPost(neweverypost);  
     }
 
   const likeClicked = async(e,post) => {
@@ -330,7 +340,7 @@ const Post = ({userObj}) => {
     </div>
   )
 
-  const Postfix = (e, post) => {
+  const Postfix = async(e, post) => {
     console.log(post.post)
     //수정은 어려워서 나중에 할래
   }
@@ -350,6 +360,18 @@ const Post = ({userObj}) => {
       return page
     })
     setEveryPost(neweverypost);   
+  }
+
+  const Commentdelete = async(e,object) => {
+    if(window.confirm("ㄹㅇ 지움?")) {
+      await dbService.collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).delete()
+      setRefresh(!refresh)
+    }
+  }
+
+  const Commentfix = async(e,comment) => {
+    console.log(comment.comment);
+    //얘도 나중에할래
   }
 
   const PostList = everyPost.map(post =>(
@@ -409,6 +431,15 @@ const Post = ({userObj}) => {
           </div>
           {post.commentslist.map(comment => (
               <div className="comments">
+                {comment.writerid == userObj.uid && (
+                  <div className="commentmoremenu">
+                    <i className="moremenuicon fas fa-ellipsis-h"/>
+                    <div className="commentmoremenuactive">
+                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post})}}>수정</div>
+                      <div className="commentdelete" onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
+                    </div>
+                  </div>
+                )}
                 <div><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
                 <div>
                   <div className="commentwriter">{comment.writername}</div>
