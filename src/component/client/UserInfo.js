@@ -62,7 +62,7 @@ const UserInfo = ({ allUsers, allGame }) => {
         <div className="userList">
           {userInfo}
         </div>
-        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userKey={userKey} />}
+        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userKey={userKey} allGame={allGame} />}
       </div>
     </>
   )

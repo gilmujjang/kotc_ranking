@@ -4,12 +4,13 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UserChart from './UserChart';
 
-const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
-    const [chartMode, setChartMode] = useState('점수')
+const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey, allGame }) => {
+    const [chartMode, setChartMode] = useState('rating')
     const [period, setPeriod] = useState('week')
+    const userName = allUsersByTime[userKey].name
 
     const canvasRef = useRef()
-    // const mmrRanking = 
+
     const info = (
         <>
             <div className="detail--profile">
@@ -159,7 +160,7 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
                 <div className="bottom--left">
                     {periodFilter}
                     {chartFilter}
-                    <UserChart chartMode={chartMode} period={period}/>
+                    <UserChart chartMode={chartMode} period={period} userName={userName} allGame={allGame} />
                 </div>
                 <div className="bottom--right">
                     {/* 최근 경기 */}

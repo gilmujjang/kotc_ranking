@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Post from '../component/client/Post';
 import RankingContent from '../component/client/RankingContent';
 import RecentGame from '../component/client/RecentGame';
@@ -41,7 +41,7 @@ const ClientMain = ({userObj, allUsers, allGame}) => {
           </div>
         <div className="ClientMain">
           {["재학생랭킹","전체랭킹"].includes(contentMode) && <RankingContent allGame={allGame} allUsers={allUsers} contentMode={contentMode} setContentMode={setContentMode}/>}
-          {contentMode==="선수상세정보" && <UserInfo allUsers={allUsers}/>}
+          {contentMode==="선수상세정보" && <UserInfo allUsers={allUsers} allGame={allGame}/>}
           {contentMode==="게시글" && <Post userObj={userObj}/>}
         </div>
         {
