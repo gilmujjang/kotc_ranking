@@ -1,28 +1,28 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2'
 
-const UserChart = ({ chartMode, period, userName, allGame }) => {
-    
-    // userName의 경기만 가져오기
-    const userMatch = allGame.filter(el => 
-        el.winners.includes(userName) || el.losers.includes(userName)).sort(function(a, b) {
-            return b.date - a.date
-        }
-    )
-
+const UserChart = ({ chartMode, period, userName, userMatch }) => {
     // userMatch에서 rating 가져오기
-    // find 안 될 시에 초기 값으로 설정 해야 함.
+    // find 안 될시에, RatingAfter말고 RatingBefore 추가해서 그걸로 가져오는 거 추가 필요.
+    // find 안 될시에, RatingAfter말고 RatingBefore 추가해서 그걸로 가져오는 거 추가 필요.
+    // find 안 될시에, RatingAfter말고 RatingBefore 추가해서 그걸로 가져오는 거 추가 필요.
     function getRating(STD_Date) {
-        const wanted = userMatch.find(el => el.date - STD_Date <= 0) ? userMatch.find(el => el.date - STD_Date <= 0) : 0
+        const wanted = userMatch.find(el => el.date - STD_Date <= 0) ? userMatch.find(el => el.date - STD_Date <= 0) : userMatch[userMatch.length - 1]
 
-        if(wanted === 0) {
-            return wanted
-        } else if(wanted.winners.includes(userName)) {
+        if(wanted.winners.includes(userName)) {
             return wanted.winnerRatingAfter[wanted.winners.indexOf(userName)]
-        } else if(wanted.losers.includes(userName)) {
+        } else {
             return wanted.loserRatingAfter[wanted.losers.indexOf(userName)]
         }
     }
+
+    
+    // 랭킹은 게임기록에서 가져 올 수 없음
+    // 랭킹은 게임기록에서 가져 올 수 없음
+    // 랭킹은 게임기록에서 가져 올 수 없음
+    // function getRanking(STD_Date) {
+    //     return 1
+    // }
 
     function getDate(std) {
         let year = std.getFullYear()
@@ -35,8 +35,11 @@ const UserChart = ({ chartMode, period, userName, allGame }) => {
         return `${year}${month}${day}`
     }
 
+    // 1월달에만 년도 출력하도록 변경하기
+    // 1월달에만 년도 출력하도록 변경하기
+    // 1월달에만 년도 출력하도록 변경하기
     function getNewDateForm(std) {
-        return `${std.slice(2, 4)}년 ${std.slice(4, 6)}월 ${std.slice(6)}일`
+        return `${std.slice(4, 6)}월 ${std.slice(6)}일`
     }
     
     function getToday() {
