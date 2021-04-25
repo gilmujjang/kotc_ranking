@@ -16,6 +16,7 @@ const AppRouter = ({ userObj }) => {
         const userObject = {
           name:doc.data().name,
           rating:doc.data().rating,
+          start_rating: doc.data().start_rating,
           game_all:doc.data().game_all,
           game_win:doc.data().game_win,
           game_lose:doc.data().game_lose,

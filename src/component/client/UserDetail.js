@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import UserChart from './UserChart';
+import UserDetailChart from './UserDetailChart';
 import UserDetailGame from './UserDetailGame';
 import UserDetailPercentage from './UserDetailPercentage';
 
@@ -77,11 +77,11 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey, allGame }) => {
                 <div className="bottom--left">
                     {periodFilter}
                     {chartFilter}
-                    <UserChart chartMode={chartMode} period={period} userName={userName} userMatch={userMatch} />
+                    <UserDetailChart chartMode={chartMode} period={period} userName={userName} allUsersByTime={allUsersByTime} userKey={userKey} userMatch={userMatch} />
                 </div>
                 <div className="bottom--right">
                     {/* 최근 경기 */}
-                    {/* <UserDetailGame /> */}
+                    <UserDetailGame userMatch={userMatch} />
                 </div>
             </div>
             <FontAwesomeIcon icon={faTimes} className="close" onClick={closeDetail}/>
