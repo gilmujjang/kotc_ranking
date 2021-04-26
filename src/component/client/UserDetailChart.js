@@ -4,10 +4,9 @@ import { Line } from 'react-chartjs-2'
 const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey, userMatch }) => {
     // userMatch에서 rating 가져오기
     function getRating(STD_Date) {
-        // const wanted = userMatch[userMatch.length - 1] ? userMatch.find(el => el.date - STD_Date <= 0) ? userMatch.find(el => el.date - STD_Date <= 0) : userMatch[userMatch.length - 1] : 0
         const wanted = userMatch.find(el => el.date - STD_Date <= 0) ? userMatch.find(el => el.date - STD_Date <= 0) : allUsersByTime[userKey].start_rating
         
-        if(typeof wanted === 'number') {
+        if(typeof wanted === 'number' || typeof wanted === 'string') {
             return Number(wanted)
         } else if(wanted.winners.includes(userName)) {
             return wanted.winnerRatingAfter[wanted.winners.indexOf(userName)]
@@ -16,7 +15,6 @@ const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey,
         }
     }
 
-    
     // 랭킹은 게임기록에서 가져 올 수 없음
     // 랭킹은 게임기록에서 가져 올 수 없음
     // 랭킹은 게임기록에서 가져 올 수 없음
@@ -24,10 +22,10 @@ const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey,
     //     return 1
     // }
 
-    function getDate(std) {
-        let year = std.getFullYear()
-        let month = std.getMonth() + 1
-        let day = std.getDate()
+    function getDate(STD_Date) {
+        let year = STD_Date.getFullYear()
+        let month = STD_Date.getMonth() + 1
+        let day = STD_Date.getDate()
 
         month = month >= 10 ? month : `0${month}`
         day = day >= 10 ? day : `0${day}`
@@ -38,8 +36,8 @@ const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey,
     // 1월달에만 년도 출력하도록 변경하기
     // 1월달에만 년도 출력하도록 변경하기
     // 1월달에만 년도 출력하도록 변경하기
-    function getNewDateForm(std) {
-        return `${std.slice(4, 6)}월 ${std.slice(6)}일`
+    function getNewDateForm(STD_Date) {
+        return `${STD_Date.slice(4, 6)}월 ${STD_Date.slice(6)}일`
     }
     
     function getToday() {
@@ -57,55 +55,38 @@ const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey,
         return getDate(date)
     }
 
-    function lastWeeks(week) {
-        const date = new Date()
-        const dayOfDate = date.getDate()
+    // period에 따라 labels array 생성
+    const getDataLabels = (period) => {
+        let dataLabels = []
 
-        date.setDate(dayOfDate - week * 7)
+        for(let i = 0; i < period; i++) {
+            dataLabels.push(getNewDateForm(lastDays(period - i)))
+        }
+        dataLabels.push(getNewDateForm(getToday()))
 
-        return getDate(date)
+        return dataLabels
     }
 
-    function lastMonths(month) {
-        const date = new Date()
-        const monthOfDate = date.getMonth()
+    // period에 따라 datas 생성
+    const getDatas = (period) => {
+        let datas = []
 
-        date.setMonth(monthOfDate - month)
+        for(let i = 0; i < period; i ++) {
+            datas.push(getRating(lastDays(period - i)))
+        }
+        datas.push(getRating(getToday()))
 
-        return getDate(date)
+        return datas
     }
 
     const dataLabels = () => {
         switch(period) {
-            case 'day':
-                return [
-                    getNewDateForm(lastDays(5)),
-                    getNewDateForm(lastDays(4)),
-                    getNewDateForm(lastDays(3)),
-                    getNewDateForm(lastDays(2)),
-                    getNewDateForm(lastDays(1)),
-                    getNewDateForm(getToday())
-                ]
-
-            case 'week':
-                return [
-                    getNewDateForm(lastWeeks(5)),
-                    getNewDateForm(lastWeeks(4)),
-                    getNewDateForm(lastWeeks(3)),
-                    getNewDateForm(lastWeeks(2)),
-                    getNewDateForm(lastWeeks(1)),
-                    getNewDateForm(getToday())
-                ]
-
-            case 'month':
-                return [
-                    getNewDateForm(lastMonths(5)),
-                    getNewDateForm(lastMonths(4)),
-                    getNewDateForm(lastMonths(3)),
-                    getNewDateForm(lastMonths(2)),
-                    getNewDateForm(lastMonths(1)),
-                    getNewDateForm(getToday())
-                ]
+            case '10':
+                return getDataLabels(period)
+            case '30':
+                return getDataLabels(period)
+            case '60':
+                return getDataLabels(period)
             default:
                 break;
         }
@@ -114,54 +95,32 @@ const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey,
     const datas = () => {
         if(chartMode === 'rating') {
             switch(period) {
-                case 'day':
-                    return [
-                        getRating(lastDays(5)),
-                        getRating(lastDays(4)),
-                        getRating(lastDays(3)),
-                        getRating(lastDays(2)),
-                        getRating(lastDays(1)),
-                        getRating(getToday())
-                    ]
-                case 'week':
-                    return [
-                        getRating(lastWeeks(5)),
-                        getRating(lastWeeks(4)),
-                        getRating(lastWeeks(3)),
-                        getRating(lastWeeks(2)),
-                        getRating(lastWeeks(1)),
-                        getRating(getToday())
-                    ]
-                case 'month':
-                    return [
-                        getRating(lastMonths(5)),
-                        getRating(lastMonths(4)),
-                        getRating(lastMonths(3)),
-                        getRating(lastMonths(2)),
-                        getRating(lastMonths(1)),
-                        getRating(getToday())
-                    ]
+                case '10':
+                    return getDatas(period)
+                case '30':
+                    return getDatas(period)
+                case '60':
+                    return getDatas(period)
                 default:
                     break;
             }
         } else {
             switch(period) {
-                case 'day':
-                case 'week':
-                case 'month':
+                case '10':
+                case '30':
+                case '60':
                 default:
                     break;
             }
         }
     }
     
-    
     return (
         <Line
             data={{
                 labels: dataLabels(),
                 datasets: [{
-                    label: 'My First Dataset',
+                    label: 'Rating',
                     data: datas(),
                     fill: false,
                     borderColor: 'rgb(75, 192, 192)',

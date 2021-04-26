@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UserDetailChart from './UserDetailChart';
 import UserDetailGame from './UserDetailGame';
-import UserDetailPercentage from './UserDetailPercentage';
+import { dbService } from '../../fbase';
+import UserDetailWinningRate from './UserDetailPercentage';
+import UserDetailRankingRate from './UserDetailRankingRate';
 
-const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey, allGame }) => {
+const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     const [chartMode, setChartMode] = useState('rating')
-    const [period, setPeriod] = useState('week')
+    const [period, setPeriod] = useState('30')
+    const [userMatch, setUserMatch] = useState([])
     const userName = allUsersByTime[userKey].name
+    
+    userMatch.sort(function(a, b) {
+        return b.date - a.date
+    })
+    
     // 해당유저의 경기기록만 가져오기
-    const userMatch = allGame.filter(el => 
-        el.winners.includes(userName) || el.losers.includes(userName)).sort(function(a, b) {
-            return b.date - a.date
-        }
-    )
+    // const userMatch = allGame.filter(el => 
+    //     el.winners.includes(userName) || el.losers.includes(userName)).sort(function(a, b) {
+    //         return b.date - a.date
+    //     }
+    // )
 
     const info = (
         <>
@@ -30,7 +38,7 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey, allGame }) => {
         </>
     )
 
-    function closeDetail(e) {
+    function closeDetail() {
         setIsDetailOn(false)
     }
 
@@ -44,9 +52,9 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey, allGame }) => {
 
     const periodFilter = (
         <>
-        <div className="button button--userDetail" onClick={periodHandler} data-period="day">일</div>
-        <div className="button button--userDetail" onClick={periodHandler} data-period="week">주</div>
-        <div className="button button--userDetail" onClick={periodHandler} data-period="month">월</div>
+        <div className="button button--userDetail" onClick={periodHandler} data-period="10">10일</div>
+        <div className="button button--userDetail" onClick={periodHandler} data-period="30">30일</div>
+        <div className="button button--userDetail" onClick={periodHandler} data-period="60">60일</div>
         </>
     )
 
@@ -63,14 +71,33 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey, allGame }) => {
         </div>
     )
 
+    useEffect(() => {
+        dbService.collection('user').doc(allUsersByTime[userKey].name).collection('game_record').get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const userMatchObj = {
+                    date: doc.data().date,
+                    loserRatingAfter: doc.data().loserRatingAfter,
+                    losers: doc.data().losers,
+                    ratingChange: doc.data().ratingChange,
+                    winnerRatingAfter: doc.data().winnerRatingAfter,
+                    winners: doc.data().winners
+                }
+                setUserMatch(userMatch => [...userMatch, userMatchObj])
+            })
+        })
+    }, [allUsersByTime, userKey])
+
     return (
         <div className="detailContainer">
             <div className="top">
                 <div className="top--left">
                     {info}
                 </div>
-                <div className="top--right">
-                    <UserDetailPercentage allUsersByTime={allUsersByTime} userKey={userKey} />    
+                <div className="top--circleRate winningRate">
+                    <UserDetailWinningRate allUsersByTime={allUsersByTime} userKey={userKey} />    
+                </div>
+                <div className="top--circleRate rankingRate">
+                    <UserDetailRankingRate allUsersByTime={allUsersByTime} userKey={userKey} />
                 </div>
             </div>
             <div className="bottom">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserDetail from './UserDetail';
 
-const UserInfo = ({ allUsers, allGame }) => {
+const UserInfo = ({ allUsers }) => {
   const allUsersByTime = [...allUsers];
   allUsersByTime.sort(function(a,b){
     return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
@@ -62,7 +62,7 @@ const UserInfo = ({ allUsers, allGame }) => {
         <div className="userList">
           {userInfo}
         </div>
-        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userKey={userKey} allGame={allGame} />}
+        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userKey={userKey} />}
       </div>
     </>
   )

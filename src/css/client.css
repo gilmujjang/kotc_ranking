@@ -61,21 +61,40 @@ address, em, i {font-style: normal;}
 .dropdown .dropdown--list .dropdown--list__item:hover{background-color: rgba(180, 180, 180, 0.8);}
 
 /* GAME LIST */
-.games{margin-top: 8px; margin-right: 16px;}
-.games .game{margin-bottom: 16px; padding: 8px; background-color: rgba(255, 255, 255, .9); border-radius: 4px;}
-.games .game .top{margin-bottom: 4px; font-size: 12px;}
+.games{margin-right: 16px;}
+.games > .game{margin-bottom: 16px; padding: 8px; background-color: rgba(255, 255, 255, .9); border-radius: 4px;}
+.games > .game .top{margin-bottom: 4px; font-size: 12px;}
 
-.games .game .bot .winner > span{display: block; width: 100%; font-size: 12px;}
-.games .game .bot .winner .winnerInfo{display: flex; justify-content: space-between; margin-bottom: 4px;}
-.games .game .bot .winner .winnerInfo .winnerNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
-.games .game .bot .winner .winnerInfo .winnerRatings{display: flex; flex-direction: column;}
-.games .game .bot .winner .winnerInfo .winnerRatings .icon--win{margin-left: 8px; fill: #2ed573;}
+.games > .game .bot .winner > span{display: block; width: 100%; font-size: 12px;}
+.games > .game .bot .winner .winnerInfo{display: flex; justify-content: space-between; margin-bottom: 4px;}
+.games > .game .bot .winner .winnerInfo .winnerNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
+.games > .game .bot .winner .winnerInfo .winnerRatings{display: flex; flex-direction: column;}
+.games > .game .bot .winner .winnerInfo .winnerRatings .icon--win{margin-left: 8px; fill: #2ed573;}
 
-.games .game .bot .loser > span{display: block; width: 100%; font-size: 12px;}
-.games .game .bot .loser .loserInfo{display: flex; justify-content: space-between;}
-.games .game .bot .loser .loserInfo .loserNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
-.games .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
-.games .game .bot .loser .loserInfo .loserRatings .icon--lose{margin-left: 8px; fill: #ff4757;}
+.games > .game .bot .loser > span{display: block; width: 100%; font-size: 12px;}
+.games > .game .bot .loser .loserInfo{display: flex; justify-content: space-between;}
+.games > .game .bot .loser .loserInfo .loserNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
+.games > .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
+.games > .game .bot .loser .loserInfo .loserRatings .icon--lose{margin-left: 8px; fill: #ff4757;}
+
+/* ANIMATION */
+@keyframes size-up-down {
+  0%{font-size: 12px;}
+  50%{font-size: 13px;}
+  100%{font-size: 12px;}
+}
+
+@keyframes width-up-and-rotate {
+  0%{width: 0; transform: translate(-50%, -50%) rotate(0);}
+  70%{width: 210px; transform: translate(-50%, -50%) rotate(0);}
+  100%{transform:translate(-50%, -50%) rotate(-30dg);}
+}
+
+@keyframes slide-y {
+  0%{opacity: 0;}
+  40%{opacity: 0; transform: translateY(-50%);}
+
+}
 
 /* NAV */
 .nav{min-width: 260px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
@@ -145,8 +164,8 @@ address, em, i {font-style: normal;}
 /* UserDetail__Buttons */
 .button--userDetail{position: absolute; top: -40px;}
 .button--userDetail:nth-child(2){right: 130px;}
-.button--userDetail:nth-child(3){right: 190px;}
-.button--userDetail:nth-child(4){right: 250px;}
+.button--userDetail:nth-child(3){right: 200px;}
+.button--userDetail:nth-child(4){right: 270px;}
 
 /* UserDetail__Dropdwon */
 .dropdown--userDetail{position: absolute; top: -40px; right: 20px;}
@@ -162,7 +181,26 @@ address, em, i {font-style: normal;}
 .detailContainer > .top > .top--left .detail__department{font-size: 24px; letter-spacing: 2px;}
 .detailContainer > .top > .top--left .detail__status{font-size: 16px;}
 
-.detailContainer > .top > .top--right{margin-right: 60px; position: absolute; right: 0;}
+.detailContainer > .top > .top--circleRate{height: 100%; position: absolute;}
+.detailContainer > .top > .top--circleRate.winningRate{left: 480px;}
+.detailContainer > .top > .top--circleRate.rankingRate{left: 680px;}
+
+.detailContainer > .top > .top--circleRate .hover{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; animation: size-up-down 2s infinite;}
+
+.detailContainer > .top > .top--circleRate .gameRecord{display: none; width: 180px; height: 180px; border-radius: 50%; background-color: rgba(255, 255, 255, .8); position: absolute; top: 50%; transform: translateY(-50%);}
+.detailContainer > .top > .top--circleRate .gameRecord::after{content: ''; display: block; width: 210px; height: 2px; background-color: #474747; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); animation: width-up-and-rotate 1.1s ease-in-out;}
+.detailContainer > .top > .top--circleRate .gameRecord .record--left{position: absolute; top: 30%; left: 35%; transform: translate(-50%, -50%); font-size: 42px; color: #1bb1a2; font-weight: 500; animation: slide-y 1.6s;}
+.detailContainer > .top > .top--circleRate .gameRecord .record--right{position: absolute; top: 70%; right: 35%; transform: translate(50%, -50%); font-size: 42px; color: #e74c3c; font-weight: 500; animation: slide-y 1.6s;}
+.detailContainer > .top > .top--circleRate:hover .gameRecord{display: block; cursor: pointer;}
+.detailContainer > .top > .top--circleRate:hover .hover{display: none;}
+
+.detailContainer > .top > .top--circleRate.rankingRate .gameRecord .record--right{font-size: 28px;}
+
+
+/* .detailContainer > .top > .top--right::after{content: ''; display: none; width: 160px; height: 160px; border-radius: 50%; background-color: rgba(255, 255, 255, .8); position: absolute; top: 50%; transform: translateY(-50%); z-index: 999;}
+.detailContainer > .top > .top--right:hover.top--right::after{display: block;} */
+
+
 
 /* UserDetail -- bottom */
 .detailContainer > .bottom{width: 100%; height: calc(100% - 244px); margin-top: 64px; position: relative;}
@@ -170,7 +208,7 @@ address, em, i {font-style: normal;}
 .detailContainer > .bottom > .bottom--left{width: 65%; height: 100%; position: relative;}
 
 .detailContainer > .bottom > .bottom--right{width: 32%; height: 95%; position: absolute; top: 10px; right: 0; overflow: auto; scrollbar-width: thin;}
-
+.detailContainer > .bottom > .bottom--right .noGame{display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; background-color: rgba(255, 255, 255, .5); border-radius: 6px;}
 
 
 
@@ -182,6 +220,7 @@ address, em, i {font-style: normal;}
 /* ASIDE1 */
 .aside1{height: 50%; margin: 16px 8px 16px 0; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin;}
 
+.aside1 .games{margin-top: 8px;}
 
 
 .asdie2{height: 100%;}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
+const UserDetailRankingRate = ({ allUsersByTime, userKey }) => {
     const canvasRef = useRef()
 
     // 각도 => 라디안 변환
@@ -17,12 +17,9 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
         ctx.stroke()
     }
 
-    // 승률 계산
-    function winningRate() {
-        return allUsersByTime[userKey].game_win / allUsersByTime[userKey].game_all
-    }
-
     // 승 부분 그리기
+    // 상위 퍼센티지에서는 반대로 걸어줘야함
+    // ex) 상위 0.01 => drawGreenCircle(ctx, x, y, r, degToRad(269), degToRad(270 - (360 * (1 - 0.01)) + 0.5), true)
     function drawGreenCircle(ctx, x, y, r, S_degree, E_degree, direction) {
         ctx.beginPath()
         ctx.lineWidth = 40
@@ -40,14 +37,36 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
         ctx.stroke()
     }
 
+    // 레이팅 정렬 하기
+    function sortRanking(arr) {
+        return arr.concat().sort(function(a, b) {return b.rating - a.rating})
+    }
+
+    // 레이팅으로 user 랭킹 상위퍼센티지 구하기
+    function rankingRate() {
+        const sortedArr = sortRanking(allUsersByTime)
+
+        const target = sortedArr.filter(el => el.name === allUsersByTime[userKey].name)
+        const ranking = sortedArr.indexOf(target[0]) + 1
+        
+        // 본인 순위 / 전체 인원
+        return ( ranking / allUsersByTime.length )
+    }
+
+    // 랭킹 수치 보정
+    const newRankingRate = () => {
+        return (rankingRate() * 100).toFixed(2)
+    }
+    console.log(newRankingRate());
+
     useEffect(() => {
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
 
-        // 승/패
+        // 상위 퍼센티지
         drawBase(ctx, 90, 90, 40, 0, Math.PI * 2, false)
-        drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * winningRate()), true)
-        drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * winningRate()), false)
+        drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - (360 * (1 - rankingRate()))), true)
+        drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - (360 * (1 - rankingRate()))), false)
     }, [])
 
     return (
@@ -55,11 +74,11 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
             <canvas width="180" height="180" ref={canvasRef} className="canvas"></canvas>
             <span className="hover">Hover me!</span>
             <div className="gameRecord">
-                <span className="record--left">{allUsersByTime[userKey].game_win} 승</span>
-                <span className="record--right">{allUsersByTime[userKey].game_lose} 패</span>
+                <span className="record--left">상위</span>
+                <span className="record--right">{newRankingRate()} %</span>
             </div>
         </>
     )
 }
 
-export default UserDetailWinningRate
+export default UserDetailRankingRate

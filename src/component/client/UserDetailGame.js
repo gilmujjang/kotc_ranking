@@ -68,10 +68,23 @@ const UserDetailGame = ( {userMatch} ) => {
       </div>
     )
 
-    return (
-      <div className="games">
-        {recentGames}
+    const noGames = (
+      <div className="noGame">
+        <span>경기 기록이 없습니다.</span>
       </div>
+    )
+
+    return (
+      <>
+        {
+        userMatch.length > 0 ?
+          <div className="games">
+            {recentGames}
+          </div>
+        :
+          noGames
+        }
+      </>
     )
 }
 
