@@ -37,7 +37,6 @@ const UserInfo = ({ allUsers }) => {
         <div className="userInfoBottomSide">
           <span className="rating">레이팅: {user.rating}</span>
           <span className="department">{user.department}</span>
-          {/* <span className="department">승률: {Math.round(((user.game_win)/(user.game_all))*100)}%</span> */}
         </div>
       </div>
     </div>

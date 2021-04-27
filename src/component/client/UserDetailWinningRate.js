@@ -18,7 +18,7 @@ const UserDetailWinningRate = ({ userDetailTarget }) => {
     }
 
     // 승률 계산
-    function winningRate() {
+    function getWinningRate() { 
         return userDetailTarget.game_win / userDetailTarget.game_all
     }
 
@@ -44,10 +44,17 @@ const UserDetailWinningRate = ({ userDetailTarget }) => {
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
 
-        // 승/패
         drawBase(ctx, 90, 90, 40, 0, Math.PI * 2, false)
-        drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * winningRate()), true)
-        drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * winningRate()), false)
+        
+        // 승/패 그리기
+        if(getWinningRate() === 0) {        // 승이 0인 경우
+            drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(-90), false)
+        } else if(getWinningRate() === 1) { // 패가 0인 경우
+            drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(-90), true)
+        } else {                          // 그 외 일반상황
+            drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * getWinningRate()), true)
+            drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * getWinningRate()), false)
+        }
     }, [])
 
     return (
