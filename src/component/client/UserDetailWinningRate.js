@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
+const UserDetailWinningRate = ({ userDetailTarget }) => {
     const canvasRef = useRef()
 
     // 각도 => 라디안 변환
@@ -19,7 +19,7 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
 
     // 승률 계산
     function winningRate() {
-        return allUsersByTime[userKey].game_win / allUsersByTime[userKey].game_all
+        return userDetailTarget.game_win / userDetailTarget.game_all
     }
 
     // 승 부분 그리기
@@ -55,8 +55,8 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
             <canvas width="180" height="180" ref={canvasRef} className="canvas"></canvas>
             <span className="hover">Hover me!</span>
             <div className="gameRecord">
-                <span className="record--left">{allUsersByTime[userKey].game_win} 승</span>
-                <span className="record--right">{allUsersByTime[userKey].game_lose} 패</span>
+                <span className="record--left">{userDetailTarget.game_win} 승</span>
+                <span className="record--right">{userDetailTarget.game_lose} 패</span>
             </div>
         </>
     )

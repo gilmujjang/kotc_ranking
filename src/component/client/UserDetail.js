@@ -5,15 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UserDetailChart from './UserDetailChart';
 import UserDetailGame from './UserDetailGame';
 import { dbService } from '../../fbase';
-import UserDetailWinningRate from './UserDetailPercentage';
+import UserDetailWinningRate from './UserDetailWinningRate';
 import UserDetailRankingRate from './UserDetailRankingRate';
 
-const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
+const UserDetail = ({ allUsersByTime, setIsDetailOn, userDetailTarget }) => {
     const [chartMode, setChartMode] = useState('rating')
     const [period, setPeriod] = useState('30')
     const [userMatch, setUserMatch] = useState([])
-    const userName = allUsersByTime[userKey].name
-    
+    // const userName = userDetailTarget.name
+
     userMatch.sort(function(a, b) {
         return b.date - a.date
     })
@@ -28,12 +28,12 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     const info = (
         <>
             <div className="detail--profile">
-                <img src={allUsersByTime[userKey].attachmentUrl} alt="detail profile" />
+                <img src={userDetailTarget.attachmentUrl} alt="detail profile" />
             </div>
             <div>
-                <span className="detail__name">{allUsersByTime[userKey].name}</span>
-                <span className="detail__department">{allUsersByTime[userKey].department}과</span>
-                <span className="detail__status">{allUsersByTime[userKey].studentid}학번 / {allUsersByTime[userKey].status}</span>
+                <span className="detail__name">{userDetailTarget.name}</span>
+                <span className="detail__department">{userDetailTarget.department}과</span>
+                <span className="detail__status">{userDetailTarget.studentid}학번 / {userDetailTarget.status}</span>
             </div>
         </>
     )
@@ -72,7 +72,7 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
     )
 
     useEffect(() => {
-        dbService.collection('user').doc(allUsersByTime[userKey].name).collection('game_record').get().then((querySnapshot) => {
+        dbService.collection('user').doc(userDetailTarget.name).collection('game_record').get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const userMatchObj = {
                     date: doc.data().date,
@@ -85,7 +85,7 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
                 setUserMatch(userMatch => [...userMatch, userMatchObj])
             })
         })
-    }, [allUsersByTime, userKey])
+    }, [userDetailTarget])
 
     return (
         <div className="detailContainer">
@@ -94,20 +94,19 @@ const UserDetail = ({ allUsersByTime, setIsDetailOn, userKey }) => {
                     {info}
                 </div>
                 <div className="top--circleRate winningRate">
-                    <UserDetailWinningRate allUsersByTime={allUsersByTime} userKey={userKey} />    
+                    <UserDetailWinningRate userDetailTarget={userDetailTarget} />    
                 </div>
                 <div className="top--circleRate rankingRate">
-                    <UserDetailRankingRate allUsersByTime={allUsersByTime} userKey={userKey} />
+                    <UserDetailRankingRate allUsersByTime={allUsersByTime} userDetailTarget={userDetailTarget} />
                 </div>
             </div>
             <div className="bottom">
                 <div className="bottom--left">
                     {periodFilter}
                     {chartFilter}
-                    <UserDetailChart chartMode={chartMode} period={period} userName={userName} allUsersByTime={allUsersByTime} userKey={userKey} userMatch={userMatch} />
+                    <UserDetailChart chartMode={chartMode} period={period} allUsersByTime={allUsersByTime} userDetailTarget={userDetailTarget} userMatch={userMatch} />
                 </div>
                 <div className="bottom--right">
-                    {/* 최근 경기 */}
                     <UserDetailGame userMatch={userMatch} />
                 </div>
             </div>

@@ -3,23 +3,25 @@ import UserDetail from './UserDetail';
 
 const UserInfo = ({ allUsers }) => {
   const allUsersByTime = [...allUsers];
-  allUsersByTime.sort(function(a,b){
-    return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
+  allUsersByTime.sort(function(a, b){
+    if(a.time < b.time) return 1
+    else if(a.time > b.time) return -1
+    else return 0
   })
   const [mapList, setMapList] = useState([])
   const [isDetailOn, setIsDetailOn] = useState(false)
   const [filterName, setFilterName] = useState('')
-  const [userKey, setUserKey] = useState(0)
+  const [userDetailTarget, setUserDetailTarget] = useState({}) // 상세 정보 보여 줄 타겟 정보
 
   function showDetail(e) {
+    setUserDetailTarget(allUsersByTime.find(el => el.name === e.target.dataset.name))
     setIsDetailOn(true)
-    setUserKey(e.target.dataset.num)
   }
 
   const userInfo = mapList.map((user,index) => (
     <div className="userInfo" key={index}>
       <div>
-        <img className="userImage" src={user.attachmentUrl} onClick={showDetail} data-num={index} alt="profile--detail"/>
+        <img className="userImage" src={user.attachmentUrl} onClick={showDetail} data-name={user.name} alt="profile--detail"/>
       </div>
       <div className="userInfoRightSide">
         <div className="userInfoUpSide">
@@ -62,7 +64,7 @@ const UserInfo = ({ allUsers }) => {
         <div className="userList">
           {userInfo}
         </div>
-        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userKey={userKey} />}
+        {isDetailOn && <UserDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userDetailTarget={userDetailTarget} />}
       </div>
     </>
   )

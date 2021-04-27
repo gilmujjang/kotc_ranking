@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-const UserDetailRankingRate = ({ allUsersByTime, userKey }) => {
+const UserDetailRankingRate = ({ allUsersByTime, userDetailTarget }) => {
     const canvasRef = useRef()
 
     // 각도 => 라디안 변환
@@ -46,7 +46,7 @@ const UserDetailRankingRate = ({ allUsersByTime, userKey }) => {
     function rankingRate() {
         const sortedArr = sortRanking(allUsersByTime)
 
-        const target = sortedArr.filter(el => el.name === allUsersByTime[userKey].name)
+        const target = sortedArr.filter(el => el.name === userDetailTarget.name)
         const ranking = sortedArr.indexOf(target[0]) + 1
         
         // 본인 순위 / 전체 인원
@@ -57,7 +57,6 @@ const UserDetailRankingRate = ({ allUsersByTime, userKey }) => {
     const newRankingRate = () => {
         return (rankingRate() * 100).toFixed(2)
     }
-    console.log(newRankingRate());
 
     useEffect(() => {
         const canvas = canvasRef.current
