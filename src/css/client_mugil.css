@@ -1,3 +1,4 @@
+
 /* Post */
 .postMain{height: 100%;}
 .postList{height: 100%; overflow: scroll; width: 40%; background-color: rgba(240,240,240,1); transition: 0.5s;}
@@ -76,3 +77,6 @@ img {cursor: pointer;}
 .postdelete:hover {background-color: skyblue;}
 .commentfix:hover{background-color: yellow;}
 .commentdelete:hover {background-color: skyblue;}
+
+.commentmain{width: 100%;}
+.commentfixmain{width: 100%; display: flex;}

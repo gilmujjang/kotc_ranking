@@ -8,6 +8,7 @@ const Post = ({userObj}) => {
   const [everyPost, setEveryPost] = useState([]);
   const [contentmake, setContent] = useState('');
   const [commentmake, setComment] = useState('');
+  const [commentfix, setCommentFix] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [postimage, setPostImage] = useState([]);
@@ -40,6 +41,7 @@ const Post = ({userObj}) => {
               writedate: comment.data().writedate,
               recentfix: comment.data().recentfix,
               writerphoto: comment.data().writerphoto,
+              commentfixmode: false,
             }
             commentslists.unshift(commentObject);
           })
@@ -102,16 +104,42 @@ const Post = ({userObj}) => {
     return time
   }
 
-  const submitComment = async(e,post) =>{
+  const commentfixSubmit = async(e,object) => {
+    e.preventDefault();
+    if(commentfix === ''){
+      alert("내용을 입력하세요");
+      return;
+    }
+    if(commentfix === object.comment.text){
+      return;
+    }
+    const time = rightNow();
+    console.log(object.post.date)
+    console.log(object.comment.writedate)
+    await dbService.collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
+    const neweverypost = everyPost.map(page => {
+      if(page.date == object.post.date){
+        page.commentslist.map(comment => {
+          if(comment.writedate == object.comment.writedate){
+            comment.commentfixmode = !comment.commentfixmode
+            comment.text = commentfix
+          }
+          return comment
+        })
+      }
+      return page
+    })
+    setEveryPost(neweverypost);
+    setCommentFix('');
+  }
+
+  const submitComment = async(e,post) => {
     e.preventDefault();
     if(commentmake === ''){
       alert("내용을 입력하세요");
       return;
     }
     const time = rightNow();
-    // async function sendData(){
-
-    // }
     const commentinfo = {
       text: commentmake,
       writedate: time,
@@ -229,6 +257,11 @@ const Post = ({userObj}) => {
   const commentChange = (e) => {
     e.preventDefault();
     setComment(e.target.value)
+  }
+
+  const commentfixChange = (e) => {
+    e.preventDefault();
+    setCommentFix(e.target.value)
   }
 
   const onFileChange = (event) => {
@@ -369,9 +402,20 @@ const Post = ({userObj}) => {
     }
   }
 
-  const Commentfix = async(e,comment) => {
-    console.log(comment.comment);
-    //얘도 나중에할래
+  const Commentfix = async(e,object) => {
+    const neweverypost = everyPost.map(page => {
+      if(page.date == object.post.date){
+        page.commentslist.map(comment => {
+          if(comment.writedate == object.comment.writedate){
+            comment.commentfixmode = !comment.commentfixmode
+          }
+          return comment
+        })
+      }
+      return page
+    })
+    setEveryPost(neweverypost);
+    setCommentFix(object.comment.text)
   }
 
   const PostList = everyPost.map(post =>(
@@ -435,15 +479,21 @@ const Post = ({userObj}) => {
                   <div className="commentmoremenu">
                     <i className="moremenuicon fas fa-ellipsis-h"/>
                     <div className="commentmoremenuactive">
-                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post})}}>수정</div>
+                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
                       <div className="commentdelete" onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
                     </div>
                   </div>
                 )}
-                <div><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
-                <div>
+                <div className="commentuserprofile"><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
+                <div className="commentmain">
                   <div className="commentwriter">{comment.writername}</div>
-                  <div>{comment.text}</div>
+                  {comment.commentfixmode
+                    ? <div className="commentfixmain">
+                        <input className="commentwrite" onChange={commentfixChange} value={commentfix}></input>
+                        <button className="commentsubmitbtn" onClick={(e) => {commentfixSubmit(e,{post,comment})}}><p>수정</p></button>
+                      </div>
+                    : <div>{comment.text}</div>
+                  }
                   <div className="commentwritedate">{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
                 </div>
               </div>
