@@ -4,10 +4,12 @@ import firebase from 'firebase/app';
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
+  const [postFixmode, setPostFixMode] =useState(false);
   const [refresh, setRefresh] = useState(false);
   const [everyPost, setEveryPost] = useState([]);
   const [contentmake, setContent] = useState('');
   const [commentmake, setComment] = useState('');
+  const [commentfix, setCommentFix] = useState('');
   const [attachment, setAttachment] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [postimage, setPostImage] = useState([]);
@@ -40,6 +42,7 @@ const Post = ({userObj}) => {
               writedate: comment.data().writedate,
               recentfix: comment.data().recentfix,
               writerphoto: comment.data().writerphoto,
+              commentfixmode: false,
             }
             commentslists.unshift(commentObject);
           })
@@ -47,6 +50,7 @@ const Post = ({userObj}) => {
         const postObject = {
           content: doc.data().content,
           writername: doc.data().writername,
+          writerid: doc.data().writerid,
           writerprofile: doc.data().writerprofile,
           date: doc.data().date,
           recent_fix: doc.data().recent_fix,
@@ -57,6 +61,8 @@ const Post = ({userObj}) => {
           commentsnum: commentsnum,
           commentslist: commentslists,
           commentshow: false,
+          moremenushow: false,
+          postfixmode: false,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -100,17 +106,41 @@ const Post = ({userObj}) => {
     return time
   }
 
-  const submitComment = async(e,post) =>{
+  const commentfixSubmit = async(e,object) => {
+    e.preventDefault();
+    if(commentfix === ''){
+      alert("내용을 입력하세요");
+      return;
+    }
+    if(commentfix === object.comment.text){
+      return;
+    }
+    const time = rightNow();
+    await dbService.collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
+    const neweverypost = everyPost.map(page => {
+      if(page.date == object.post.date){
+        page.commentslist.map(comment => {
+          if(comment.writedate == object.comment.writedate){
+            comment.commentfixmode = !comment.commentfixmode
+            comment.text = commentfix
+          }
+          return comment
+        })
+      }
+      return page
+    })
+    setEveryPost(neweverypost);
+    setCommentFix('');
+  }
+
+  const submitComment = async(e,post) => {
     e.preventDefault();
     if(commentmake === ''){
       alert("내용을 입력하세요");
       return;
     }
     const time = rightNow();
-    // async function sendData(){
-
-    // }
-    const commnetinfo = {
+    const commentinfo = {
       text: commentmake,
       writedate: time,
       recentfix: time,
@@ -118,8 +148,18 @@ const Post = ({userObj}) => {
       writerid: userObj.uid,
       writerphoto: userObj.photoUrl,
     }
-    await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commnetinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
+    await dbService.collection("post").doc(post.post.date).collection("comments").doc(time).set(commentinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
     setComment('');
+
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        const commentslists = page.commentslist;
+        commentslists.unshift(commentinfo);
+        page.commentslist = commentslists;
+      }
+      return page
+    })
+    setEveryPost(neweverypost); 
   };
 
   const unlikeClicked = async(e,post) => {
@@ -132,26 +172,13 @@ const Post = ({userObj}) => {
         const likelistbyuserid = page.likelistuserid;
         const namelist = likelistbyname.filter((name) => name !== userObj.displayName);
         const idlist = likelistbyuserid.filter((uid) => uid !== userObj.uid);
-
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum - 1,
-          likelistname: namelist,
-          likelistuserid: idlist,
-          commentsnum: page.commentsnum,
-          commentslist: page.commentslist,
-          commentshow: page.commentshow,
-        }
-        page = postObject;
+        page.likenum = page.likenum -1;
+        page.likelistname = namelist;
+        page.likelistuserid = idlist;
       }
       return page
     })
-     setEveryPost(neweverypost);  
+    setEveryPost(neweverypost);  
     }
 
   const likeClicked = async(e,post) => {
@@ -169,22 +196,9 @@ const Post = ({userObj}) => {
         const likelistbyuserid = page.likelistuserid;
         likelistbyname.push(userObj.displayName);
         likelistbyuserid.push(userObj.uid);
-
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum + 1,
-          likelistname: likelistbyname,
-          likelistuserid: likelistbyuserid,
-          commentsnum: page.commentsnum,
-          commentslist: page.commentslist,
-          commentshow: page.commentshow,
-        }
-        page = postObject;
+        page.likenum = page.likenum + 1;
+        page.likelistname = likelistbyname;
+        page.likelistuserid = likelistbyuserid;
       }
       return page
     })
@@ -204,36 +218,47 @@ const Post = ({userObj}) => {
       let i = 0;
       const promises = attachment.map(async(file) => {
         i = i+1;
-        let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
-        let response = await attachmentRef.putString(file, "data_url");
-        let url = await response.ref.getDownloadURL();
-        return url
+        console.log(file.slice(0,4))
+        if(file.slice(0,4)=="http"){
+          return file
+        } else {
+          let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
+          let response = await attachmentRef.putString(file, "data_url");
+          let url = await response.ref.getDownloadURL();
+          return url
+        }
       })
       const results =  await Promise.all(promises)
       results.forEach(data => attachmentUrl.push(data) )
     }
     await sendData();
-    
-    const postObject = {
-      date: time,
-      recent_fix: time,
-      content: contentmake,
-      writername: userObj.displayName,
-      writerid: userObj.uid,
-      writerprofile: userObj.photoUrl,
-      imageurl: attachmentUrl,
-      like: 0,
-      comment: 0,
-    }
 
-    await dbService.collection("post").doc(time).set(postObject);
+    if(postFixmode){
+      console.log("postfixmode")
+      await dbService.collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
+    } else {
+      const postObject = {
+        date: time,
+        recent_fix: time,
+        content: contentmake,
+        writername: userObj.displayName,
+        writerid: userObj.uid,
+        writerprofile: userObj.photoUrl,
+        imageurl: attachmentUrl,
+      }
+      await dbService.collection("post").doc(time).set(postObject);
+    }
     setContent('')
     setWriteMode(!writeMode)
     setRefresh(!refresh)
     setAttachment([])
+    setPostFixMode(false)
   };
 
   const writeModeBtn = () => {
+    setContent('')
+    setAttachment([])
+    setPostFixMode(false)
     setWriteMode(!writeMode)
   }
 
@@ -245,6 +270,11 @@ const Post = ({userObj}) => {
   const commentChange = (e) => {
     e.preventDefault();
     setComment(e.target.value)
+  }
+
+  const commentfixChange = (e) => {
+    e.preventDefault();
+    setCommentFix(e.target.value)
   }
 
   const onFileChange = (event) => {
@@ -285,21 +315,7 @@ const Post = ({userObj}) => {
     e.preventDefault();
     const neweverypost = everyPost.map(page => {
       if(page.date == post.post.date){
-        const postObject = {
-          content: page.content,
-          writername: page.writername,
-          writerprofile: page.writerprofile,
-          date: page.date,
-          recent_fix: page.recent_fix,
-          imagelist: page.imagelist,
-          likenum: page.likenum,
-          likelistname: page.likelistname,
-          likelistuserid: page.likelistuserid,
-          commentsnum: page.commentsnum,
-          commentslist: page.commentslist,
-          commentshow: !page.commentshow,
-        }
-        page = postObject;
+        page.commentshow = !page.commentshow;
       }
       return page
     })
@@ -370,8 +386,65 @@ const Post = ({userObj}) => {
     </div>
   )
 
+  const Postfix = async(e, post) => {
+    setPostFixMode(post.post.date)
+    setWriteMode(!writeMode)
+    setContent(post.post.content)
+    setAttachment(post.post.imagelist)
+
+  }
+
+  const Postdelete = async(e,post) => {
+    if(window.confirm("ㄹㅇ 지움?")) {
+      await dbService.collection("post").doc(post.post.date).delete()
+      setRefresh(!refresh)
+    }
+  }
+
+  const Postmenushow = (e, post) => {
+    const neweverypost = everyPost.map(page => {
+      if(page.date == post.post.date){
+        page.moremenushow = !page.moremenushow
+      }
+      return page
+    })
+    setEveryPost(neweverypost);   
+  }
+
+  const Commentdelete = async(e,object) => {
+    if(window.confirm("ㄹㅇ 지움?")) {
+      await dbService.collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).delete()
+      setRefresh(!refresh)
+    }
+  }
+
+  const Commentfix = async(e,object) => {
+    const neweverypost = everyPost.map(page => {
+      if(page.date == object.post.date){
+        page.commentslist.map(comment => {
+          if(comment.writedate == object.comment.writedate){
+            comment.commentfixmode = !comment.commentfixmode
+          }
+          return comment
+        })
+      }
+      return page
+    })
+    setEveryPost(neweverypost);
+    setCommentFix(object.comment.text)
+  }
+
   const PostList = everyPost.map(post =>(
     <div className="post">
+      {post.writerid == userObj.uid && (
+        <div className="moremenu" onClick={(e) => {Postmenushow(e,{post})}}>
+          <i className="moremenuicon fas fa-ellipsis-h"/>
+          <div className={post.moremenushow ? "moremenuactive" : "moremenuicons"}>
+            <div className="postfix" onClick={(e) => {Postfix(e,{post})}}>수정</div>
+            <div className="postdelete" onClick={(e) => {Postdelete(e,{post})}}>삭제</div>
+          </div>
+        </div>
+      )}
       <div className="postHeader">
         <div className="postHeaderLeft">
           <img className="userProfile" src={post.writerprofile}></img>
@@ -395,19 +468,19 @@ const Post = ({userObj}) => {
         <div className="getheart">
           <i className="hearticon fas fa-heart"></i>
           {post.likenum}
+          <div className="likelistshow">{post.likelistname.map(username => <div classNames="likeuser">{username}</div>)}</div>
         </div>
-        <div className="getcomment">
+        <div onClick={(e) => {showcomment(e,{post})}} className="getcomment">
           <i class="commenticon fas fa-comment"></i>
           {post.commentsnum}
         </div>
-      </div>
-      
+      </div>     
       <div className="postFooter">
         {post.likelistuserid.includes(userObj.uid)
-          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i></div>
-          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i></div>
+          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i>좋아요</div>
+          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i>좋아요</div>
         }
-        <div onClick={(e) => {showcomment(e,{post})}} className="postComment">댓글 쓰기</div>
+        <div onClick={(e) => {showcomment(e,{post})}} className="postComment"><i class="commenticon fas fa-comment-dots"></i>댓글 쓰기</div>
       </div>
       {post.commentshow && (  //댓글작성, 보기
         <div className="commentsBox">
@@ -418,12 +491,27 @@ const Post = ({userObj}) => {
           </div>
           {post.commentslist.map(comment => (
               <div className="comments">
-                <div><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
-                <div>
+                <div className="commentuserprofile"><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
+                <div className="commentmain">
                   <div className="commentwriter">{comment.writername}</div>
-                  <div>{comment.text}</div>
+                  {comment.commentfixmode
+                    ? <div className="commentfixmain">
+                        <input className="commentwrite" onChange={commentfixChange} value={commentfix}></input>
+                        <button className="commentsubmitbtn" onClick={(e) => {commentfixSubmit(e,{post,comment})}}><p>수정</p></button>
+                      </div>
+                    : <div>{comment.text}</div>
+                  }
                   <div className="commentwritedate">{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
                 </div>
+                {comment.writerid == userObj.uid && (
+                  <div className="commentmoremenu">
+                    <i className="moremenuicon fas fa-ellipsis-h"/>
+                    <div className="commentmoremenuactive">
+                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
+                      <div className="commentdelete" onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
         </div>

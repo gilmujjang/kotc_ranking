@@ -16,6 +16,7 @@ const AppRouter = ({ userObj }) => {
         const userObject = {
           name:doc.data().name,
           rating:doc.data().rating,
+          start_rating: doc.data().start_rating,
           game_all:doc.data().game_all,
           game_win:doc.data().game_win,
           game_lose:doc.data().game_lose,
@@ -34,13 +35,15 @@ const AppRouter = ({ userObj }) => {
     dbService.collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
-          winners:doc.data().winners,
-          losers:doc.data().losers,
-          ratingChange:doc.data().ratingChange,
-          percentage:doc.data().percentage,
-          date:doc.data().date,
-          time:doc.data().write_time,
-          id:doc.data().date+'-'+doc.data().write_time
+          winners: doc.data().winners,
+          losers: doc.data().losers,
+          ratingChange: doc.data().ratingChange,
+          percentage: doc.data().percentage,
+          date: doc.data().date,
+          time: doc.data().write_time,
+          id: doc.data().date+'-'+doc.data().write_time,
+          winnerRatingAfter: doc.data().winnerRatingAfter,
+          loserRatingAfter: doc.data().loserRatingAfter
         }
         setAllGame(allGame => [...allGame, gameObject]);
       })

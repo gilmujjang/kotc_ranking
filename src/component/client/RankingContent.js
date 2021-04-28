@@ -3,10 +3,9 @@ import '../../css/client.css';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const RankingContent = ({allUsers, allGame, contentMode, setContentMode}) => {
+const RankingContent = ({ allUsers, contentMode }) => {
   const allUsersList = allUsers.filter(user => user.status ==="재학" || user.status ==="졸업")
   const studentRanking = allUsers.filter(user => user.status === "재학");
-  const studentidRanking = allUsers.filter(user => user.studentid === 16);
   const [loadState, setLoadState] = useState({ end: 9 });
   const [showRanking, setShowRanking] = useState([]);
   const [currentType, setCurrentType] = useState('전체');
