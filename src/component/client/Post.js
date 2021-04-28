@@ -568,11 +568,37 @@ const Post = ({userObj}) => {
     </button>
   )
 
+  // const test = () => {
+  //   dbService.collection("game").get().then(snapshot => {
+  //     snapshot.docs.map(doc => {
+  //       let docname = doc.data().date + '-' + doc.data().write_time
+  //       let winnerlist = doc.data().winners;
+  //       for(let i=0; i<winnerlist.length; i++){
+  //         if(winnerlist[i]=="1500"){
+  //           winnerlist[i] = "정화"
+  //           console.log(winnerlist)
+  //           dbService.collection("game").doc(docname).update({winners: winnerlist})
+  //         }
+  //       }
+
+  //       let loserlist = doc.data().losers;
+  //       for(let i=0; i<loserlist.length; i++){
+  //         if(loserlist[i]=="1500"){
+  //           loserlist[i] = "정화"
+  //           dbService.collection("game").doc(docname).update({losers: loserlist})
+  //         }
+  //       }
+        
+  //     })
+  //   })
+  // }
+
   return (
     <>
       <div className="postMain">
         {showImage && modal}
         {postMaker}
+        {/* <button onClick={test}>데이터처리</button> */}
         <div className={writeMode ? 'postList active' : 'postList'}>
           {userObj.displayName
             ? <>{postMakeBtn}</>
