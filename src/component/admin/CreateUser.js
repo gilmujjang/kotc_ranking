@@ -118,8 +118,6 @@ const CreateUser = () => {
     }
     reader.readAsDataURL(theFile);
   };
-
-  //위에는 함수 밑에는 jsx
   
   const userMaker = (
     <div className='userMaker'>
@@ -157,6 +155,8 @@ const CreateUser = () => {
           <Input type="select" name='status' onChange={handleChange} value={status}>
             <option>재학</option>
             <option>졸업</option>
+            <option>휴학</option>
+            <option>외부인</option>
           </Input>
         </div>
         <Button className="needMargin" onClick={userMakeSubmit}>전송</Button>
