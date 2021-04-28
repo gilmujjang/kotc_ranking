@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
+const UserDetailWinningRate = ({ userDetailTarget }) => {
     const canvasRef = useRef()
 
     // 각도 => 라디안 변환
@@ -18,8 +18,8 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
     }
 
     // 승률 계산
-    function winningRate() {
-        return allUsersByTime[userKey].game_win / allUsersByTime[userKey].game_all
+    function getWinningRate() { 
+        return userDetailTarget.game_win / userDetailTarget.game_all
     }
 
     // 승 부분 그리기
@@ -44,10 +44,17 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
 
-        // 승/패
         drawBase(ctx, 90, 90, 40, 0, Math.PI * 2, false)
-        drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * winningRate()), true)
-        drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * winningRate()), false)
+        
+        // 승/패 그리기
+        if(getWinningRate() === 0) {        // 승이 0인 경우
+            drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(-90), false)
+        } else if(getWinningRate() === 1) { // 패가 0인 경우
+            drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(-90), true)
+        } else {                          // 그 외 일반상황
+            drawGreenCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * getWinningRate()), true)
+            drawRedCircle(ctx, 90, 90, 66, degToRad(270), degToRad(270 - 360 * getWinningRate()), false)
+        }
     }, [])
 
     return (
@@ -55,8 +62,8 @@ const UserDetailWinningRate = ({ allUsersByTime, userKey }) => {
             <canvas width="180" height="180" ref={canvasRef} className="canvas"></canvas>
             <span className="hover">Hover me!</span>
             <div className="gameRecord">
-                <span className="record--left">{allUsersByTime[userKey].game_win} 승</span>
-                <span className="record--right">{allUsersByTime[userKey].game_lose} 패</span>
+                <span className="record--left">{userDetailTarget.game_win} 승</span>
+                <span className="record--right">{userDetailTarget.game_lose} 패</span>
             </div>
         </>
     )

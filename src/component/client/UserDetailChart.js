@@ -1,17 +1,17 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2'
 
-const UserDetailChart = ({ chartMode, period, userName, allUsersByTime, userKey, userMatch }) => {
+const UserDetailChart = ({ chartMode, period, userMatch, userDetailTarget }) => {
     // userMatch에서 rating 가져오기
     function getRating(STD_Date) {
-        const wanted = userMatch.find(el => el.date - STD_Date <= 0) ? userMatch.find(el => el.date - STD_Date <= 0) : allUsersByTime[userKey].start_rating
+        const wanted = userMatch.find(el => el.date - STD_Date <= 0) ? userMatch.find(el => el.date - STD_Date <= 0) : userDetailTarget.start_rating
         
         if(typeof wanted === 'number' || typeof wanted === 'string') {
             return Number(wanted)
-        } else if(wanted.winners.includes(userName)) {
-            return wanted.winnerRatingAfter[wanted.winners.indexOf(userName)]
-        } else if(wanted.losers.includes(userName)) {
-            return wanted.loserRatingAfter[wanted.losers.indexOf(userName)]
+        } else if(wanted.winners.includes(userDetailTarget.name)) {
+            return wanted.winnerRatingAfter[wanted.winners.indexOf(userDetailTarget.name)]
+        } else if(wanted.losers.includes(userDetailTarget.name)) {
+            return wanted.loserRatingAfter[wanted.losers.indexOf(userDetailTarget.name)]
         }
     }
 
