@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 
 const Post = ({userObj}) => {
   const [writeMode, setWriteMode] = useState(false);
+  const [postFixmode, setPostFixMode] =useState(false);
   const [refresh, setRefresh] = useState(false);
   const [everyPost, setEveryPost] = useState([]);
   const [contentmake, setContent] = useState('');
@@ -61,6 +62,7 @@ const Post = ({userObj}) => {
           commentslist: commentslists,
           commentshow: false,
           moremenushow: false,
+          postfixmode: false,
         }
         setEveryPost(everyPost => [...everyPost, postObject]);
       })
@@ -114,8 +116,6 @@ const Post = ({userObj}) => {
       return;
     }
     const time = rightNow();
-    console.log(object.post.date)
-    console.log(object.comment.writedate)
     await dbService.collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
     const neweverypost = everyPost.map(page => {
       if(page.date == object.post.date){
@@ -218,34 +218,47 @@ const Post = ({userObj}) => {
       let i = 0;
       const promises = attachment.map(async(file) => {
         i = i+1;
-        let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
-        let response = await attachmentRef.putString(file, "data_url");
-        let url = await response.ref.getDownloadURL();
-        return url
+        console.log(file.slice(0,4))
+        if(file.slice(0,4)=="http"){
+          return file
+        } else {
+          let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
+          let response = await attachmentRef.putString(file, "data_url");
+          let url = await response.ref.getDownloadURL();
+          return url
+        }
       })
       const results =  await Promise.all(promises)
       results.forEach(data => attachmentUrl.push(data) )
     }
     await sendData();
-    
-    const postObject = {
-      date: time,
-      recent_fix: time,
-      content: contentmake,
-      writername: userObj.displayName,
-      writerid: userObj.uid,
-      writerprofile: userObj.photoUrl,
-      imageurl: attachmentUrl,
-    }
 
-    await dbService.collection("post").doc(time).set(postObject);
+    if(postFixmode){
+      console.log("postfixmode")
+      await dbService.collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
+    } else {
+      const postObject = {
+        date: time,
+        recent_fix: time,
+        content: contentmake,
+        writername: userObj.displayName,
+        writerid: userObj.uid,
+        writerprofile: userObj.photoUrl,
+        imageurl: attachmentUrl,
+      }
+      await dbService.collection("post").doc(time).set(postObject);
+    }
     setContent('')
     setWriteMode(!writeMode)
     setRefresh(!refresh)
     setAttachment([])
+    setPostFixMode(false)
   };
 
   const writeModeBtn = () => {
+    setContent('')
+    setAttachment([])
+    setPostFixMode(false)
     setWriteMode(!writeMode)
   }
 
@@ -374,8 +387,11 @@ const Post = ({userObj}) => {
   )
 
   const Postfix = async(e, post) => {
-    console.log(post.post)
-    //수정은 어려워서 나중에 할래
+    setPostFixMode(post.post.date)
+    setWriteMode(!writeMode)
+    setContent(post.post.content)
+    setAttachment(post.post.imagelist)
+
   }
 
   const Postdelete = async(e,post) => {
@@ -475,15 +491,6 @@ const Post = ({userObj}) => {
           </div>
           {post.commentslist.map(comment => (
               <div className="comments">
-                {comment.writerid == userObj.uid && (
-                  <div className="commentmoremenu">
-                    <i className="moremenuicon fas fa-ellipsis-h"/>
-                    <div className="commentmoremenuactive">
-                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
-                      <div className="commentdelete" onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
-                    </div>
-                  </div>
-                )}
                 <div className="commentuserprofile"><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
                 <div className="commentmain">
                   <div className="commentwriter">{comment.writername}</div>
@@ -496,6 +503,15 @@ const Post = ({userObj}) => {
                   }
                   <div className="commentwritedate">{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
                 </div>
+                {comment.writerid == userObj.uid && (
+                  <div className="commentmoremenu">
+                    <i className="moremenuicon fas fa-ellipsis-h"/>
+                    <div className="commentmoremenuactive">
+                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
+                      <div className="commentdelete" onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
         </div>
