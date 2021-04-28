@@ -1,5 +1,45 @@
 import React, { useEffect, useRef } from 'react'
 
+// 각도 => 라디안 변환
+function degToRad(degree) {
+    return degree * (Math.PI / 180)
+}
+
+// 기본 원 그리기
+function drawBase(ctx, x, y, r, S_degree, E_degree, direction) {
+    ctx.beginPath()
+    ctx.lineWidth = 4
+    ctx.strokeStyle = '#7f8c8d'
+    ctx.arc(x, y, r, S_degree, E_degree, direction)
+    ctx.stroke()
+}
+
+// 승 부분 그리기
+// 상위 퍼센티지 그래프에서는 반대로 걸어줘야함. ex) 상위 0.01 => 그 반대인 0.99 곱해야 함
+// drawGreenCircle(ctx, x, y, r, degToRad(269), degToRad(270 - (360 * (1 - 0.01)) + 0.5), true)
+function drawGreenCircle(ctx, x, y, r, S_degree, E_degree, direction) {
+    ctx.beginPath()
+    ctx.lineWidth = 40
+    ctx.strokeStyle = '#2EC4B6'
+    ctx.arc(x, y, r, S_degree, E_degree, direction)
+    ctx.stroke()
+}
+
+// 패 부분 그리기
+function drawRedCircle(ctx, x, y, r, S_degree, E_degree, direction) {
+    ctx.beginPath()
+    ctx.lineWidth = 40
+    ctx.strokeStyle = '#e74c3c'
+    ctx.arc(x, y, r, S_degree, E_degree, direction)
+    ctx.stroke()
+}
+
+
+
+
+
+
+
 const UserDetailRankingRate = ({ allUsersByTime, userDetailTarget }) => {
     const canvasRef = useRef()
 
@@ -11,10 +51,9 @@ const UserDetailRankingRate = ({ allUsersByTime, userDetailTarget }) => {
     // 레이팅으로 user 랭킹 상위퍼센티지 구하기
     function getRankingRate() {
         const sortedArr = sortRanking(allUsersByTime)
-
+        
         const target = sortedArr.filter(el => el.name === userDetailTarget.name)
         const ranking = sortedArr.indexOf(target[0]) + 1
-        
         // 본인 순위 / 전체 인원
         return ( ranking / allUsersByTime.length )
     }
@@ -22,40 +61,6 @@ const UserDetailRankingRate = ({ allUsersByTime, userDetailTarget }) => {
     // 화면 출력용 랭킹 수치 보정
     const newRankingRate = () => {
         return Math.round(getRankingRate() * 100)
-    }
-
-    // 각도 => 라디안 변환
-    function degToRad(degree) {
-        return degree * (Math.PI / 180)
-    }
-
-    // 기본 원 그리기
-    function drawBase(ctx, x, y, r, S_degree, E_degree, direction) {
-        ctx.beginPath()
-        ctx.lineWidth = 4
-        ctx.strokeStyle = '#7f8c8d'
-        ctx.arc(x, y, r, S_degree, E_degree, direction)
-        ctx.stroke()
-    }
-
-    // 승 부분 그리기
-    // 상위 퍼센티지 그래프에서는 반대로 걸어줘야함. ex) 상위 0.01 => 그 반대인 0.99 곱해야 함
-    // drawGreenCircle(ctx, x, y, r, degToRad(269), degToRad(270 - (360 * (1 - 0.01)) + 0.5), true)
-    function drawGreenCircle(ctx, x, y, r, S_degree, E_degree, direction) {
-        ctx.beginPath()
-        ctx.lineWidth = 40
-        ctx.strokeStyle = '#2EC4B6'
-        ctx.arc(x, y, r, S_degree, E_degree, direction)
-        ctx.stroke()
-    }
-
-    // 패 부분 그리기
-    function drawRedCircle(ctx, x, y, r, S_degree, E_degree, direction) {
-        ctx.beginPath()
-        ctx.lineWidth = 40
-        ctx.strokeStyle = '#e74c3c'
-        ctx.arc(x, y, r, S_degree, E_degree, direction)
-        ctx.stroke()
     }
 
     useEffect(() => {
@@ -87,4 +92,4 @@ const UserDetailRankingRate = ({ allUsersByTime, userDetailTarget }) => {
     )
 }
 
-export default UserDetailRankingRate
+export default React.memo(UserDetailRankingRate)

@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const UserDetailGame = ( {userMatch} ) => {
-
-    const recentGames = userMatch.map((el, index) => 
+function getRecentGamesStructure(arr) {
+  return (
+    arr.map((el, index) => 
       <div className="game" key={index}>
         <div className="top">{el.date.slice(0, 4)}년 {el.date.slice(4, 6)}월 {el.date.slice(6)}일</div>
         <div className="bot">
@@ -67,25 +67,34 @@ const UserDetailGame = ( {userMatch} ) => {
         </div>
       </div>
     )
+  )
+}
 
-    const noGames = (
-      <div className="noGame">
-        <span>경기 기록이 없습니다.</span>
-      </div>
-    )
+function noGamesStructure() {
+  return (
+    <div className="noGame">
+      <span>경기 기록이 없습니다.</span>
+    </div>
+  )
+}
 
-    return (
-      <>
-        {
-        userMatch.length > 0 ?
-          <div className="games">
-            {recentGames}
-          </div>
-        :
-          noGames
-        }
-      </>
-    )
+const UserDetailGame = ( {userMatch} ) => {
+  const recentGames = useMemo(() => getRecentGamesStructure(userMatch), [userMatch])
+
+  const noGames = useMemo(() => noGamesStructure(), [])
+
+  return (
+    <>
+      {
+      userMatch.length > 0 ?
+        <div className="games">
+          {recentGames}
+        </div>
+      :
+        noGames
+      }
+    </>
+  )
 }
 
 export default UserDetailGame
