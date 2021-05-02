@@ -1,0 +1,2 @@
+.header{display: flex; justify-content: center; align-items: center; width: 100%; height: 100px; background-color: #a0fcdd;}
+.header h1{margin: 0; font-size: 32px;}

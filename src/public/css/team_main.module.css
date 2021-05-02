@@ -1,0 +1,15 @@
+.publicContainer{display: flex; height: 100%; background: -webkit-linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228)); background: linear-gradient(19deg, rgb(237, 66, 100), rgb(95, 195, 228));}
+
+.teamContainer{width: 100%; margin: 100px 80px; position: relative;}
+
+/* ASIDE */
+/* ASIDE */
+.aside{min-width: 280px; height: 100%;}
+
+/* ASIDE1 */
+.aside1{height: 50%; margin: 16px 8px 16px 0; overflow: auto; scrollbar-color: rgba(237, 66, 100, .6) rgba(255, 255, 255, 0); scrollbar-width: thin;}
+
+.aside1 .games{margin-top: 8px;}
+
+
+.asdie2{height: 100%;}

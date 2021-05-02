@@ -1,0 +1,59 @@
+/* FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap');
+
+/* RESET */
+* {
+  margin: 0;padding: 0;
+  font-family: 'Noto Sans KR', 'Roboto', sans-serif; color: #2d2d2d; line-height: 1.6;
+  box-sizing: border-box; outline: none;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, tbody, tfoot, thead, tr, th, td{margin:0; padding:0;}
+h1, h2, h3, h4, h5, h6 {font-size: inherit;}
+a {color: inherit; text-decoration: inherit;}
+a:hover{color: inherit; text-decoration: inherit;}
+img {vertical-align: middle;}
+a img {border: none;}
+li {list-style: none;}
+address, em, i {font-style: normal;}
+
+#main{width: 100%; height: 100vh;}
+
+/* BUTTON */
+.button{display: inline-flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, 0.7); border-radius: 5px; cursor: pointer;}
+.button:hover{background-color: rgba(180, 180, 180, 0.8);}
+
+
+
+/* DROPDOWN */
+.dropdown{width: 100px; cursor: pointer;}
+.dropdown:hover .dropdown__list{opacity: 1; visibility: visible;}
+.dropdown .dropdown__selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px;}
+.dropdown .dropdown__list{background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
+.dropdown .dropdown__list .dropdown__list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500;}
+.dropdown .dropdown__list .dropdown__list__item:hover{background-color: rgba(180, 180, 180, 0.8);}
+
+.dropdown.dropdown__rankingContainer{position: absolute; top: -60px; right: 160px;}
+.dropdown.dropdown__userDetail{position: absolute; top: -40px; right: 20px;}
+
+/* INPUT--FILTER */
+.filter__rankingContainer{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
+.filter__memberList{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 80px;}
+
+/* GAME LIST */
+.games{margin-right: 16px;}
+.games > .game{margin-bottom: 16px; padding: 8px; background-color: rgba(255, 255, 255, .9); border-radius: 4px;}
+.games > .game .top{margin-bottom: 4px; font-size: 12px;}
+
+.games > .game .bot .winner > span{display: block; width: 100%; font-size: 12px;}
+.games > .game .bot .winner .winnerInfo{display: flex; justify-content: space-between; margin-bottom: 4px;}
+.games > .game .bot .winner .winnerInfo .winnerNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
+.games > .game .bot .winner .winnerInfo .winnerRatings{display: flex; flex-direction: column;}
+.games > .game .bot .winner .winnerInfo .winnerRatings .icon__win{margin-left: 4px; color: #2ed573;}
+
+.games > .game .bot .loser > span{display: block; width: 100%; font-size: 12px;}
+.games > .game .bot .loser .loserInfo{display: flex; justify-content: space-between;}
+.games > .game .bot .loser .loserInfo .loserNames{display: flex; flex-direction: column; min-width: 100px; margin-left: 8px;}
+.games > .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
+.games > .game .bot .loser .loserInfo .loserRatings .icon__lose{margin-left: 4px; color: #ff4757;}
+

@@ -1,0 +1,5 @@
+.main{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: calc(100% - 200px); background-color: blanchedalmond;}
+.greeting{width: 600px; padding: 1px; text-align: center;}
+.greeting > h1{margin-top: 32px; font-size: 32px;}
+.greeting > h2{margin-top: 24px; font-size: 24px;}
+.greeting > h3{margin: 16px 0 32px; font-size: 16px;}

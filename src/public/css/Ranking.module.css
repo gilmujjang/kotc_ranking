@@ -1,0 +1,16 @@
+/* RankingContent */
+.rankingContainer{width: 100%; max-height: 100%;   overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
+
+.ranking{display: flex; align-items: center; height: 100px; margin: 28px 20px 28px 10px; position: relative; cursor: pointer;}
+
+.ranking > .left.grade{width: 120px; font-size: 84px; font-weight: 500; text-align: center;}
+
+.ranking > .middle{width: 80px; height: 80px; position: absolute; left: 150px;}
+.ranking > .middle img{width: 100%; height: 100%; border-radius: 50%; box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 6px;}
+
+.ranking > .right{display: flex; position: absolute; right: 0;}
+.ranking > .right .rating{margin-right: 48px; font-size: 68px;}
+.ranking > .right > div{min-width: 140px; position: relative;}
+.ranking > .right > div > .studentName{width: 100%; font-size: 36px; text-align: center; position: absolute; top: 8px;}
+.ranking > .right > div > .studentId{position: absolute; bottom: 16px; left: 8px;}
+.ranking > .right > div > .department{position: absolute; bottom: 16px; right: 8px;}

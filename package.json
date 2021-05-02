@@ -1,0 +1,20 @@
+{
+  "name": "tenigo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "chart.js": "^3.2.1",
+    "firebase": "^8.4.3",
+    "next": "10.2.0",
+    "react": "17.0.2",
+    "react-chartjs-2": "^3.0.3",
+    "react-dom": "17.0.2",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3"
+  }
+}
