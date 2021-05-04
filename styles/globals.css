@@ -19,11 +19,16 @@ address, em, i {font-style: normal;}
 
 #main{width: 100%; height: 100vh;}
 
+/* CONTAINER */
+.container__index{width: 1080px; margin: 0 auto;}
+
 /* BUTTON */
 .button{display: inline-flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, 0.7); border-radius: 5px; cursor: pointer;}
 .button:hover{background-color: rgba(180, 180, 180, 0.8);}
 
-
+/* BUTTON__INDEX */
+.button__index{display: inline-flex; justify-content: center; align-items: center; padding: 8px 16px; background-color: rgba(52, 152, 219, .6); border-radius: 6px; font-size: 16px; color: #101820; cursor: pointer;}
+.button__index:hover{background-color: rgba(52, 152, 219, .8);}
 
 /* DROPDOWN */
 .dropdown{width: 100px; cursor: pointer;}

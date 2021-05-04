@@ -1,2 +1,5 @@
-.header{display: flex; justify-content: center; align-items: center; width: 100%; height: 100px; background-color: #a0fcdd;}
-.header h1{margin: 0; font-size: 32px;}
+.header{width: 100%; height: 70px; background-color: #101820; border-bottom: 1px solid #636e72;}
+.header .container__index__header{display: flex; justify-content: space-between; align-items: center; height: 100%;}
+.header .logo{margin: 0; font-size: 32px; color: #3498db; letter-spacing: 2px;}
+
+.header ul li:first-child{margin-right: 12px;}
