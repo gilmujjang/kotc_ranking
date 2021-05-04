@@ -218,7 +218,6 @@ const Post = ({userObj}) => {
       let i = 0;
       const promises = attachment.map(async(file) => {
         i = i+1;
-        console.log(file.slice(0,4))
         if(file.slice(0,4)=="http"){
           return file
         } else {
@@ -234,7 +233,6 @@ const Post = ({userObj}) => {
     await sendData();
 
     if(postFixmode){
-      console.log("postfixmode")
       await dbService.collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
     } else {
       const postObject = {
@@ -576,7 +574,7 @@ const Post = ({userObj}) => {
   //       for(let i=0; i<winnerlist.length; i++){
   //         if(winnerlist[i]=="1500"){
   //           winnerlist[i] = "정화"
-  //           console.log(winnerlist)
+  //           (winnerlist)
   //           dbService.collection("game").doc(docname).update({winners: winnerlist})
   //         }
   //       }

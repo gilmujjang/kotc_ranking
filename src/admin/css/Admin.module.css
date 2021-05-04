@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Poor+Story&display=swap');
+
+/* AdminMain */
+.AdminMain {
+  background-color: #EDF5E1;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* header */
+.header {
+  width: 100%;
+  height: 72px;
+  background-color: #5CDB95;
+  font-size: 32px;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerText {
+  padding: 4px;
+  margin-left: 20vw;
+  font-family: 'Jua', sans-serif;
+  font-size: 48px;
+}
+
+.logout {
+  margin-right: 10vw;
+  cursor: pointer;
+}
+
+/* Content */
+.Content {
+  display: flex;
+  justify-content: space-around;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.ShortBox {
+  background-color:white;
+  padding: 15px;
+  width: 340px;
+  height: 520px;
+  margin-top: 96px;
+  box-shadow: 2px 2px 10px 1px grey;
+  overflow: scroll;
+  border-radius: 15px;
+}
+
+.LongBox {
+  background-color:white;
+  padding: 10px;
+  width: 370px;
+  height: 720px;
+  margin-top: 96px;
+  box-shadow: 2px 2px 10px 1px grey;
+  overflow: scroll;
+  border-radius: 15px;
+}
+
+/* MatchList */
+
+.deleteIcon {
+  position: relative;
+  right: 20px;
+  top: 8px;
+  width: 0;
+  height: 0;
+}
+
+.gameListHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 12px;
+  margin-top: 0;
+}
+
+/* Createuser */
+.profileImg{
+  width: 280px;
+  height: 320px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+/* RegisterMatch */
+.playerView {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.datepicker {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.matchResult {
+  display: flex;
+  text-align:center;
+  margin-bottom: 12px;
+}
+
+.versus{
+  margin-top: 24px;
+  padding: 4px;
+}
+
+.targetUser{
+  margin: 4px;
+  padding-right: 8px;
+  padding-left: 8px;
+  padding-bottom: 2px;
+  border-radius: 16px;
+  font-size: 14px;
+  background-color: #D1DFE8;
+  display: inline-block;
+}
+
+.winnerSearchCancle {
+  color: red;
+  position: relative;
+  right: 12px;
+}
+
+/* Auth */
+.container {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.authBtns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+}
+
+.authBtn {
+  cursor: pointer;
+  border-radius: 20px;
+  border: none;
+  padding: 10px 0px;
+  font-size: 12px;
+  text-align: center;
+  width: 150px;
+  background: white;
+  cursor: pointer;
+}
+
+.authInput {
+  max-width: 320px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 1);
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: black;
+}
+
+.authSubmit {
+  text-align: center;
+  background: #04aaff;
+  color: white;
+  margin-top: 10;
+  cursor: pointer;
+}
+
+.authError {
+  color: tomato;
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.authSwitch {
+  color: #04aaff;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  display: block;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+/* Utility  */
+.needMargin {
+  margin: 4px;
+}
+
+.spaceBetween {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.displayFlex {
+  display: flex;
+}

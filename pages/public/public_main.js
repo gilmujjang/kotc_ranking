@@ -11,7 +11,7 @@ const public_main = () => {
       <div className={styles.myTeams}>
         <h3>가입한 팀</h3>
         <div className={styles.myTeam}>
-          <Link href="/public/team_main">
+          <Link href="/public/kotc_router">
             <a>
               <h1>KOTC! ^^</h1>
               <h2>얄랄라뽕따이~</h2>
