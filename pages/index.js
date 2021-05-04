@@ -13,22 +13,18 @@ const Home = () => {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if(user) {
-        console.log('index의 유저 :', user);
-        console.log(user.displayName, user.uid, user.photoURL);
         setUserObj({
           ...userObj,
           displayName: user.displayName,
           uid: user.uid,
           photoURL: user.photoURL
         })
-        console.log(userObj);
       } else {
-        console.log('없음');
-        // authService.signInAnonymously()
-        // .catch((error) => {
-        //   console.log(error.code)
-        //   console.log(error.message)
-        // })
+        authService.signInAnonymously()
+        .catch((error) => {
+          console.log(error.code)
+          console.log(error.message)
+        })
       }
       setInit(true)
     })
