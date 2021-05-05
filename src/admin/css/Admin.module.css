@@ -181,6 +181,18 @@
   right: 12px;
 }
 
+/*  UserLIst  */
+.toast{
+  border: solid 1px #c8c8c8;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.toastheader{
+  display: flex;
+  border-bottom: 1px solid #c8c8c8;
+}
+
 
 /* Auth */
 .container {
