@@ -1,7 +1,12 @@
+import { useContext } from 'react'
 import Link from 'next/link'
 import styles from '../../src/public/css/public_main.module.css'
+import UserObjContext from '../../src/contextAPI/UserObjContext'
 
 const public_main = () => {
+  const [userObj, setUserObj] = useContext(UserObjContext)
+  console.log(userObj);
+
   return (
     <>
       <div className={styles.header}>

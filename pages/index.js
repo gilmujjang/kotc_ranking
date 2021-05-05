@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { authService } from '../src/fbase'
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
+import UserObjContext from '../src/contextAPI/UserObjContext'
 import Head from 'next/head'
 import Footer from '../src/index/component/Footer'
 import Header from '../src/index/component/Header'
@@ -8,7 +9,7 @@ import Main from '../src/index/component/Main'
 
 const Home = () => {
   const [init, setInit] = useState(false)
-  const [userObj, setUserObj] = useState({})
+  const [userObj, setUserObj] = useContext(UserObjContext)
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -39,7 +40,7 @@ const Home = () => {
     {
     init ?
     <>
-      <Header userObj={userObj} />
+      <Header />
       <Main />
       <Footer />
     </>
