@@ -79,6 +79,10 @@
 }
 
 /* Createuser */
+
+.userMaker{
+  font-size: 16px;
+}
 .profileImg{
   width: 280px;
   height: 320px;
@@ -86,6 +90,34 @@
   margin-bottom: 4px;
 }
 
+.userProfileImage{
+  display: flex;
+  flex-direction: column;
+}
+
+.createuserlist{
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.createuserinput{
+  padding: 6px;
+  border-radius: 6px;
+  border-color: gray;
+  border-style: solid;
+  border-width: thin;
+}
+
+.createuserinput:focus{
+  border-color: skyblue;
+}
+
+.createuserbtn{
+  margin: 4px;
+  padding: 6px;
+  border-radius: 8px;
+}
 /* RegisterMatch */
 .playerView {
   display: flex;
