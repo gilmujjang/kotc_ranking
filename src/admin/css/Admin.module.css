@@ -113,10 +113,17 @@
   border-color: skyblue;
 }
 
-.createuserbtn{
+.submitbtn{
   margin: 4px;
   padding: 6px;
-  border-radius: 8px;
+  border-radius: 6px;
+  border-color: gray;
+  border-style: solid;
+  border-width: thin;
+}
+
+.submitbtn:hover{
+  background-color: #787878;
 }
 /* RegisterMatch */
 .playerView {
@@ -125,15 +132,31 @@
   text-align: center;
 }
 
-.datepicker {
+.datepickerbox {
   margin-top: 12px;
   margin-bottom: 12px;
+}
+
+.datepicker{
+  padding:4px;
+  border-color: gray;
+  border-style: solid;
+  border-width: thin;
 }
 
 .matchResult {
   display: flex;
   text-align:center;
   margin-bottom: 12px;
+}
+
+.regimatchuser{
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border-color: gray;
+  border-style: solid;
+  border-width: thin;
 }
 
 .versus{
@@ -157,6 +180,7 @@
   position: relative;
   right: 12px;
 }
+
 
 /* Auth */
 .container {

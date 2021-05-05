@@ -225,36 +225,34 @@ const RegiMatch = ({allUsers}) => {
 
   const regiMatch = (
     <div className={styles.userMaker}>
-      <Form className={styles.noteWriter}>
-        <div className={styles.matchResult}>
-          <span>
-            <div>승</div>
-            <Input type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
-            <div className={classNames({["users"]: true, ["playerView"]: true})}>
-              {winners.map(i => (
+      <div className={styles.matchResult}>
+        <span>
+          <div>승</div>
+          <input className={styles.regimatchuser} type="text" name='win' value={searchWinner} onChange={winnerChange} onKeyPress={winnerChange}/>
+          <div className={classNames({["users"]: true, ["playerView"]: true})}>
+            {winners.map(i => (
+              <span className={styles.targetUser}>{i}</span>
+            ))}
+          </div>
+        </span>
+        <span className={styles.versus}> VS </span>
+        <span>
+          <div>패</div>
+          <input className={styles.regimatchuser} type="text" name='lose' value={searchLoser} onChange={loserChange} onKeyPress={loserChange}/>
+          <div className={styles.users}>
+            <div className={styles.flexWrap}>
+              {losers.map(i => (
                 <span className={styles.targetUser}>{i}</span>
               ))}
             </div>
-          </span>
-          <span className={styles.versus}> VS </span>
-          <span>
-            <div>패</div>
-            <Input type="text" name='lose' value={searchLoser} onChange={loserChange} onKeyPress={loserChange}/>
-            <div className={styles.users}>
-              <div className={styles.flexWrap}>
-                {losers.map(i => (
-                  <span className={styles.targetUser}>{i}</span>
-                ))}
-              </div>
-            </div>
-          </span>
-        </div>
-        <div className={styles.datepicker}>
-          <span className={styles.needMargin}>시합일</span>
-          <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-        </div>
-        <Button className={styles.needMargin} onClick={matchSubmit}>전송</Button>
-      </Form>
+          </div>
+        </span>
+      </div>
+      <div className={styles.datepickerbox}>
+        <span className={styles.needMargin}>시합일</span>
+        <DatePicker className={styles.datepicker} selected={startDate} onChange={date => setStartDate(date)} />
+      </div>
+      <button className={styles.submitbtn} onClick={matchSubmit}>전송</button>
     </div>
   );
 

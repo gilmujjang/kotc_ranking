@@ -159,7 +159,7 @@ const CreateUser = () => {
           <option>외부인</option>
         </select>
       </div>
-      <button className={styles.createuserbtn} onClick={userMakeSubmit}>전송</button>
+      <button className={styles.submitbtn} onClick={userMakeSubmit}>전송</button>
     </div>
   );
 
