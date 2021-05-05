@@ -3,6 +3,7 @@ import { dbService,authService,firebaseInstance,storageService } from '../../fba
 import firebase from 'firebase/app';
 import styles from '../css/Community.module.css'
 import classNames from 'classnames';
+import { Icon } from 'semantic-ui-react'
 
 const Community = () => {
   const [userObj, setUserObj] = useState({displayName: null});
