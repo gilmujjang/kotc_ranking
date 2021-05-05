@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { authService, firebaseInstance } from '../../fbase'
 import classNames from 'classnames'
 import styles from '../css/Header.module.css'
+import UserObjContext from '../../contextAPI/UserObjContext'
 
-export default function Header({ userObj }) {
+export default function Header() {
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [userObj, setUserObj] = useContext(UserObjContext)
 
   const onGoogleSignIn = async () => {
-    const  provider = new firebaseInstance.auth.GoogleAuthProvider();
+    const provider = new firebaseInstance.auth.GoogleAuthProvider();
     await authService.signInWithPopup(provider);
 
     setIsSignedIn(true)
