@@ -14,6 +14,7 @@ const Home = () => {
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if(user) {
+        console.log(user)
         setUserObj({
           ...userObj,
           displayName: user.displayName,
