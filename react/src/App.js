@@ -11,6 +11,7 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if(user) {
         setUserObj({
+          name: user.name,
           displayName: user.displayName,
           uid: user.uid,
           photoUrl: user.photoURL,

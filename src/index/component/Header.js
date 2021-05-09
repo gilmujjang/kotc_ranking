@@ -33,12 +33,12 @@ export default function Header() {
 
   return (
     <div className={styles.header}>
-      <div className={classNames({["container__index"]: true, [styles.container__index__header]: true})}>
+      <div className={classNames({["container"]: true, [styles.container__index__header]: true})}>
         <h1 className={styles.logo}>가즈아</h1>
         {
         isSignedIn ?
         <ul>
-          <li className={styles.name}>도킹 완료</li>
+          <li className={styles.name}>{userObj.displayName} 님,</li>
           <li className="button__index" onClick={onGoogleSignOut}>Sign out</li>
         </ul>
         :

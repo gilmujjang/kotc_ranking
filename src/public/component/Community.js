@@ -1,12 +1,14 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState,useRef, useContext } from 'react';
 import { dbService,authService,firebaseInstance,storageService } from '../../fbase'
 import firebase from 'firebase/app';
 import styles from '../css/Community.module.css'
 import classNames from 'classnames';
 import { Icon } from 'semantic-ui-react'
+import UserObjContext from '../../contextAPI/UserObjContext';
 
 const Community = () => {
-  const [userObj, setUserObj] = useState({displayName: null});
+  // 요렇게 불러오면 됩니다.
+  const [userObj, setUserObj] = useContext(UserObjContext)
 
   const [writeMode, setWriteMode] = useState(false);
   const [postFixmode, setPostFixMode] =useState(false);
@@ -20,24 +22,29 @@ const Community = () => {
   const [postimage, setPostImage] = useState([]);
   const [imageid, setImageId] = useState(0);
   const increment = firebase.firestore.FieldValue.increment(1);
-  useEffect( () => {
-    authService.onAuthStateChanged((user) => {
-      if(user) {
-        setUserObj({
-          displayName: user.displayName,
-          uid: user.uid,
-          photoUrl: user.photoURL,
-        });
-      } else {
-        authService.signInAnonymously()
-        .catch((error) => {
-          console.log(error.code)
-          console.log(error.message)
-        })
-      }
-    });
-  }, [])
+
+  // 아래는 지워도 됩니다.
+  // 새로고침하면 userObj는 날라감. 초기화 됨
+  // 이건 어쩔 수 없음. 다른 작업 해줘야 함.
+  // useEffect( () => {
+  //   authService.onAuthStateChanged((user) => {
+  //     if(user) {
+  //       setUserObj({
+  //         displayName: user.displayName,
+  //         uid: user.uid,
+  //         photoUrl: user.photoURL,
+  //       });
+  //     } else {
+  //       authService.signInAnonymously()
+  //       .catch((error) => {
+  //         console.log(error.code)
+  //         console.log(error.message)
+  //       })
+  //     }
+  //   });
+  // }, [])
   useEffect(() => {
+    console.log('커뮤 :', userObj)
     setEveryPost([])
     dbService.collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(async(doc) => {

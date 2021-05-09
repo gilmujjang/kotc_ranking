@@ -1,5 +1,5 @@
 .main{width: 100%; background-color: #101820;}
-.main .container__index__main{ height: 100%;}
+.main .container__index__main{height: 100%;}
 .main .container__index__main .main__section:first-child{display: flex; flex-direction: column; justify-content: center; align-items: center; height: calc(100vh - 70px); position: relative;}
 .main .container__index__main .main__section:last-child{display: flex; align-items: center; height: 100vh; position: relative;}
 .main .container__index__main .main__section:first-child::after{content: ''; width: 2000px; height: 1px; background-color: #636e72; position: absolute; bottom: 0;}

@@ -5,7 +5,7 @@ import styles from '../css/Main.module.css'
 const Main = () => {
   return (
     <div className={styles.main}>
-      <div className={classNames({["container__index"]: true, [styles.container__index__main]: true})}>
+      <div className={classNames({["container"]: true, [styles.container__index__main]: true})}>
         <div className={styles.main__section}>
           <div className={styles.greeting}>
             <h1>'가즈아'는 온라인 모임 공간을 찾던 테니스 동호인들을 위한 새로운 정답이 될&nbsp;것입니다.</h1>

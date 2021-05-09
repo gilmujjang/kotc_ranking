@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react'
 
-const UserObjContext = createContext()
+const UserObjContext = createContext({})
 
 export const UserObjProvider = ({ children }) => {
   const [userObj, setUserObj] = useState({})
