@@ -186,11 +186,23 @@
   border: solid 1px #c8c8c8;
   border-radius: 8px;
   margin-bottom: 12px;
+  box-shadow: 1px 1px 5px #828282;
+  width: 100%;
 }
 
 .toastheader{
   display: flex;
   border-bottom: 1px solid #c8c8c8;
+  font-weight: bold;
+}
+
+.userinfomodule{
+  display: flex;
+  justify-content: space-between;
+}
+
+.userinfo {
+  padding: 4px;
 }
 
 

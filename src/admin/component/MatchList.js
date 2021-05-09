@@ -5,6 +5,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import styles from '../css/Admin.module.css'
 import classNames from 'classnames';
+import { Icon } from 'semantic-ui-react'
 
 const MatchList = ({allGame}) => {
 
@@ -43,8 +44,8 @@ const MatchList = ({allGame}) => {
 
   const RecentGame = allGame.map(game => (
     <div className={styles.displayFlex}>
-      <Toast>
-        <ToastHeader>
+      <div className={styles.toast}>
+        <div className={styles.toastheader}>
           {game.winners.map(i => (
           <span className={styles.targetUser}>{i}</span>
           ))}
@@ -52,16 +53,16 @@ const MatchList = ({allGame}) => {
           {game.losers.map(i => (
           <span className={styles.targetUser}>{i}</span>
           ))}
-        </ToastHeader>
-        <div className={classNames({["needMargin"]: true,["flexWrap"]: true,["spaceBetween"]: true})}>
-          <div>레이팅변화 : {game.ratingChange}</div>
-          <div>승률예측 : {game.percentage}%</div>
         </div>
-        <div className={classNames({["needMargin"]: true,["flexWrap"]: true,["spaceBetween"]: true})}>
+        <div className={styles.userinfomodule}>
+          <div className={styles.userinfo}>레이팅변화 : {game.ratingChange}</div>
+          <div className={styles.userinfo}>승률예측 : {game.percentage}%</div>
+        </div>
+        <div className={styles.userinfo}>
           등록시각 : {game.time}
         </div>
-      </Toast>
-      <i className={classNames({["far fa-trash-alt"]: true,["deleteIcon"]: true})} id={game.date+'-'+game.time} onClick={deleteClick}></i>
+      </div>
+      <Icon name="trash" className="deleteIcon" id={game.date+'-'+game.time} onClick={deleteClick}></Icon>
     </div>
   ))
  

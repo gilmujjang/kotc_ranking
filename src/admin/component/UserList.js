@@ -14,13 +14,13 @@ const UserList = ({allUsers}) => {
           <div className={styles.needMargin}>{user.status}</div>
         </div>
       </div>
-      <div className={classNames({["needMargin"]: true, ["spaceBetween"]: true})}>
-        <div>학번 : {user.studentid}</div>
-        <div>학과 : {user.department}</div>
+      <div className={styles.userinfomodule}>
+        <div className={styles.userinfo}>학번 : {user.studentid}</div>
+        <div className={styles.userinfo}>학과 : {user.department}</div>
       </div>
-      <div className={classNames({["needMargin"]: true, ["spaceBetween"]: true})}>
-        <div>Rating : {user.rating}</div>
-        <div>전적 : {user.game_win}승 {user.game_lose}패</div>
+      <div className={styles.userinfomodule}>
+        <div className={styles.userinfo}>Rating : {user.rating}</div>
+        <div className={styles.userinfo}>전적 : {user.game_win}승 {user.game_lose}패</div>
       </div>
     </div>
   ))
