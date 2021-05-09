@@ -17,6 +17,7 @@ const Home = () => {
         console.log(user)
         setUserObj({
           ...userObj,
+          name: user.displayName,
           displayName: user.displayName,
           uid: user.uid,
           photoURL: user.photoURL
