@@ -28,6 +28,7 @@
 .logout {
   margin-right: 10vw;
   cursor: pointer;
+  margin: 40px;
 }
 
 /* Content */
@@ -64,8 +65,7 @@
 
 .deleteIcon {
   position: relative;
-  right: 20px;
-  top: 8px;
+  cursor: pointer;
   width: 0;
   height: 0;
 }
@@ -194,6 +194,7 @@
   display: flex;
   border-bottom: 1px solid #c8c8c8;
   font-weight: bold;
+  justify-content: space-between;
 }
 
 .userinfomodule{
