@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { authService, firebaseInstance } from '../../fbase'
+import Link from 'next/link'
 import classNames from 'classnames'
 import styles from '../css/Header.module.css'
 import UserObjContext from '../../contextAPI/UserObjContext'
@@ -34,7 +35,7 @@ export default function Header() {
   return (
     <div className={styles.header}>
       <div className={classNames({["container"]: true, [styles.container__index__header]: true})}>
-        <h1 className={styles.logo}>가즈아</h1>
+        <h1 className={styles.logo}><Link href="/"><a>가즈아</a></Link></h1>
         {
         isSignedIn ?
         <ul>
