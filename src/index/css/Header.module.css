@@ -1,7 +1,0 @@
-.header{width: 100%; height: 70px; background-color: #101820; border-bottom: 1px solid #636e72;}
-.header .container__index__header{display: flex; justify-content: space-between; align-items: center; height: 100%;}
-.header .logo{margin: 0; font-size: 32px; color: #3498db; letter-spacing: 2px;}
-
-.header ul{display: flex; align-items: center;}
-.header ul .name{font-size: 20px; color: #3498db;}
-.header ul li:first-child{margin-right: 12px;}
