@@ -1,4 +1,5 @@
-import { useState, useContext, useRouter } from 'react'
+import { useState, useContext } from 'react'
+import { useRouter } from 'next/router'
 import classNames from 'classnames'
 import { dbService } from '../../src/fbase'
 import styles from "../../src/public/css/public_createGroup.module.css"
@@ -7,6 +8,7 @@ import Footer from "../../src/index/component/Footer"
 import UserObjContext from '../../src/contextAPI/UserObjContext'
 
 const public_createGroup = () => {
+  const router = useRouter()
   const [userObj, setUserObj] = useContext(UserObjContext)
   const [groupInfo, setGroupInfo] = useState({
     group_name: '',
@@ -24,39 +26,53 @@ const public_createGroup = () => {
   }
 
   function createGroup() {
-    dbService.collection(group_name).doc('group information').set(groupInfo)
-    .then(() => {
-      console.log('Success setting new group')
-    })
-    .catch((error) => {
-      console.log('Error setting new group', error)
-    })
-    .then(() => {
-      dbService.collection(group_name).doc('group operators').collection('운영자 목록').doc(userObj.name).set({
-        operator_name: userObj.name,
-        operator_displayName:userObj.displayName
+    if(group_name.length === 0) {
+      alert('그룹 이름을 입력 해주세요.')
+    } else if(group_introduce.length === 0) {
+      alert('그룹 소개를 입력 해주세요.')
+    } else {
+      dbService.collection(group_name).doc('group information').set(groupInfo)
+      .then(() => {
+        console.log('Success setting new group')
       })
-    })
-    .then(() => {
-      console.log("Success setting group's first operator")
-    })
-    .catch((error) => {
-      console.log("Error setting group's first operator", error)
-    })
-    .then(() => {
-      dbService.collection(group_name).doc('group members').collection('멤버 목록').doc(userObj.name).set({
-        name: userObj.name,
-        displayName: userObj.displayName,
-        else: '나머지 정보 추후 추가 필요'
-        // 추가 정보 기입 하면 필요
+      .catch((error) => {
+        console.log('Error setting new group', error)
       })
-    })
-    .then(() => {
-      console.log("Success setting group's first member")
-    })
-    .catch((error) => {
-      console.log("Error setting group's first member", error)
-    })
+      .then(() => {
+        dbService.collection(group_name).doc('group operators').collection('운영자 목록').doc(userObj.name).set({
+          operator_name: userObj.name,
+          operator_displayName:userObj.displayName
+        })
+      })
+      .then(() => {
+        console.log("Success setting group's first operator")
+      })
+      .catch((error) => {
+        console.log("Error setting group's first operator", error)
+      })
+      .then(() => {
+        dbService.collection(group_name).doc('group members').collection('멤버 목록').doc(userObj.name).set({
+          name: userObj.name,
+          displayName: userObj.displayName,
+          else: '나머지 정보 추후 추가 필요'
+          // 추가 정보 기입 하면 필요
+        })
+      })
+      .then(() => {
+        console.log("Success setting group's first member")
+      })
+      .catch((error) => {
+        console.log("Error setting group's first member", error)
+      })
+      .then(() => {
+        alert('그룹 생성을 완료하였습니다.')
+        router.push('/')
+      })
+      .catch((error) => {
+        alert(`그룹 생성에 실패하였습니다.<br /> Error : ${error}`)
+        router.push('/')
+      })
+    }
   }
 
   return (
