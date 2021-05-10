@@ -4,7 +4,7 @@ import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
 import UserObjContext from '../src/contextAPI/UserObjContext'
 import Head from 'next/head'
 import Footer from '../src/index/component/Footer'
-import Header from '../src/index/component/Header'
+import Top from '../src/index/component/Top'
 import Main from '../src/index/component/Main'
 
 const Home = () => {
@@ -21,13 +21,14 @@ const Home = () => {
           uid: user.uid,
           photoURL: user.photoURL
         })
-      } else {
-        authService.signInAnonymously()
-        .catch((error) => {
-          console.log(error.code)
-          console.log(error.message)
-        })
       }
+      //  else {
+      //   authService.signInAnonymously()
+      //   .catch((error) => {
+      //     console.log(error.code)
+      //     console.log(error.message)
+      //   })
+      // }
       setInit(true)
     })
   }, [])
@@ -41,7 +42,7 @@ const Home = () => {
     {
     init ?
     <>
-      <Header />
+      <Top />
       <Main />
       <Footer />
     </>
