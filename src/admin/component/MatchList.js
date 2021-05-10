@@ -46,13 +46,18 @@ const MatchList = ({allGame}) => {
     <div className={styles.displayFlex}>
       <div className={styles.toast}>
         <div className={styles.toastheader}>
-          {game.winners.map(i => (
-          <span className={styles.targetUser}>{i}</span>
-          ))}
-          vs 
-          {game.losers.map(i => (
-          <span className={styles.targetUser}>{i}</span>
-          ))}
+          <div>
+            {game.winners.map(i => (
+            <span className={styles.targetUser}>{i}</span>
+            ))}
+            vs 
+            {game.losers.map(i => (
+            <span className={styles.targetUser}>{i}</span>
+            ))}
+          </div>
+          <div>
+            <Icon name="trash alternate outline" className={styles.deleteIcon} id={game.date+'-'+game.time} onClick={deleteClick}></Icon>
+          </div>
         </div>
         <div className={styles.userinfomodule}>
           <div className={styles.userinfo}>레이팅변화 : {game.ratingChange}</div>
@@ -62,10 +67,8 @@ const MatchList = ({allGame}) => {
           등록시각 : {game.time}
         </div>
       </div>
-      <Icon name="trash" className="deleteIcon" id={game.date+'-'+game.time} onClick={deleteClick}></Icon>
     </div>
   ))
- 
   return (
     <div className={styles.LongBox}>
       <div className={styles.gameListHeader}>

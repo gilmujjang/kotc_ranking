@@ -19,7 +19,7 @@ const public_main = () => {
               <p>ㅎㅎ 안녕하세용~</p>
             </a>
           </Link>
-          <Link href="/publick/admin_main">
+          <Link href="/public/admin_main">
             <a>
               <h2>어드민</h2>
             </a>
