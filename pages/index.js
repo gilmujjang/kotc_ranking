@@ -11,19 +11,10 @@ const Home = () => {
   const [init, setInit] = useState(false)
   const [userObj, setUserObj] = useContext(UserObjContext)
 
-  // function getJoinedDate() {
-  //   const today = new Date()
 
-  //   const year = today.getFullYear()
-  //   const month = today.getMonth() + 1
-  //   const date = today.getDate()
-
-  //   return `${year}${month}${date}`
-  // }
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      // 최초 로그인일 때만 생성하고 이미 가입 된 유저라면 fb에서 가져오도록 변경 해야 함.
       if(user) {
         setUserObj({
           ...userObj,

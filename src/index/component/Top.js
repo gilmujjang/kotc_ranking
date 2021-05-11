@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { authService, firebaseInstance } from '../../fbase'
+import { authService, dbService, firebaseInstance } from '../../fbase'
 import Link from 'next/link'
 import classNames from 'classnames'
 import { Icon } from 'semantic-ui-react'
@@ -12,11 +12,44 @@ const Top = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [userObj, setUserObj] = useContext(UserObjContext)
 
+  function getJoinedDate() {
+    const today = new Date()
+    const year = today.getFullYear()
+    let month = today.getMonth() + 1
+    let date = today.getDate()
+
+    month = month >= 10 ? month : `0${month}`
+    date = date >= 10 ? date : `0${date}`
+
+    return Number(`${year}${month}${date}`)
+  }
+
   const onGoogleSignIn = async () => {
     const provider = new firebaseInstance.auth.GoogleAuthProvider();
-    await authService.signInWithPopup(provider);
+    await authService.signInWithPopup(provider).then((result) => {
+      const docRef = dbService.collection('whole_users').doc(result.user.uid)
 
-    setIsSignedIn(true)
+      docRef.get().then((doc) => {
+        if(!doc.exists) {
+          // whole_users에 해당 uid의 문서가 없을 경우
+          dbService.collection('whole_users').doc(result.user.uid).set({
+            name: result.user.displayName,
+            displayName: result.user.displayName,
+            uid: result.user.uid,
+            photoURL: result.user.photoURL,
+            joinedDate: getJoinedDate()
+          })
+          .then(() => {
+            console.log("Success setting document in whole_users");
+          })
+          .catch((error) => {
+            console.log("Error setting document in whole_users", error)
+          })
+        }
+      })
+    }).then(() => {
+      setIsSignedIn(true)
+    })
   };
   
   const onGoogleSignOut = () => {
