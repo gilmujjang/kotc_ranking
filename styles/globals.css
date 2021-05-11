@@ -46,6 +46,7 @@ address, em, i {font-style: normal;}
 
 /* INPUT */
 .input__text{display: block; width: 330px; height: 40px; padding: 8px; background-color: #dfe6e9; border: none; border-radius: 4px;}
+.input__underline{display: block; height: 36px; padding: 8px; background-color: transparent; border: none; border-bottom: 1px solid #2d2d2d;}
 
 /* INPUT--FILTER */
 .filter__rankingContainer{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
