@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import classNames from 'classnames'
 import { dbService } from '../../src/fbase'
 import styles from "../../src/public/css/public_createGroup.module.css"
-import Header from "../../src/index/component/Header"
+import Top from "../../src/index/component/Top"
 import Footer from "../../src/index/component/Footer"
 import UserObjContext from '../../src/contextAPI/UserObjContext'
 
@@ -77,7 +77,7 @@ const public_createGroup = () => {
 
   return (
     <>
-      <Header />
+      <Top />
       <div className={styles.createGroup}>
         <div className={classNames({["container"]: true, [styles.container__public_createGroup]: true})}>
           <h1 className={styles.title}>그룹 생성하기</h1>

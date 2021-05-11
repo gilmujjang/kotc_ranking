@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import Footer from '../../src/index/component/Footer'
-import Header from '../../src/index/component/Header'
+import Top from '../../src/index/component/Top'
 import styles from '../../src/public/css/public_main.module.css'
 
 const public_main = () => {
 
   return (
     <>
-      <Header />
+      <Top />
       <div className={styles.myTeams}>
         <h3>가입한 팀</h3>
         <div className={styles.myTeam}>
