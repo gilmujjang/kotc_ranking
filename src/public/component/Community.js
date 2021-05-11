@@ -23,26 +23,23 @@ const Community = () => {
   const [imageid, setImageId] = useState(0);
   const increment = firebase.firestore.FieldValue.increment(1);
 
-  // 아래는 지워도 됩니다.
-  // 새로고침하면 userObj는 날라감. 초기화 됨
-  // 이건 어쩔 수 없음. 다른 작업 해줘야 함.
-  // useEffect( () => {
-  //   authService.onAuthStateChanged((user) => {
-  //     if(user) {
-  //       setUserObj({
-  //         displayName: user.displayName,
-  //         uid: user.uid,
-  //         photoUrl: user.photoURL,
-  //       });
-  //     } else {
-  //       authService.signInAnonymously()
-  //       .catch((error) => {
-  //         console.log(error.code)
-  //         console.log(error.message)
-  //       })
-  //     }
-  //   });
-  // }, [])
+  useEffect( () => {
+    authService.onAuthStateChanged((user) => {
+      if(user) {
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          photoUrl: user.photoURL,
+        });
+      } else {
+        authService.signInAnonymously()
+        .catch((error) => {
+          console.log(error.code)
+          console.log(error.message)
+        })
+      }
+    });
+  }, [])
   useEffect(() => {
     console.log('커뮤 :', userObj)
     setEveryPost([])
@@ -376,7 +373,7 @@ const Community = () => {
   )
 
   const postImageFour = (post) => (
-    <div className="postImages">
+    <div className={styles.postImages}>
       <div onClick={(e) => {imgClicked(e,{post})}} className={styles.imageFour}>
         <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className={styles.fullimage}/>
       </div>
@@ -466,8 +463,8 @@ const Community = () => {
     <div className={styles.post}>
       {post.writerid == userObj.uid && (
         <div className={styles.moremenu} onClick={(e) => {Postmenushow(e,{post})}}>
-          <i className={classNames({["moremenuicon"]: true,["fas"]: true, ["fa-ellipsis-h"]: true})}/>
-          <div className={post.moremenushow ? "moremenuactive" : "moremenuicons"}>
+          <Icon name="cog icon" className={styles.moremenuicon}></Icon>
+          <div className={post.moremenushow ? styles.moremenuactive : styles.moremenuicons}>
             <div className={styles.postfix} onClick={(e) => {Postfix(e,{post})}}>수정</div>
             <div className={styles.postdelete} onClick={(e) => {Postdelete(e,{post})}}>삭제</div>
           </div>
@@ -494,21 +491,21 @@ const Community = () => {
       </div>
       <div className={styles.heartandcomment}>
         <div className={styles.getheart}>
-          <i className={classNames({["hearticon"]: true,["fas"]: true, ["fa-heart"]: true})}></i>
+          <Icon name="heart icon" className={styles.hearticon}></Icon>
           {post.likenum}
           <div className={styles.likelistshow}>{post.likelistname.map(username => <div classNames={styles.likeuser}>{username}</div>)}</div>
         </div>
         <div onClick={(e) => {showcomment(e,{post})}} className={styles.getcomment}>
-          <i className={classNames({["commenticon"]: true,["fas"]: true, ["fa-comment"]: true})}></i>
+          <Icon name="comment icon" className={styles.commenticon}></Icon>
           {post.commentsnum}
         </div>
       </div>     
       <div className={styles.postFooter}>
         {post.likelistuserid.includes(userObj.uid)
-          ? <div className={styles.postLike}><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i>좋아요</div>
-          : <div className={styles.postLike}><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i>좋아요</div>
+          ? <div className={styles.postLike}><Icon name="heart icon" className={styles.hearticon} onClick={(e) => {unlikeClicked(e,{post})}}></Icon>좋아요</div>
+          : <div className={styles.postLike}><Icon name="heart outline icon" className={styles.hearticon} onClick={(e) => {likeClicked(e,{post})}}></Icon>좋아요</div>
         }
-        <div onClick={(e) => {showcomment(e,{post})}} className={styles.postComment}><i class="commenticon fas fa-comment-dots"></i>댓글 쓰기</div>
+        <div onClick={(e) => {showcomment(e,{post})}} className={styles.postComment}><Icon name="comment icon" className={styles.commenticon}></Icon>댓글 쓰기</div>
       </div>
       {post.commentshow && (  //댓글작성, 보기
         <div className={styles.commentsBox}>
@@ -533,7 +530,7 @@ const Community = () => {
                 </div>
                 {comment.writerid == userObj.uid && (
                   <div className={styles.commentmoremenu}>
-                    <i className={classNames({["moremenuicon"]: true,["fas"]: true, ["fa-ellipsis-h"]: true})}/>
+                    <Icon name="cog icon" className={styles.moremenuicon}></Icon>
                     <div className={styles.commentmoremenuactive}>
                       <div className={styles.commentfix} onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
                       <div className={styles.commentdelete} onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
@@ -548,7 +545,7 @@ const Community = () => {
   ))
 
   const postMaker = (
-      <div className={writeMode ? 'postMaker active' : 'postMaker'}>
+      <div className={writeMode ? styles.postMakerActive : styles.postMaker}>
         <div className={styles.postMakeHeader}> 게시물 만들기 </div>
         <textarea className={styles.makePost} onChange={handleChange} value={contentmake} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
         <div className={styles.file}>
@@ -556,12 +553,12 @@ const Community = () => {
             <input type="file" id="fileInput" className={styles.fileInput} multiple={true} onChange={onFileChange}/>
             <label htmlFor="fileInput">
               <span>이미지 추가하기</span>
-              <i class="fas fa-images fa-2x"></i>
+              <Icon name="file image outline icon"></Icon>
             </label>
           </div>
           {attachment.length < 6 && (
             attachment.map(image => (
-              <img className="images" src={image} alt="photo"/>
+              <img className={styles.images} src={image} alt="photo"/>
             ))
           )}
           {attachment.length >= 6 && (
@@ -596,6 +593,8 @@ const Community = () => {
     </button>
   )
 
+
+  //데이터처리 더미코드
   const test = () => {
     dbService.collection("game").get().then(snapshot => {
       snapshot.docs.map(doc => {
