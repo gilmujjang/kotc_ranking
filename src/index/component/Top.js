@@ -2,9 +2,10 @@ import { useContext, useEffect, useState } from 'react'
 import { authService, firebaseInstance } from '../../fbase'
 import Link from 'next/link'
 import classNames from 'classnames'
-import { Icon, Button, Header, Image, Modal } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import styles from '../css/Top.module.css'
 import UserObjContext from '../../contextAPI/UserObjContext'
+import UserInfoModal from './UserInfoModal'
 
 const Top = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
@@ -23,7 +24,6 @@ const Top = () => {
       // sign-out successful.
       setUserObj({})
       setIsSignedIn(false)
-      console.log(userObj)
     }).catch((error) => {
       // An error happended.
       console.log(error.code)
@@ -57,17 +57,7 @@ const Top = () => {
         }
       </div>
     </div>
-    <Modal onClose={() => setIsModalOpen(false)} open={isModalOpen} size="small">
-      <Modal.Header>안녕하세요, {userObj.name}님?</Modal.Header>
-      <Modal.Description>
-        <Header>개인 정보 설정</Header>
-        <p>빠라 빠빠빠~</p>
-      </Modal.Description>
-      <Modal.Actions>
-        <Button>꺼져</Button>
-        <Button>드루와~</Button>
-      </Modal.Actions>
-    </Modal>
+    <UserInfoModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </>
   )
 }
