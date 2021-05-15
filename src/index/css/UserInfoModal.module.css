@@ -1,5 +1,10 @@
-.top{margin: 14px 0 14px 16px !important;}
+.modal_description{display: flex; align-items: center;}
+.modal_description > .left{display: flex; flex-direction: column; justify-content: center; align-items: center; width: 50%;}
+.modal_description > .left .left__img{display: flex; justify-content: center; align-items: center; margin: 8px 0;}
+.modal_description > .left > div{margin-bottom: 8px;}
 
-.bot{display: flex; flex-direction: column;}
-.bot > .item{display: flex; flex-direction: row; margin-bottom: 8px; margin-left: 16px;}
-.bot > .item > .label{width: 80px; font-size: 16px; letter-spacing: 1.5px; margin-right: 8px;}
+.modal_description > .right{width: 50%;}
+.modal_description > .right .right__top{margin: 14px 0 14px 16px !important;}
+.modal_description > .right .right__bot{display: flex; flex-direction: column;}
+.modal_description > .right .right__bot > .item{display: flex; flex-direction: row; margin-bottom: 8px; margin-left: 16px;}
+.modal_description > .right .right__bot > .item > .label{width: 80px; font-size: 16px; letter-spacing: 1.5px; margin-right: 8px;}

@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
-import { authService } from '../src/fbase'
+import { authService, dbService } from '../src/fbase'
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
 import UserObjContext from '../src/contextAPI/UserObjContext'
 import Head from 'next/head'
@@ -11,20 +11,34 @@ const Home = () => {
   const [init, setInit] = useState(false)
   const [userObj, setUserObj] = useContext(UserObjContext)
 
-
-
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if(user) {
-        setUserObj({
-          ...userObj,
-          name: user.displayName,
-          displayName: user.displayName,
-          uid: user.uid,
-          photoURL: user.photoURL,
-          // joinedDate: getJoinedDate()
+        const docRef = dbService.collection('whole_users').doc(user.uid)
+        docRef.get().then((doc) => {
+          if(doc.exists) {
+            setUserObj({
+              ...userObj,
+              name: doc.data().name,
+              displayName: doc.data().displayName,
+              uid: doc.data().uid,
+              photoURL: doc.data().photoURL,
+              joinedDate: doc.data().joinedDate
+            })
+          }
         })
       }
+      
+      // if(user) {
+      //   setUserObj({
+      //     ...userObj,
+      //     name: user.displayName,
+      //     displayName: user.displayName,
+      //     uid: user.uid,
+      //     photoURL: user.photoURL,
+      //     // joinedDate: getJoinedDate()
+      //   })
+      // }
       //  else {
       //   authService.signInAnonymously()
       //   .catch((error) => {
@@ -34,7 +48,7 @@ const Home = () => {
       // }
       setInit(true)
     })
-  }, [])
+  }, [dbService.collection('whole_users')])
 
   return (
     <>

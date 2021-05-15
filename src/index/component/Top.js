@@ -32,7 +32,7 @@ const Top = () => {
       docRef.get().then((doc) => {
         if(!doc.exists) {
           // whole_users에 해당 uid의 문서가 없을 경우
-          dbService.collection('whole_users').doc(result.user.uid).set({
+          docRef.set({
             name: result.user.displayName,
             displayName: result.user.displayName,
             uid: result.user.uid,
