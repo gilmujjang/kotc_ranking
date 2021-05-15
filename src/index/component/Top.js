@@ -37,14 +37,9 @@ const Top = () => {
             displayName: result.user.displayName,
             uid: result.user.uid,
             photoURL: result.user.photoURL,
-            joinedDate: getJoinedDate()
+            joined_date: getJoinedDate()
           })
-          .then(() => {
-            console.log("Success setting document in whole_users");
-          })
-          .catch((error) => {
-            console.log("Error setting document in whole_users", error)
-          })
+          .catch((error) => {alert("whole_users에 문서를 추가하는데에 실패하였습니다. : ", error)})
         }
       })
     }).then(() => {

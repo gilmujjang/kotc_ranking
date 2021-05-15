@@ -23,7 +23,7 @@ const Home = () => {
               displayName: doc.data().displayName,
               uid: doc.data().uid,
               photoURL: doc.data().photoURL,
-              joinedDate: doc.data().joinedDate
+              joinedDate: doc.data().joined_date
             })
           }
         })
