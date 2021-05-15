@@ -545,7 +545,7 @@ const Community = () => {
   ))
 
   const postMaker = (
-      <div className={writeMode ? styles.postMakerActive : styles.postMaker}>
+      <div className={styles.postMaker}>
         <div className={styles.postMakeHeader}> 게시물 만들기 </div>
         <textarea className={styles.makePost} onChange={handleChange} value={contentmake} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
         <div className={styles.file}>
@@ -624,9 +624,9 @@ const Community = () => {
     <>
       <div className={styles.postMain}>
         {showImage && modal}
-        {postMaker}
+        {writeMode && postMaker}
         {/* <button onClick={test}>데이터처리</button> */}
-        <div className={writeMode ? 'postList active' : 'postList'}>
+        <div className={writeMode ? styles.postListactive : styles.postList}>
           {userObj.displayName
             ? <>{postMakeBtn}</>
             : <>{needLoginBtn}</>
