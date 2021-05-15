@@ -1,8 +1,19 @@
+import { memo, useContext, useState } from 'react'
 import classNames from 'classnames'
+import { dbService } from '../../fbase'
 import styles from '../css/PublicMyTeam.module.css'
+import UserObjContext from '../../contextAPI/UserObjContext'
 
 const MyTeam = () => {
+  const [userObj, setUserObj] = useContext(UserObjContext)
+  const [myTeamList, setMyTeamList] = useState([])
+  dbService.collection('whole_users').doc(userObj.uid).collection('가입한 그룹').get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+    })
+  })
 //   const teamCard = 
+//   console.log();
 
   return (
     <>
@@ -15,4 +26,4 @@ const MyTeam = () => {
   )
 }
 
-export default MyTeam
+export default memo(MyTeam)

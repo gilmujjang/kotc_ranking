@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import { authService, dbService, firebaseInstance } from '../../fbase'
 import Link from 'next/link'
 import classNames from 'classnames'
@@ -11,7 +11,7 @@ const Top = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [userObj, setUserObj] = useContext(UserObjContext)
-
+  console.log('Top')
   function getJoinedDate() {
     const today = new Date()
     const year = today.getFullYear()
@@ -53,7 +53,6 @@ const Top = () => {
       setUserObj({})
       setIsSignedIn(false)
     }).catch((error) => {
-      // An error happended.
       console.log(error.code)
       console.log(error.message)
     })
@@ -90,4 +89,5 @@ const Top = () => {
   )
 }
 
-export default Top
+export default memo(Top)
+// export default Top

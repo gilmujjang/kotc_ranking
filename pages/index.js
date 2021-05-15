@@ -28,24 +28,6 @@ const Home = () => {
           }
         })
       }
-      
-      // if(user) {
-      //   setUserObj({
-      //     ...userObj,
-      //     name: user.displayName,
-      //     displayName: user.displayName,
-      //     uid: user.uid,
-      //     photoURL: user.photoURL,
-      //     // joinedDate: getJoinedDate()
-      //   })
-      // }
-      //  else {
-      //   authService.signInAnonymously()
-      //   .catch((error) => {
-      //     console.log(error.code)
-      //     console.log(error.message)
-      //   })
-      // }
       setInit(true)
     })
   }, [dbService.collection('whole_users')])
