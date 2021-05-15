@@ -595,37 +595,23 @@ const Community = () => {
 
 
   //데이터처리 더미코드
-  const test = () => {
-    dbService.collection("game").get().then(snapshot => {
-      snapshot.docs.map(doc => {
-        let docname = doc.data().date + '-' + doc.data().write_time
-        let winnerlist = doc.data().winners;
-        for(let i=0; i<winnerlist.length; i++){
-          if(winnerlist[i]=="1500"){
-            winnerlist[i] = "정화"
-            console.log(winnerlist)
-            dbService.collection("game").doc(docname).update({winners: winnerlist})
-          }
-        }
-
-        let loserlist = doc.data().losers;
-        for(let i=0; i<loserlist.length; i++){
-          if(loserlist[i]=="1500"){
-            loserlist[i] = "정화"
-            dbService.collection("game").doc(docname).update({losers: loserlist})
-          }
-        }
-        
-      })
-    })
-  }
+  // const test = () => {
+  //   dbService.collection("post").get().then( snapshot => {
+  //     snapshot.docs.map( doc => {
+  //       setTimeout(function(){
+  //         console.log(doc.data())
+  //         dbService.collection("kotc_post").doc(doc.data().date).set(doc.data());
+  //       },1000)
+  //     })
+  //   })
+  // }
 
   return (
     <>
       <div className={styles.postMain}>
         {showImage && modal}
         {writeMode && postMaker}
-        {/* <button onClick={test}>데이터처리</button> */}
+        <button onClick={test}>데이터처리</button>
         <div className={writeMode ? styles.postListactive : styles.postList}>
           {userObj.displayName
             ? <>{postMakeBtn}</>
