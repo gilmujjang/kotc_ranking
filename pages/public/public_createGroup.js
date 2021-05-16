@@ -65,6 +65,7 @@ const public_createGroup = () => {
           const docRef = dbService.collection('whole_users').doc(userObj.uid).collection('가입한 그룹').doc(group_name)
           docRef.set({
             group_name: group_name,
+            group_introduce: group_introduce,
             joined_date: getJoinedDate()
           }, { merge: true })
         })
