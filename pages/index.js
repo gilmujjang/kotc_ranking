@@ -30,7 +30,7 @@ const Home = () => {
       }
       setInit(true)
     })
-  }, [dbService.collection('whole_users')])
+  }, [])
 
   return (
     <>
