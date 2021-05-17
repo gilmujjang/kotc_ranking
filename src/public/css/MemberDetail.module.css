@@ -1,0 +1,66 @@
+/* MemberDetail__Buttons */
+.button__memberDetail{position: absolute; top: -40px;}
+.button__memberDetail:nth-child(1){right: 130px;}
+.button__memberDetail:nth-child(2){right: 200px;}
+.button__memberDetail:nth-child(3){right: 270px;}
+
+/* MemberDetail */
+.detailContainer{position: fixed; top: 100px; left: 250px; bottom: 50px; right: 150px; padding: 24px 36px; border-radius: 6px; background-color: #DCE2F0;}
+.detailContainer .close{position: absolute; top: 18px; right: 18px; font-size: 32px; transition: .4s; cursor: pointer;}
+.detailContainer .close:hover{transform: rotate(-180deg); color: #e74c3c;}
+
+/* MemberDetail -- top */
+.detailContainer > .top{width: 100%; height: 180px; position: relative;}
+.detailContainer > .top > .top__left{display: flex;margin-left: 60px; position: absolute; left: 0;}
+.detailContainer > .top > .top__left .detail__profile{width: 180px; height: 180px; margin-right: 24px;}
+.detailContainer > .top > .top__left .detail__profile img{width: 100%; height: 100%;}
+.detailContainer > .top > .top__left div:nth-child(2){display: flex; flex-direction: column; justify-content: space-between;}
+
+.detailContainer > .top > .top__left .detail__name{font-size: 48px; letter-spacing: 5px;}
+.detailContainer > .top > .top__left .detail__department{font-size: 24px; letter-spacing: 2px;}
+.detailContainer > .top > .top__left .detail__status{font-size: 16px;}
+
+.detailContainer > .top > .top__circleRate{height: 100%; position: absolute;}
+.detailContainer > .top > .top__circleRate.winningRate{left: 480px;}
+.detailContainer > .top > .top__circleRate.rankingRate{left: 680px;}
+
+.detailContainer > .top > .top__circleRate{height: 100%; position: absolute;}
+.detailContainer > .top > .top__circleRate.winningRate{left: 480px;}
+.detailContainer > .top > .top__circleRate.rankingRate{left: 680px;}
+
+.detailContainer > .top > .top__circleRate .hover{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; animation: size-up-down 2s infinite;}
+
+.detailContainer > .top > .top__circleRate .gameRecord{display: none; width: 180px; height: 180px; border-radius: 50%; background-color: rgba(255, 255, 255, .8); position: absolute; top: 50%; transform: translateY(-50%);}
+.detailContainer > .top > .top__circleRate .gameRecord::after{content: ''; display: block; width: 210px; height: 2px; background-color: #474747; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); animation: width-up-and-rotate 1.1s ease-in-out;}
+.detailContainer > .top > .top__circleRate .gameRecord .record__left{position: absolute; top: 30%; left: 35%; transform: translate(-50%, -50%); font-size: 42px; color: #1bb1a2; font-weight: 500; animation: slide-y 1.6s;}
+.detailContainer > .top > .top__circleRate .gameRecord .record__right{position: absolute; top: 70%; right: 35%; transform: translate(50%, -50%); font-size: 42px; color: #e74c3c; font-weight: 500; animation: slide-y 1.6s;}
+.detailContainer > .top > .top__circleRate:hover .gameRecord{display: block; cursor: pointer;}
+.detailContainer > .top > .top__circleRate:hover .hover{display: none;}
+
+.detailContainer > .top > .top__circleRate.rankingRate .gameRecord .record__right{font-size: 28px;}
+
+
+/* MemberDetail -- bottom */
+.detailContainer > .bot{width: 100%; height: calc(100% - 244px); margin-top: 64px; position: relative;}
+
+.detailContainer > .bot > .bot__left{width: 65%; height: 100%; position: relative;}
+
+.detailContainer > .bot > .bot__right{width: 32%; height: 95%; position: absolute; top: 10px; right: 0; overflow: auto; scrollbar-width: thin;}
+
+/* ANIMATION */
+@keyframes size-up-down {
+    0%{font-size: 12px;}
+    50%{font-size: 13px;}
+    100%{font-size: 12px;}
+  }
+  
+  @keyframes width-up-and-rotate {
+    0%{width: 0; transform: translate(-50%, -50%) rotate(0);}
+    70%{width: 210px; transform: translate(-50%, -50%) rotate(0);}
+    100%{transform:translate(-50%, -50%) rotate(-30dg);}
+  }
+  
+  @keyframes slide-y {
+    0%{opacity: 0;}
+    40%{opacity: 0; transform: translateY(-50%);}
+  }

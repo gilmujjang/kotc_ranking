@@ -1,8 +1,15 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState,useRef, useContext } from 'react';
 import { dbService,authService,firebaseInstance,storageService } from '../../fbase'
 import firebase from 'firebase/app';
+import styles from '../css/Community.module.css'
+import classNames from 'classnames';
+import { Icon } from 'semantic-ui-react'
+import UserObjContext from '../../contextAPI/UserObjContext';
 
-const Post = ({userObj}) => {
+const Community = () => {
+  // 요렇게 불러오면 됩니다.
+  const [userObj, setUserObj] = useContext(UserObjContext)
+
   const [writeMode, setWriteMode] = useState(false);
   const [postFixmode, setPostFixMode] =useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -16,7 +23,25 @@ const Post = ({userObj}) => {
   const [imageid, setImageId] = useState(0);
   const increment = firebase.firestore.FieldValue.increment(1);
 
+  useEffect( () => {
+    authService.onAuthStateChanged((user) => {
+      if(user) {
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          photoUrl: user.photoURL,
+        });
+      } else {
+        authService.signInAnonymously()
+        .catch((error) => {
+          console.log(error.code)
+          console.log(error.message)
+        })
+      }
+    });
+  }, [])
   useEffect(() => {
+    console.log('커뮤 :', userObj)
     setEveryPost([])
     dbService.collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(async(doc) => {
@@ -323,66 +348,66 @@ const Post = ({userObj}) => {
   }
 
   const postImageOne = (post) => (
-      <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageOne"/>
+      <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className={styles.imageOne}/>
   )
 
   const postImageTwo = (post) => (
     <div className="postImages">
       <div onClick={(e) => {imgClicked(e,{post})}}>
-        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="imageTwo"/>
+        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className={styles.imageTwo}/>
       </div>
       <div onClick={(e) => {imgClicked(e,{post})}}>
-        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className="imageTwo"/>
+        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className={styles.imageTwo}/>
       </div>
     </div>
   )
 
   const postImageThree = (post) => (
     <>
-      <div onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className="imageThreeBig"/></div>
+      <div onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className={styles.imageThreeBig}/></div>
       <div onClick={(e) => {imgClicked(e,{post})}}>
-        <img id="1" src={post[1]} className="imageThreeSmall"/>
-        <img id="2" src={post[2]} className="imageThreeSmall"/>
+        <img id="1" src={post[1]} className={styles.imageThreeSmall}/>
+        <img id="2" src={post[2]} className={styles.imageThreeSmall}/>
       </div>
     </>
   )
 
   const postImageFour = (post) => (
-    <div className="postImages">
-      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
-        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className="fullimage"/>
+    <div className={styles.postImages}>
+      <div onClick={(e) => {imgClicked(e,{post})}} className={styles.imageFour}>
+        <img id="0" onClick={(e) => {imgClicked(e,{post})}} src={post[0]} className={styles.fullimage}/>
       </div>
-      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
-        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className="fullimage"/>
+      <div onClick={(e) => {imgClicked(e,{post})}} className={styles.imageFour}>
+        <img id="1" onClick={(e) => {imgClicked(e,{post})}} src={post[1]} className={styles.fullimage}/>
       </div>
-      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
-        <img id="2" onClick={(e) => {imgClicked(e,{post})}} src={post[2]} className="fullimage"/>
+      <div onClick={(e) => {imgClicked(e,{post})}} className={styles.imageFour}>
+        <img id="2" onClick={(e) => {imgClicked(e,{post})}} src={post[2]} className={styles.fullimage}/>
       </div>
-      <div onClick={(e) => {imgClicked(e,{post})}} className="imageFour">
-        <img id="3" onClick={(e) => {imgClicked(e,{post})}} src={post[3]} className="fullimage"/>
+      <div onClick={(e) => {imgClicked(e,{post})}} className={styles.imageFour}>
+        <img id="3" onClick={(e) => {imgClicked(e,{post})}} src={post[3]} className={styles.fullimage}/>
       </div>
     </div>
   )
 
   const postImages = (post) => (
-    <div className="postImages">
-      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className="fullimage"/></div>
-      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="1" src={post[1]} className="fullimage"/></div>
-      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="2" src={post[2]} className="fullimage"/></div>
-      <div className="imageFour" post={post} onClick={(e) => {imgClicked(e,{post})}}>
-        <div className="moreimages" id="3"/>
-        <div className="showmoreimages" id="3">더보기+</div>
-        <img id="3" src={post[3]} className="fullimage"/>
+    <div className={styles.postImages}>
+      <div className={styles.imageFour} post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="0" src={post[0]} className={styles.fullimage}/></div>
+      <div className={styles.imageFour} post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="1" src={post[1]} className={styles.fullimage}/></div>
+      <div className={styles.imageFour} post={post} onClick={(e) => {imgClicked(e,{post})}}><img id="2" src={post[2]} className={styles.fullimage}/></div>
+      <div className={styles.imageFour} post={post} onClick={(e) => {imgClicked(e,{post})}}>
+        <div className={styles.moreimages} id="3"/>
+        <div className={styles.showmoreimages} id="3">더보기+</div>
+        <img id="3" src={post[3]} className={styles.fullimage}/>
       </div>
     </div>
   )
 
   const modal = (
-    <div className='modal'>
-      <span className="close" onClick={closeClick}>&times;</span>
+    <div className={styles.modal}>
+      <span className={styles.close} onClick={closeClick}>&times;</span>
       {imageid != 0 && <span className="left" onClick={moveleft}>&lt;</span>}
-      {postimage.length-1 !== imageid && <span className="right" onClick={moveright}>&gt;</span>}
-      <img className="modal-content" src={postimage[imageid]}/>
+      {postimage.length-1 !== imageid && <span className={styles.right} onClick={moveright}>&gt;</span>}
+      <img className={styles.modal_content} src={postimage[imageid]}/>
     </div>
   )
 
@@ -435,28 +460,28 @@ const Post = ({userObj}) => {
   }
 
   const PostList = everyPost.map(post =>(
-    <div className="post">
+    <div className={styles.post}>
       {post.writerid == userObj.uid && (
-        <div className="moremenu" onClick={(e) => {Postmenushow(e,{post})}}>
-          <i className="moremenuicon fas fa-ellipsis-h"/>
-          <div className={post.moremenushow ? "moremenuactive" : "moremenuicons"}>
-            <div className="postfix" onClick={(e) => {Postfix(e,{post})}}>수정</div>
-            <div className="postdelete" onClick={(e) => {Postdelete(e,{post})}}>삭제</div>
+        <div className={styles.moremenu} onClick={(e) => {Postmenushow(e,{post})}}>
+          <Icon name="cog icon" className={styles.moremenuicon}></Icon>
+          <div className={post.moremenushow ? styles.moremenuactive : styles.moremenuicons}>
+            <div className={styles.postfix} onClick={(e) => {Postfix(e,{post})}}>수정</div>
+            <div className={styles.postdelete} onClick={(e) => {Postdelete(e,{post})}}>삭제</div>
           </div>
         </div>
       )}
-      <div className="postHeader">
-        <div className="postHeaderLeft">
-          <img className="userProfile" src={post.writerprofile}></img>
+      <div className={styles.postHeader}>
+        <div className={styles.postHeaderLeft}>
+          <img className={styles.userProfile} src={post.writerprofile}></img>
         </div>
-        <div className="postHeaderRight">
-          <div classNames="userName">{post.writername}</div>
-          <div classNames="postDate">{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
+        <div className={styles.postHeaderRight}>
+          <div classNames={styles.userName}>{post.writername}</div>
+          <div classNames={styles.postDate}>{post.date.slice(0,4)}년 {post.date.slice(4, 6)}월 {post.date.slice(6,8)}일</div>
         </div>
       </div>
-      <div className="postContent">
-        <div className="postText">{post.content}</div>
-        <div className="postImage">
+      <div className={styles.postContent}>
+        <div className={styles.postText}>{post.content}</div>
+        <div className={styles.postImage}>
           {post.imagelist.length == 1 && postImageOne(post.imagelist)}
           {post.imagelist.length == 2 && postImageTwo(post.imagelist)}
           {post.imagelist.length == 3 && postImageThree(post.imagelist)}
@@ -464,51 +489,51 @@ const Post = ({userObj}) => {
           {post.imagelist.length > 4 && postImages(post.imagelist)}
         </div>
       </div>
-      <div className="heartandcomment">
-        <div className="getheart">
-          <i className="hearticon fas fa-heart"></i>
+      <div className={styles.heartandcomment}>
+        <div className={styles.getheart}>
+          <Icon name="heart icon" className={styles.hearticon}></Icon>
           {post.likenum}
-          <div className="likelistshow">{post.likelistname.map(username => <div classNames="likeuser">{username}</div>)}</div>
+          <div className={styles.likelistshow}>{post.likelistname.map(username => <div classNames={styles.likeuser}>{username}</div>)}</div>
         </div>
-        <div onClick={(e) => {showcomment(e,{post})}} className="getcomment">
-          <i class="commenticon fas fa-comment"></i>
+        <div onClick={(e) => {showcomment(e,{post})}} className={styles.getcomment}>
+          <Icon name="comment icon" className={styles.commenticon}></Icon>
           {post.commentsnum}
         </div>
       </div>     
-      <div className="postFooter">
+      <div className={styles.postFooter}>
         {post.likelistuserid.includes(userObj.uid)
-          ? <div className="postLike"><i className="heart fas fa-heart" onClick={(e) => {unlikeClicked(e,{post})}}></i>좋아요</div>
-          : <div className="postLike"><i className="heart far fa-heart" onClick={(e) => {likeClicked(e,{post})}}></i>좋아요</div>
+          ? <div className={styles.postLike}><Icon name="heart icon" className={styles.hearticon} onClick={(e) => {unlikeClicked(e,{post})}}></Icon>좋아요</div>
+          : <div className={styles.postLike}><Icon name="heart outline icon" className={styles.hearticon} onClick={(e) => {likeClicked(e,{post})}}></Icon>좋아요</div>
         }
-        <div onClick={(e) => {showcomment(e,{post})}} className="postComment"><i class="commenticon fas fa-comment-dots"></i>댓글 쓰기</div>
+        <div onClick={(e) => {showcomment(e,{post})}} className={styles.postComment}><Icon name="comment icon" className={styles.commenticon}></Icon>댓글 쓰기</div>
       </div>
       {post.commentshow && (  //댓글작성, 보기
-        <div className="commentsBox">
-          <div className="commentmaker">
-            <img class="commentUserProfile" src={userObj.photoUrl}></img>
-            <input className="commentwrite" onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
-            {commentmake ? <button className="commentsubmitbtn" onClick={(e) => {submitComment(e,{post})}}><p>보내기</p></button> : <div className="btnunactive"><p>보내기</p></div>}
+        <div className={styles.commentsBox}>
+          <div className={styles.commentmaker}>
+            <img class={styles.commentUserProfile} src={userObj.photoUrl}></img>
+            <input className={styles.commentwrite} onChange={commentChange} value={commentmake} placeholder="댓글을 입력해보세용"></input>
+            {commentmake ? <button className={styles.commentsubmitbtn} onClick={(e) => {submitComment(e,{post})}}><p>보내기</p></button> : <div className={styles.btnunactive}><p>보내기</p></div>}
           </div>
           {post.commentslist.map(comment => (
-              <div className="comments">
-                <div className="commentuserprofile"><img className="commentUserProfile" src={comment.writerphoto} alt="프사"></img></div>
-                <div className="commentmain">
-                  <div className="commentwriter">{comment.writername}</div>
+              <div className={styles.comments}>
+                <div className={styles.commentuserprofile}><img className={styles.commentUserProfile} src={comment.writerphoto} alt="프사"></img></div>
+                <div className={styles.commentmain}>
+                  <div className={styles.commentwriter}>{comment.writername}</div>
                   {comment.commentfixmode
-                    ? <div className="commentfixmain">
-                        <input className="commentwrite" onChange={commentfixChange} value={commentfix}></input>
-                        <button className="commentsubmitbtn" onClick={(e) => {commentfixSubmit(e,{post,comment})}}><p>수정</p></button>
+                    ? <div className={styles.commentfixmain}>
+                        <input className={styles.commentwrite} onChange={commentfixChange} value={commentfix}></input>
+                        <button className={styles.commentsubmitbtn} onClick={(e) => {commentfixSubmit(e,{post,comment})}}><p>수정</p></button>
                       </div>
                     : <div>{comment.text}</div>
                   }
-                  <div className="commentwritedate">{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
+                  <div className={styles.commentwritedate}>{comment.writedate.slice(0, 4)}년 {comment.writedate.slice(4, 6)}월 {comment.writedate.slice(6,8)}일</div>
                 </div>
                 {comment.writerid == userObj.uid && (
-                  <div className="commentmoremenu">
-                    <i className="moremenuicon fas fa-ellipsis-h"/>
-                    <div className="commentmoremenuactive">
-                      <div className="commentfix" onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
-                      <div className="commentdelete" onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
+                  <div className={styles.commentmoremenu}>
+                    <Icon name="cog icon" className={styles.moremenuicon}></Icon>
+                    <div className={styles.commentmoremenuactive}>
+                      <div className={styles.commentfix} onClick={(e) => {Commentfix(e,{post,comment})}}>수정</div>
+                      <div className={styles.commentdelete} onClick={(e) => {Commentdelete(e,{post,comment})}}>삭제</div>
                     </div>
                   </div>
                 )}
@@ -520,20 +545,20 @@ const Post = ({userObj}) => {
   ))
 
   const postMaker = (
-      <div className={writeMode ? 'postMaker active' : 'postMaker'}>
-        <div className="postMakeHeader"> 게시물 만들기 </div>
-        <textarea className="makePost" onChange={handleChange} value={contentmake} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
-        <div className="file">
-          <div className="fileHeader">
-            <input type="file" id="fileInput" className="fileInput" multiple={true} onChange={onFileChange}/>
+      <div className={styles.postMaker}>
+        <div className={styles.postMakeHeader}> 게시물 만들기 </div>
+        <textarea className={styles.makePost} onChange={handleChange} value={contentmake} placeholder={`반갑습니다 ${userObj.displayName}님!`}></textarea>
+        <div className={styles.file}>
+          <div className={styles.fileHeader}>
+            <input type="file" id="fileInput" className={styles.fileInput} multiple={true} onChange={onFileChange}/>
             <label htmlFor="fileInput">
               <span>이미지 추가하기</span>
-              <i class="fas fa-images fa-2x"></i>
+              <Icon name="file image outline icon"></Icon>
             </label>
           </div>
           {attachment.length < 6 && (
             attachment.map(image => (
-              <img className="images" src={image} alt="photo"/>
+              <img className={styles.images} src={image} alt="photo"/>
             ))
           )}
           {attachment.length >= 6 && (
@@ -542,11 +567,11 @@ const Post = ({userObj}) => {
             ))
           )}
         </div>
-        <div className="buttons">
-          <button className="writeModeBtn" onClick={writeModeBtn}>
+        <div className={styles.buttons}>
+          <button className={styles.writeModeBtn} onClick={writeModeBtn}>
             취소
           </button>
-          <button className="writeModeBtn" onClick={submitReview}>
+          <button className={styles.writeModeBtn} onClick={submitReview}>
             작성
           </button>
         </div>
@@ -554,26 +579,40 @@ const Post = ({userObj}) => {
   )
 
   const postMakeBtn = (
-    <div className="postMakeBtn">
+    <div className={styles.postMakeBtn}>
       <div>{userObj.displayName} 님 안녕하세요!</div>
-      <button className="writeModeBtn" onClick={writeModeBtn}>
+      <button className={styles.writeModeBtn} onClick={writeModeBtn}>
         작성
       </button>
     </div>
   )
 
   const needLoginBtn = (
-    <button onClick={onSocialClick} name="google" className="writeModeBtn">
+    <button onClick={onSocialClick} name="google" className={styles.writeModeBtn}>
       구글 로그인
     </button>
   )
 
+
+  //데이터처리 더미코드
+  // const test = () => {
+  //   dbService.collection("post").get().then( snapshot => {
+  //     snapshot.docs.map( doc => {
+  //       setTimeout(function(){
+  //         console.log(doc.data())
+  //         dbService.collection("kotc_post").doc(doc.data().date).set(doc.data());
+  //       },1000)
+  //     })
+  //   })
+  // }
+
   return (
     <>
-      <div className="postMain">
+      <div className={styles.postMain}>
         {showImage && modal}
-        {postMaker}
-        <div className={writeMode ? 'postList active' : 'postList'}>
+        {writeMode && postMaker}
+        <button onClick={test}>데이터처리</button>
+        <div className={writeMode ? styles.postListactive : styles.postList}>
           {userObj.displayName
             ? <>{postMakeBtn}</>
             : <>{needLoginBtn}</>
@@ -585,4 +624,4 @@ const Post = ({userObj}) => {
   )
 };
 
-export default Post;
+export default Community;

@@ -1,0 +1,79 @@
+/* Post */
+.postMain{height: 100%; width: 580px;}
+.postList{height: 100%; overflow: scroll; background-color: rgba(240,240,240,1); transition: 0.5s;}
+.postListactive {opacity: 0.1;pointer-events: none;user-select: none; transition: 0.5s;}
+.post{position: relative;margin: 16px;padding-top: 10px; background-color: white; box-shadow : 2px 2px 5px #999;}
+.writeHidden { visibility: hidden; max-height: 0px;}
+.writeMode {height: 5%;}
+.titleInput { margin:8px; width: 70%; height: 40px;}
+.buttons{width: 100%; text-align: center; border-top: 1px solid gray;} 
+.submitButton { width: 64px; height: 24px; font-size: 16px; border: none; background: white; border-radius: 5px; margin-top: 12px;}
+.writeModeBtn {height: 70%; width: 20%; margin: 8px; padding-right: 12px; padding-left: 12px; border-radius: 10%;}
+.postMakeBtn{ margin: 16px; padding:10px;background-color: white; box-shadow : 2px 2px 5px #999; display: flex; align-items: center; justify-content: space-between;}
+.userProfile{width: 48px; height: 48px; border-radius: 50%;}
+.postHeader{display: flex; padding-left: 8px; padding-left: 8px; padding-right: 8px;}
+.postHeaderLeft{margin: 8px;}
+.postHeaderRight{margin: 8px;}
+.postDate{font-size: large;}
+.postContent{margin: 8px; padding-left: 8px; padding-right: 8px;}
+.makePost{padding: 12px; border: none; box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);width: 100%; height: 100%; min-height: 200px;}
+.postMaker {z-index: 1; background-color: white;position: fixed; top: 10%; left: 20%; visibility: visible; opacity: 1; transition: 0.5s; width: 40%; height: auto; margin: 0; display: flex; flex-direction: column; align-items: center; border: 1px solid black; border-radius: 16px; height: auto;  max-height: 90%; visibility: visible; opacity: 1; transition: 0.5s; top: 10%; z-index: 1;}
+.postMakeHeader{border-bottom: 1px solid gray; padding: 12px; width: 100%; text-align: center; font-size:large; font-weight: 400;}
+.file{width: 100%; height: auto; padding: 8px;}
+.fileHeader{margin-bottom:8px; border-bottom: 1px solid gray;}
+.fileInput{display: none;}
+.images{cursor: pointer; width: 20%; height: auto}
+.postImages{cursor: pointer; width:auto ; height: auto;}
+.imageOne{cursor: pointer; width: 500px; height: 500px; object-fit: cover; padding: 2px;}
+.imageTwo{cursor: pointer; width: 250px; height: 250px; object-fit: cover; padding: 2px;}
+.imageThreeBig{cursor: pointer; width: 500px; height: 250px; object-fit: cover; padding: 2px;}
+.imageThreeSmall{cursor: pointer; width: 250px; height: 250px; object-fit: cover; padding: 2px;}
+.imageFour{cursor: pointer;position: relative;width: 250px; height: 250px;}
+.moreimages{background-color: black; z-index:100%; width: 100%; height: 100%; opacity: 0.5; position: absolute; }
+.showmoreimages{font-size: 32px; z-index:11; width: 100%; height: 50%; margin-top: calc(50% - 32px); position: absolute; color: white; text-align: center; vertical-align: middle;}
+.postImages{cursor: pointer; display: flex; flex-wrap: wrap;}
+.fullimage{width: 100%; height: 100%; object-fit: cover; padding: 2px;}
+.postFooter{background-color:rgba(0,0,0,0.05);display: flex; justify-content: space-between;}
+.postLike{width: 50%; text-align: center;align-items: center; padding: 8px;}
+.postComment{width: 50%; text-align: center;align-items: center; cursor:pointer; padding: 8px;}
+.imageFour:hover {opacity: 0.7;}
+.modal {display: block; position: fixed; z-index: 100;padding-top: 100px;left: 0;top: 0;width: 100vw; height: 100vh;overflow: auto;background-color: rgba(0,0,0,0.9);}
+.modal_content {cursor: pointer; margin: auto;display: block;width: 80%;max-width: 700px;height: 90%;object-fit: contain;background-color: rgba(0,0,0,0);}
+.close {position: absolute;top: 15px;right: 35px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.close:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
+.left {position: absolute;top: 45vh;left: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.left:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
+.right {position: absolute;top: 45vh; right: 300px;color: #f1f1f1;font-size: 40px;font-weight: bold;transition: 0.3s;}
+.right:hover,.close:focus {color: #bbb;text-decoration: none;cursor: pointer;}
+.relative{position: relative;}
+.heart{cursor: pointer; padding: 4px;color: red;}
+.commentsBox{background-color:rgba(0,0,0,0.05); padding: 4px;}
+.commentmaker{display: flex;}
+.commentwrite{margin: 4px; width: 70%; border-radius: 15px; padding-left: 8px;}
+.commentsubmitbtn{height:36px; width: 15%; margin: 4px; padding-right: 6px; padding-left: 6px; border-radius: 10%; background-color: white;}
+.btnunactive{display: flex; justify-content: center; align-items: center; height: 36px; width: 15%; margin: 4px;padding:2px; padding-right: 6px; padding-left: 6px; border-radius: 10%; background-color: rgba(0,0,0,0.2);}
+.commentUserProfile{margin: 4px; margin-right: 10px;width: 36px; height: 36px; border-radius: 50%;}
+.comments{display: flex; padding: 4px; margin: 4px; border-top: 1px solid black;}
+.heartandcomment{display: flex; justify-content: space-between;margin-left: 24px; margin-right: 24px; padding: 8px;}
+.commenticon{padding: 4px; color:#422724;}
+.hearticon{padding: 4px;color: red;}
+.commentwriter{font-size: 14px; font-weight: 800;}
+.commentwritedate{font-size: 12px;}
+.getheart{position: relative;}
+.likelistshow{opacity: 0; padding:2px; font-size: 14px; position: absolute;  top: 24px; background-color: rgba(200,200,200,1); border-radius: 15%; width: 3rem;}
+.getheart:hover > .likelistshow{opacity: 1;}
+.getcomment{cursor:pointer};
+.likeuser{}
+.commentmoremenu{position: absolute; right: 24px; padding: 4px;}
+.commentmoremenuactive{opacity: 0; font-size: 12px;}
+.commentmoremenu:hover > .commentmoremenuactive{opacity: 1;}
+.moremenu{position: absolute; right: 24px; padding: 4px; font-size: large;}
+.moremenuactive{opacity: 1; transition: 0.5s;font-size: 14px;}
+.moremenuicons{opacity: 0; transition: 0.5s;font-size: 14px;}
+.postfix:hover{background-color: yellow;}
+.postdelete:hover {background-color: skyblue;}
+.commentfix:hover{background-color: yellow;}
+.commentdelete:hover {background-color: skyblue;}
+
+.commentmain{width: 100%;}
+.commentfixmain{width: 100%; display: flex;}

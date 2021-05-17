@@ -1,0 +1,17 @@
+/* NAV */
+.nav{min-width: 260px; height: 100%; padding-top: 1px; background-color: rgba(2, 52, 63, .4); position: relative;}
+.nav ul{margin-top: 12px; width: 100%;}
+.nav ul li{display: block; height: 40px; padding-left: 12px; font-size: 18px; line-height: 40px; transition: .2s ease-in-out; cursor: pointer;}
+.nav ul li:hover{background-color: #2d2d2d; color: #fff; text-decoration: none;}
+
+.nav .signedUser{display: flex; align-items: center; margin-left: 12px; position: absolute; bottom: 80px;}
+.nav .signedUser .signedUser--img{width: 70px; height: 70px; margin-right: 12px; border-radius: 50%;}
+.nav .signedUser .signedUser--txt{cursor: pointer;}
+.nav .signedUser .signedUser--txt .signedUser__email{font-size: 12px;}
+
+.nav .back{display: block; height: 40px; width: 100%; padding-left: 12px; position: absolute; bottom: 60px; font-size: 18px; line-height: 40px; transition: .2s ease-in-out; cursor: pointer;}
+.nav .back:hover{background-color: #2d2d2d; color: #fff;}
+
+.nav footer{margin-left: 12px; position: absolute; bottom: 12px; font-size: 12px;}
+.nav footer .footer--top{letter-spacing: 1.4px;}
+.nav footer .footer--bot{letter-spacing: 1.1px;}

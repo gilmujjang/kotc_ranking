@@ -1,0 +1,11 @@
+.createGroup{height: calc(100vh - 130px); background-color: #101820;}
+.createGroup .container__public_createGroup{display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 0; height: 100%;}
+
+.createGroup .title{margin-bottom: 40px; font-size: 40px; color: #dfe6e9; line-height: 1.5; letter-spacing: 1.5px;}
+.createGroup .createGroup__form{display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 40px;}
+.createGroup .createGroup__form .createGroup__name{display: flex; flex-direction: row; margin-bottom: 16px; transform: translateX(-53px);}
+.createGroup .createGroup__form .createGroup__introduce{display: flex; flex-direction: row; transform: translateX(-53px);}
+.createGroup .createGroup__form .createGroup__introduce input{height: 150px;}
+.createGroup .createGroup__form span{font-size: 20px; color: #dfe6e9; line-height: 1.5; letter-spacing: 1.5px;}
+
+.createGroup .button__public_createGroup{font-size: 24px; letter-spacing: 1.5px;}
