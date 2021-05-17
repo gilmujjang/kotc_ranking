@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import classNames from 'classnames'
 import Footer from '../../src/index/component/Footer'
 import Top from '../../src/index/component/Top'
 import MyTeam from '../../src/public/component/PublicMyTeam'
@@ -28,9 +29,12 @@ const public_main = () => {
         </div>
       </div>
       <MyTeam />
-      <div className={styles.sample}>
-        <div className={styles.create_team}><Link href="/public/public_createGroup"><a>팀 생성하기</a></Link></div>
-        <div className={styles.join_team}>팀 가입하기</div>
+      <div className={styles.newTeam}>
+        <div className={classNames({["container"]: true, [styles.container__public_newTeam]: true})}>
+          <div className="button__index"><Link href="/public/public_createGroup"><a>그룹 생성하기</a></Link></div>
+          <div className="button__index">그룹 가입하기</div>
+          {/* <div className="button__index"><Link href="/public/public_joinGroup"><a>그룹 가입하기</a></Link></div> */}
+        </div>
       </div>
       <Footer />
     </>

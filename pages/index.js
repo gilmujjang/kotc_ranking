@@ -59,3 +59,27 @@ const Home = () => {
 }
 
 export default Home
+
+// export const getServerSideProps = async () => {
+//   let currentUser = []
+//   currentUser.push(1)
+//   await authService.onAuthStateChanged(user).then(user => {
+//     currentUser.push(2)
+//       if(user) {
+//         currentUser.push(3)
+//         const docRef = dbService.collection('whole_users').doc('sample').get()
+//         docRef.then((doc) => {
+//           if(doc.exists) {
+//             currentUser.push(4)
+//             currentUser.push(doc.data())
+//           }
+//         })
+//       } else {
+//         currentUser.push('X')
+//       }
+//     })
+
+//   return {
+//     props: {currentUser}
+//   }
+// }

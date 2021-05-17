@@ -11,7 +11,7 @@ const Top = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [userObj, setUserObj] = useContext(UserObjContext)
-  console.log('Top')
+  
   function getJoinedDate() {
     const today = new Date()
     const year = today.getFullYear()

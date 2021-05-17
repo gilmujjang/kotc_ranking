@@ -6,8 +6,10 @@
 
 .team{display: flex; flex-direction: column; width: 290px; margin: 16px 0 32px 0;}
 
-.team > .team_image{width: 100%; height: 290px;}
+.team > .team_image{width: 100%; height: 290px; position: relative;}
 .team > .team_image > img{width: 100%; height: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;}
+.team > .team_image > .setting{position: absolute; top: 12px; right: 8px; cursor: pointer;}
+.team > .team_image > .setting:hover{animation: rotate 2s linear infinite;}
 
 .team > .team_name{width: 100%; padding: 16px 0; position: relative; background-color: #fff; font-size: 20px; color: #2d2d2d; text-align: center; letter-spacing: 1.5px;}
 .team > .team_name:hover::after{content: 'Enter!'; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background-color: #101820; font-size: 28px; color: #3498db; font-weight: 700; cursor: pointer;}
@@ -19,3 +21,8 @@
 .team > .team_info li:last-child{border: none;}
 .team > .team_info li .info_name{font-size: 12px; color: #2d2d2d; text-align: center;}
 .team > .team_info li .info_content{font-size: 16px; color: #4d4d4d; text-align: center;}
+
+@keyframes rotate {
+    0%{transform: rotate(0deg);}
+    100%{transform: rotate(360deg);}
+  }

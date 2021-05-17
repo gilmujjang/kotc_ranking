@@ -1,6 +1,7 @@
 import { memo, useState, useEffect, useContext } from 'react'
-import classNames from 'classnames'
 import { dbService } from '../../fbase'
+import { Icon } from 'semantic-ui-react'
+import classNames from 'classnames'
 import styles from '../css/PublicMyTeam.module.css'
 import UserObjContext from '../../contextAPI/UserObjContext'
 
@@ -13,8 +14,8 @@ const MyTeam = () => {
     <div className={styles.team} key={index}>
       <div className={styles.team_image}>
         <img src={src} alt="team profile" />
+        {el.isOperator === true ? <Icon className={styles.setting} name='setting' size='large' /> : <></>}
       </div>
-      <span className={styles.border}></span>
       <h1 className={styles.team_name}>{el.group_name}</h1>
       <h2 className={styles.team_introduce}>{el.group_introduce}</h2>
       <ul className={styles.team_info}>
@@ -40,6 +41,7 @@ const MyTeam = () => {
         setMyTeamList(myTeamList => [...myTeamList, {
           group_name: doc.data().group_name,
           group_introduce: doc.data().group_introduce,
+          isOperator: doc.data().isOperator,
           joined_date: doc.data().joined_date,
           created_date: doc.data().created_date,
           number_of_member: doc.data().number_of_member

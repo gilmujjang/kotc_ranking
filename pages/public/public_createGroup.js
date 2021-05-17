@@ -12,7 +12,9 @@ const public_createGroup = () => {
   const [userObj, setUserObj] = useContext(UserObjContext)
   const [groupInfo, setGroupInfo] = useState({
     group_name: '',
-    group_introduce: ''
+    group_introduce: '',
+    created_date: getToday(),
+    number_of_member: 1
   })
 
   const { group_name, group_introduce } = groupInfo
@@ -25,7 +27,7 @@ const public_createGroup = () => {
     })
   }
 
-  function getJoinedDate() {
+  function getToday() {
     const today = new Date()
     const year = today.getFullYear()
     let month = today.getMonth() + 1
@@ -66,13 +68,10 @@ const public_createGroup = () => {
           docRef.set({
             group_name: group_name,
             group_introduce: group_introduce,
-            joined_date: getJoinedDate()
-          }, { merge: true })
-        })
-        .then(() => {
-          const docRef = dbService.collection('whole_users').doc(userObj.uid).collection('운영자 상태인 그룹').doc(group_name)
-          docRef.set({
-            group_name: group_name
+            isOperator: true,
+            joined_date: getToday(),
+            created_date: getToday(),
+            number_of_member: 1
           }, { merge: true })
         })
         .then(() => {
