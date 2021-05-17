@@ -32,8 +32,7 @@ const public_main = () => {
       <div className={styles.newTeam}>
         <div className={classNames({["container"]: true, [styles.container__public_newTeam]: true})}>
           <div className="button__index"><Link href="/public/public_createGroup"><a>그룹 생성하기</a></Link></div>
-          <div className="button__index">그룹 가입하기</div>
-          {/* <div className="button__index"><Link href="/public/public_joinGroup"><a>그룹 가입하기</a></Link></div> */}
+          <div className="button__index"><Link href="/public/public_joinGroup"><a>그룹 가입하기</a></Link></div>
         </div>
       </div>
       <Footer />
