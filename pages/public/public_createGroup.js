@@ -6,15 +6,14 @@ import styles from "../../src/public/css/public_createGroup.module.css"
 import Top from "../../src/index/component/Top"
 import Footer from "../../src/index/component/Footer"
 import UserObjContext from '../../src/contextAPI/UserObjContext'
+import { v4 as uuidv4 } from 'uuid'
 
 const public_createGroup = () => {
   const router = useRouter()
   const [userObj, setUserObj] = useContext(UserObjContext)
   const [groupInfo, setGroupInfo] = useState({
     group_name: '',
-    group_introduce: '',
-    created_date: getToday(),
-    number_of_member: 1
+    group_introduce: ''
   })
 
   const { group_name, group_introduce } = groupInfo
@@ -45,8 +44,16 @@ const public_createGroup = () => {
     } else if(group_introduce.length === 0) {
       alert('그룹 소개를 입력 해주세요.')
     } else {
+      const id = uuidv4()
       try {
         dbService.collection(group_name).doc('group information').set(groupInfo)
+        .then(() => {
+          dbService.collection(group_name).doc('group information').set({
+            created_date: getToday(),
+            number_of_member: 1,
+            id: id
+          }, { merge: true})
+        })
         .then(() => {
           dbService.collection(group_name).doc('group operators').collection('운영자 목록').doc(userObj.uid).set({
             operator_name: userObj.name,
@@ -75,14 +82,18 @@ const public_createGroup = () => {
           }, { merge: true })
         })
         .then(() => {
+          dbService.collection('whole_groups').doc(group_name).set({
+            group_name: group_name,
+            id: id
+          })
+        })
+        .then(() => {
           alert('그룹 생성을 완료하였습니다!!')
           router.push('/')
         })
-        
       } catch(error) {
         alert('그룹을 생성하는 데에 실패하였습니다. : ', error)
       }
-      
     }
   }
 
