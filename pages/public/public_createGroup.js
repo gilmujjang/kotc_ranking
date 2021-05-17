@@ -84,6 +84,7 @@ const public_createGroup = () => {
         .then(() => {
           dbService.collection('whole_groups').doc(group_name).set({
             group_name: group_name,
+            group_introduce: group_introduce,
             id: id
           })
         })
