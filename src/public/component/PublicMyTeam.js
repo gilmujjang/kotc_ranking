@@ -4,6 +4,7 @@ import { Icon } from 'semantic-ui-react'
 import classNames from 'classnames'
 import styles from '../css/PublicMyTeam.module.css'
 import UserObjContext from '../../contextAPI/UserObjContext'
+import Link from 'next/link'
 
 const MyTeam = () => {
   const [userObj, setUserObj] = useContext(UserObjContext)
@@ -14,7 +15,7 @@ const MyTeam = () => {
     <div className={styles.team} key={index}>
       <div className={styles.team_image}>
         <img src={src} alt="team profile" />
-        {el.isOperator === true ? <Icon className={styles.setting} name='setting' size='large' /> : <></>}
+        {el.isOperator === true ? <Link href="/admin/admin_main"><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
       </div>
       <h1 className={styles.team_name}>{el.group_name}</h1>
       <h2 className={styles.team_introduce}>{el.group_introduce}</h2>
