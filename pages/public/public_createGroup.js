@@ -44,57 +44,65 @@ const public_createGroup = () => {
     } else if(group_introduce.length === 0) {
       alert('그룹 소개를 입력 해주세요.')
     } else {
-      const id = uuidv4()
-      try {
-        dbService.collection(group_name).doc('group information').set(groupInfo)
-        .then(() => {
-          dbService.collection(group_name).doc('group information').set({
-            created_date: getToday(),
-            number_of_member: 1,
-            id: id
-          }, { merge: true})
-        })
-        .then(() => {
-          dbService.collection(group_name).doc('group operators').collection('운영자 목록').doc(userObj.uid).set({
-            operator_name: userObj.name,
-            operator_displayName:userObj.displayName,
-            operator_uid: userObj.uid
-          })
-        })
-        .then(() => {
-          dbService.collection(group_name).doc('group members').collection('멤버 목록').doc(userObj.uid).set({
-            name: userObj.name,
-            displayName: userObj.displayName,
-            uid: userObj.uid,
-            photoURL: userObj.photoURL,
-            joined_date: userObj.joinedDate
-          })
-        })
-        .then(() => {
-          const docRef = dbService.collection('whole_users').doc(userObj.uid).collection('가입한 그룹').doc(group_name)
-          docRef.set({
-            group_name: group_name,
-            group_introduce: group_introduce,
-            isOperator: true,
-            joined_date: getToday(),
-            created_date: getToday(),
-            number_of_member: 1
-          }, { merge: true })
-        })
-        .then(() => {
-          dbService.collection('whole_groups').doc(group_name).set({
-            group_name: group_name,
-            group_introduce: group_introduce,
-            id: id
-          })
-        })
-        .then(() => {
-          alert('그룹 생성을 완료하였습니다!!')
-          router.push('/')
-        })
-      } catch(error) {
-        alert('그룹을 생성하는 데에 실패하였습니다. : ', error)
-      }
+      dbService.collection(group_name).get().then((querySnapshot) => {
+        if(querySnapshot.docs.length > 0) {
+          // 해당 그룹명의 콜렉션이 이미 존재
+          alert('해당 그룹명이 이미 존재합니다. ㅜㅜ')
+        } else {
+          // 해당 그룹명의 콜렉션이 없음.
+          const id = uuidv4()
+          try {
+            dbService.collection(group_name).doc('group information').set(groupInfo)
+            .then(() => {
+              dbService.collection(group_name).doc('group information').set({
+                created_date: getToday(),
+                number_of_member: 1,
+                id: id
+              }, { merge: true})
+            })
+            .then(() => {
+              dbService.collection(group_name).doc('group operators').collection('운영자 목록').doc(userObj.uid).set({
+                operator_name: userObj.name,
+                operator_displayName:userObj.displayName,
+                operator_uid: userObj.uid
+              })
+            })
+            .then(() => {
+              dbService.collection(group_name).doc('group members').collection('멤버 목록').doc(userObj.uid).set({
+                name: userObj.name,
+                displayName: userObj.displayName,
+                uid: userObj.uid,
+                photoURL: userObj.photoURL,
+                joined_date: userObj.joinedDate
+              })
+            })
+            .then(() => {
+              const docRef = dbService.collection('whole_users').doc(userObj.uid).collection('가입한 그룹').doc(group_name)
+              docRef.set({
+                group_name: group_name,
+                group_introduce: group_introduce,
+                isOperator: true,
+                joined_date: getToday(),
+                created_date: getToday(),
+                number_of_member: 1
+              }, { merge: true })
+            })
+            .then(() => {
+              dbService.collection('whole_groups').doc(group_name).set({
+                group_name: group_name,
+                group_introduce: group_introduce,
+                id: id
+              })
+            })
+            .then(() => {
+              alert('그룹 생성을 완료하였습니다!!')
+              router.push('/')
+            })
+          } catch(error) {
+            alert('그룹을 생성하는 데에 실패하였습니다. : ', error)
+          }
+        }
+      })
     }
   }
 
