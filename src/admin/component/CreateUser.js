@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import { Form, Input, Button } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 import styles from '../css/Admin.module.css'
 
@@ -91,7 +90,7 @@ const CreateUser = () => {
       game_win:0,
       game_lose:0,
     }
-    await dbService.collection("user").doc(name).set(userProfile);
+    await dbService.collection("kotc").doc("group_data").collection("players").doc(name).set(userProfile);
 
     setAttachment("");
     setInputs({
