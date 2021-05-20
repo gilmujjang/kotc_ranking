@@ -1,10 +1,12 @@
 import { useState, useContext, useRef, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { Button, Header, Image, Modal } from 'semantic-ui-react'
 import UserObjContext from '../../contextAPI/UserObjContext'
 import { dbService, storageService } from '../../fbase'
 import styles from '../css/UserInfoModal.module.css'
 
 const UserInfoModal = ({ isModalOpen, setIsModalOpen }) => {
+  const router = useRouter()
   const imageUploader = useRef()
   const [userObj, setUserObj] = useContext(UserObjContext)
   const [changedInfo, setChangedInfo] = useState({
@@ -21,19 +23,25 @@ const UserInfoModal = ({ isModalOpen, setIsModalOpen }) => {
     const docRef = dbService.collection('whole_users').doc(userObj.uid)
     
     if(imageRef) {
-      storageRef.put(imageRef).then(() => {
-        storageRef.getDownloadURL().then((url) => {
-          docRef.set({
-            photoURL: url
-          }, { merge: true })
-          .then(() => {alert('이미지를 변경하였습니다.')})
-          .catch((error) => {alert('이미지 변경에 실패하였습니다. : ', error)})
-        })
-        .catch((error) => {alert('storage에서 이미지 url을 가져오는데 실패하였습니다. : '), error})
-      })
-      .catch((error) => {alert('storage에 이미지를 업로드 하는데 실패하였습니다. : '), error})
+      if(typeof userObj.name === 'undefined') {
+        alert('죄송합니다. 다시 시도해 주세요.').then(() => {
+          router.push('/')
+          })
+        } else {
+          storageRef.put(imageRef).then(() => {
+            storageRef.getDownloadURL().then((url) => {
+              docRef.set({
+                photoURL: url
+              }, { merge: true })
+              .then(() => {alert('이미지를 변경하였습니다.')})
+              .catch((error) => {alert('이미지 변경에 실패하였습니다. : ', error)})
+            })
+            .catch((error) => {alert('storage에서 이미지 url을 가져오는데 실패하였습니다. : '), error})
+          })
+          .catch((error) => {alert('storage에 이미지를 업로드 하는데 실패하였습니다. : '), error})
+        }
+      }
     }
-  }
 
   function getInputChange(e) {
     const { name, value } = e.target
@@ -51,11 +59,17 @@ const UserInfoModal = ({ isModalOpen, setIsModalOpen }) => {
   }
 
   function saveUserInfo() {
-    const docRef = dbService.collection('whole_users').doc(userObj.uid)
-    docRef.set(changedInfo, { merge: true })
-    .then(() => {alert('수정이 완료되었습니다.')})
-    .catch((error) => {alert('수정에 실패하였습니다 : ', error)})
-    .then(() => {setIsModalOpen(false)})
+    if(typeof userObj.name === 'undefined') {
+      alert('죄송합니다. 다시 시도해 주세요.').then(() => {
+        router.push('/')
+      })
+    } else {
+      const docRef = dbService.collection('whole_users').doc(userObj.uid)
+      docRef.set(changedInfo, { merge: true })
+      .then(() => {alert('수정이 완료되었습니다.')})
+      .catch((error) => {alert('수정에 실패하였습니다 : ', error)})
+      .then(() => {setIsModalOpen(false)})
+    }
   }
 
   return (

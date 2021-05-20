@@ -17,7 +17,7 @@ const MyTeam = () => {
         <img src={src} alt="team profile" />
         {el.isOperator === true ? <Link href="/admin/admin_main"><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
       </div>
-      <h1 className={styles.team_name}>{el.group_name}</h1>
+      <Link href="/public/group_main"><a><h1 className={styles.team_name}>{el.group_name}</h1></a></Link>
       <h2 className={styles.team_introduce}>{el.group_introduce}</h2>
       <ul className={styles.team_info}>
         <li className={styles.created_date}>
