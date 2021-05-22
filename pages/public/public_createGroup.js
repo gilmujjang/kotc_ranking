@@ -73,7 +73,10 @@ const public_createGroup = () => {
                 displayName: userObj.displayName,
                 uid: userObj.uid,
                 photoURL: userObj.photoURL,
-                joined_date: userObj.joinedDate
+                joined_date: userObj.joinedDate,
+                rating: 1500,
+                game_all, game_win, game_lose: 0,
+                status: '이제 막 시작...!'
               })
             })
             .then(() => {

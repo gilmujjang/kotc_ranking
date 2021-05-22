@@ -15,9 +15,9 @@ const MyTeam = () => {
     <div className={styles.team} key={index}>
       <div className={styles.team_image}>
         <img src={src} alt="team profile" />
-        {el.isOperator === true ? <Link href="/admin/admin_main"><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
+        {el.isOperator === true ? <Link href={`/admin/${el.group_name}`}><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
       </div>
-      <Link href="/public/group_main"><a><h1 className={styles.team_name}>{el.group_name}</h1></a></Link>
+      <Link href={`/public/${el.group_name}`}><a><h1 className={styles.team_name}>{el.group_name}</h1></a></Link>
       <h2 className={styles.team_introduce}>{el.group_introduce}</h2>
       <ul className={styles.team_info}>
         <li className={styles.created_date}>
