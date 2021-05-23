@@ -11,8 +11,8 @@ const MyTeam = () => {
   const [myTeamList, setMyTeamList] = useState([])
   const src = 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
 
-  const myTeam = myTeamList.map((el, index) => 
-    <div className={styles.team} key={index}>
+  const myTeamCard = myTeamList.map((el, index) => 
+    <div className={styles.team_card} key={index}>
       <div className={styles.team_image}>
         <img src={src} alt="team profile" />
         {el.isOperator === true ? <Link href={`/admin/${el.group_name}`}><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
@@ -58,7 +58,7 @@ const MyTeam = () => {
         <div className={classNames({["container"]: true, [styles.container__myTeam]: true})}>
           <h1>가입한 그룹</h1>
           <div className={styles.teams}>
-            {myTeam}
+            {myTeamCard}
           </div>
         </div>
       </div>

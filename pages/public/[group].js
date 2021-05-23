@@ -16,7 +16,6 @@ const group_main = () => {
   const [groupMembers, setGroupMembers] = useState([]);
   const [allGame, setAllGame] = useState([]);
 
-  console.log(groupMembers);
   useEffect(() => {
     const docRef = dbService.collection(group).doc('group members').collection('멤버 목록')
     docRef.get().then(querySnapshot => {
@@ -26,7 +25,12 @@ const group_main = () => {
           displayName: doc.data().displayName,
           uid: doc.data().uid,
           photoURL: doc.data().photoURL,
-          joined_date: doc.data().joined_date
+          joined_date: doc.data().joined_date,
+          rating: doc.data().rating,
+          game_all: doc.data().game_all,
+          game_win: doc.data().game_win,
+          game_lose: doc.data().game_lose,
+          status: doc.data().status
         }
         setGroupMembers(groupMembers => [...groupMembers, singleMemberObject])
       })
