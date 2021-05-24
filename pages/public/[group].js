@@ -14,9 +14,10 @@ const group_main = () => {
   const { group } = router.query
   const [content, setContent] = useState('community')
   const [groupMembers, setGroupMembers] = useState([]);
-  const [allGame, setAllGame] = useState([]);
+  const [wholeGames, setWholeGames] = useState([]);
 
   useEffect(() => {
+    // 전체 멤버
     const docRef = dbService.collection(group).doc('group members').collection('멤버 목록')
     docRef.get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
@@ -39,6 +40,22 @@ const group_main = () => {
 
   useEffect(() => {
     // 경기 기록
+    dbService.collection(group).doc('group_data').collection('game').orderBy("write_time","desc").limit(10).get().then(snapshot => {
+      snapshot.docs.map(doc => {
+        const singleGameObject = {
+          winners: doc.data().winners,
+          losers: doc.data().losers,
+          ratingChange: doc.data().ratingChange,
+          percentage: doc.data().percentage,
+          date: doc.data().date,
+          time: doc.data().write_time,
+          id: doc.data().date+'-'+doc.data().write_time,
+          winnerRatingAfter: doc.data().winnerRatingAfter,
+          loserRatingAfter: doc.data().loserRatingAfter
+        }
+        setWholeGames(wholeGames => [...wholeGames, singleGameObject]);
+      })
+    })
   }, [])
 
   return (
@@ -49,16 +66,16 @@ const group_main = () => {
         {content === 'member list' && <MemberList groupMembers={groupMembers} />}
         {content === 'community' && <Community />}
       </div>
+      {content !== 'community' &&
       <div className={styles.aside}>
         <div className={styles.aside1}>
-          {/* <RecentGame allGame={allGame} /> */}
+          <RecentGame wholeGames={wholeGames} />
         </div>
-        {content !== 'community' &&
         <div className={styles.aside2}>
           <h2>aside2</h2>
         </div>
-        }
       </div>
+      }
     </div>
   )
 }
