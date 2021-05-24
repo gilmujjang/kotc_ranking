@@ -76,7 +76,8 @@ const public_createGroup = () => {
                 joined_date: userObj.joinedDate,
                 rating: 1500,
                 game_all, game_win, game_lose: 0,
-                status: '이제 막 시작...!'
+                status: '이제 막 시작...!',
+                introduce: userObj.introduce
               })
             })
             .then(() => {

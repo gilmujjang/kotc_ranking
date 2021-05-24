@@ -66,15 +66,30 @@ function getRecentGamesStructure(arr) {
   ))
 }
 
-const RecentGame = ({ allGame }) => {
-
-  const recentGames = useMemo(() => getRecentGamesStructure(allGame), [allGame])
-
+function noGamesStructure() {
   return (
-    <div className="games">
-      {recentGames}
+    <div className="noGame">
+      <span>경기 기록이 없습니다.</span>
     </div>
-  );
+  )
+}
+
+const RecentGame = ({ wholeGames }) => {
+  const recentGames = useMemo(() => getRecentGamesStructure(wholeGames), [wholeGames])
+  const noGames = useMemo(() => noGamesStructure(), [])
+  
+  return (
+    <>
+      {
+      wholeGames.length > 0 ?
+        <div className="games">
+          {recentGames}
+        </div>
+      :
+        noGames
+      }
+    </>
+  )
 }
 
 export default RecentGame

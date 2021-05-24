@@ -24,29 +24,43 @@ const RankingContent = ({ groupMembers }) => {
     }
   }, [groupMembers, currentType, wantedMember])
 
-  const userRankingList = membersToShow.map((member,index) => (
-    <div className={styles.ranking} key={index}>
-      <p className={classNames({[styles.left]: true, [styles.grade]: true})}>
-        {index + 1}
-      </p>
-      <div className={styles.middle}>
-        {
-        member.photoURL ?
-        <img src={member.photoURL} alt="member profile"/> :
-        <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/68/d768b6caa2c0d23507bc12087bf171a8.jpeg" alt="profile-img"/>
-        }
+  const memberRankingCard = membersToShow.map((member,index) => (
+    <div className={styles.ranking_card} key={index}>
+      <div className={styles.left}>
+        <div className={styles.left__top}>
+          <div className={styles.profile_img}>
+            {
+            member.photoURL ?
+            <img src={member.photoURL} alt="member profile"/> :
+            <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/68/d768b6caa2c0d23507bc12087bf171a8.jpeg" alt="profile-img"/>
+            }
+          </div>
+          <div className={styles.names}>
+            <span className={styles.displayName}>{member.displayName}</span>
+            <span className={styles.name}>{member.name}</span>
+          </div>
+        </div>
+        <div className={styles.left__bot}>
+          <span className={styles.rating}>
+            <span>{member.rating}</span>  
+            <span>Rating</span>
+          </span>
+          <span className={styles.win}>
+            <span>{member.game_win}</span>
+            <span>승</span>
+          </span>
+          <span className={styles.lose}>
+            <span>{member.game_lose}</span>
+            <span>패</span>
+          </span>
+        </div>
       </div>
       <div className={styles.right}>
-        <span className={styles.rating}>{member.rating}</span>
-        <div>
-          <span className={styles.studentName}>{member.name}</span>
-          <span className={styles.studentId}>{member.studentid}</span>
-          <span className={styles.department}>{member.department}</span>
-        </div>
+        <span className={styles.ranking}>{index + 1}</span>
+        <span>Ranking</span>
       </div>
     </div>
   ))
-
 
   function filterWantedMember(e) {
     setWantedMember(e.target.value)
@@ -75,7 +89,7 @@ const RankingContent = ({ groupMembers }) => {
     <>
       {rankingContentFilter}
       <div className={styles.rankingContainer}>
-        {userRankingList}
+        {memberRankingCard}
       </div>
     </>
   )

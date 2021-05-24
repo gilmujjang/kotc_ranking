@@ -1,16 +1,23 @@
 /* RankingContent */
-.rankingContainer{width: 100%; max-height: 100%;   overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
+.rankingContainer{display: flex; flex-direction: column; align-items: center; width: 100%; max-height: 100%; overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
 
-.ranking{display: flex; align-items: center; height: 100px; margin: 28px 20px 28px 10px; position: relative; cursor: pointer;}
+.ranking_card{display: inline-flex; align-items: center; margin: 28px 0; padding: 16px; background-color: rgba(255, 255, 255, .8); box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; transition: .3s; cursor: pointer;}
+.ranking_card:hover{background-color: rgba(200, 214, 229, .6);}
 
-.ranking > .left.grade{width: 120px; font-size: 84px; font-weight: 500; text-align: center;}
+.ranking_card > .left{display: flex; flex-direction: column; border-right: 1px solid #636e72;}
+.ranking_card > .left > .left__top{display: flex; justify-content: center; align-items: center; height: 90px;}
+.ranking_card > .left > .left__top > .profile_img{display: flex; justify-content: center; align-items: center; width: 90px; height: 100%; margin-right: 24px;}
+.ranking_card > .left > .left__top > .profile_img img{width: 100%; height: 100%; border-radius: 50%;}
+.ranking_card > .left > .left__top > .names{display: flex; flex-direction: column; justify-content: center; width: 300px; height: 100%;}
+.ranking_card > .left > .left__top > .names .displayName{margin-bottom: 2px; font-size: 24px; font-weight: 500;}
+.ranking_card > .left > .left__top > .names .name{font-size: 16px; color: #444}
 
-.ranking > .middle{width: 80px; height: 80px; position: absolute; left: 150px;}
-.ranking > .middle img{width: 100%; height: 100%; border-radius: 50%; box-shadow: rgba(0, 0, 0, 0.35) 0px 2px 6px;}
+.ranking_card > .left > .left__bot{display: flex; justify-content: center;}
+.ranking_card > .left > .left__bot > span{display: flex; flex-direction: column; justify-content: center; align-items: center; margin-right: 32px;}
+.ranking_card > .left > .left__bot > span:last-child{margin-right: 0;}
+.ranking_card > .left > .left__bot > span > span:first-child{font-size: 22px; letter-spacing: 1.5px;}
+.ranking_card > .left > .left__bot > span > span:last-child{font-size: 14px; color: #444; letter-spacing: 2px;}
 
-.ranking > .right{display: flex; position: absolute; right: 0;}
-.ranking > .right .rating{margin-right: 48px; font-size: 68px;}
-.ranking > .right > div{min-width: 140px; position: relative;}
-.ranking > .right > div > .studentName{width: 100%; font-size: 36px; text-align: center; position: absolute; top: 8px;}
-.ranking > .right > div > .studentId{position: absolute; bottom: 16px; left: 8px;}
-.ranking > .right > div > .department{position: absolute; bottom: 16px; right: 8px;}
+.ranking_card > .right{display: flex; flex-direction: column; justify-content: center; align-items: center; margin-left: 16px; padding: 8px;}
+.ranking_card > .right > .ranking{font-size: 48px;}
+.ranking_card > .right > span:last-child{font-size: 24px; letter-spacing: 2px;}
