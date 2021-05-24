@@ -12,7 +12,7 @@ const admin_main = () => {
   const [allGame, setAllGame] = useState([]);
 
   useEffect(() => {
-    dbService.collection("user").orderBy("rating","desc").get().then(snapshot => {
+    dbService.collection("kotc").doc("group_data").collection("players").orderBy("rating","desc").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {
           name:doc.data().name,
@@ -33,7 +33,7 @@ const admin_main = () => {
   }, [])
 
   useEffect(() => {
-    dbService.collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
+    dbService.collection("kotc").doc("group_data").collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
           winners: doc.data().winners,
