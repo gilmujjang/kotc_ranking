@@ -31,7 +31,8 @@ const group_main = () => {
           game_all: doc.data().game_all,
           game_win: doc.data().game_win,
           game_lose: doc.data().game_lose,
-          status: doc.data().status
+          status: doc.data().status,
+          introduce: doc.data().introduce
         }
         setGroupMembers(groupMembers => [...groupMembers, singleMemberObject])
       })

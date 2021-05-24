@@ -14,26 +14,18 @@ const MemberList = ({ groupMembers }) => {
     setIsDetailOn(true)
   }
 
-  const memberInfoCard = mapList.map((member,index) => (
-    <div className={styles.memberInfo} key={index}>
-      <div>
-        <img className={styles.userImage} src={member.photoURL} onClick={showDetail} data-name={member.name} alt="member list profile"/>
+  const memberListCard = mapList.map((member,index) => (
+    <div className={styles.member_card} key={index}>
+      <div className={styles.top}>
+        <img src={member.photoURL} alt="member profile" />
       </div>
-      <div className={styles.right}>
-        <div className={styles.up}>
-          <div>
-            <span className={styles.memberName}>{member.name}</span>
-            <span className={styles.memberStatus}>{member.status}</span>
-          </div>
-          <div className={styles.memberRecord}>
-            <div>{member.game_win}승</div>
-            <div>{member.game_lose}패</div>
-          </div>
-        </div>
-        <div className={styles.bot}>
-          <span className={styles.memberRating}>레이팅: {member.rating}</span>
-          <span className={styles.memberDepartment}>{member.department}</span>
-        </div>
+      <div className={styles.mid}>
+        <span className={styles.displayName}>{member.displayName}</span>
+        <span className={styles.name}>{member.name}</span>
+        <span className={styles.introduce}>{member.introduce}</span>
+      </div>
+      <div className={styles.bot}>
+        <div className="button__index">Look Detail</div>
       </div>
     </div>
   ))
@@ -55,7 +47,7 @@ const MemberList = ({ groupMembers }) => {
       <input type="text" className="filter__memberList" placeholder="text name..." onChange={traceInput} />
       <div className={styles.allMembers}>
         <div className={styles.memberList}>
-          {memberInfoCard}
+          {memberListCard}
         </div>
         {isDetailOn && <MemberDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} memberDetailTarget={memberDetailTarget} />}
       </div>
