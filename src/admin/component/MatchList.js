@@ -1,9 +1,8 @@
-import { React, useEffect, useState } from 'react';
+import { React } from 'react';
 import { dbService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import styles from '../css/Admin.module.css'
-import classNames from 'classnames';
 import { Icon } from 'semantic-ui-react'
 
 const MatchList = ({allGame}) => {

@@ -51,6 +51,7 @@ const admin_main = () => {
       })
     })
   }, [])
+  
   return (
     <div className={styles.AdminMain}>
       <Header />

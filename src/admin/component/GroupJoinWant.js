@@ -1,6 +1,6 @@
 import { React } from 'react';
 import styles from '../css/Admin.module.css'
-import classNames from 'classnames';
+import { Icon } from 'semantic-ui-react'
 
 const GroupJoinWant = () => {
   const [joinlist, setJoinlist] = useState([]);
@@ -33,6 +33,10 @@ const GroupJoinWant = () => {
       </div>
       <div className={styles.userinfomodule}>
         <div className={styles.userinfo}>시각 : {user.time}</div>
+      </div>
+      <div>
+        <Icon name="check icon" onClick={(e) => {joinAccept(e,{user})}}/>
+        <Icon name="window close outline icon" onClick={(e) => {joinDeny(e,{user})}}/>
       </div>
     </div>
   ))
