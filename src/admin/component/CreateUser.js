@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { dbService, storageService } from '../../fbase';
 import styles from '../css/Admin.module.css'
 
-const CreateUser = () => {
+const CreateUser = ({group}) => {
   const [inputs, setInputs] = useState({
     name: '',
     studentid:'',
@@ -90,7 +90,7 @@ const CreateUser = () => {
       game_win:0,
       game_lose:0,
     }
-    await dbService.collection("kotc").doc("group_data").collection("players").doc(name).set(userProfile);
+    await dbService.collection(group).doc("group_data").collection("players").doc(name).set(userProfile);
 
     setAttachment("");
     setInputs({
