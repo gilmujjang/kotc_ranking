@@ -60,10 +60,10 @@ const admin_main = () => {
       <Header />
       <div className={styles.Content}>
         <CreateUser/>
-        <RegiMatch allUsers={allUsers}/>
-        <UserList allUsers={allUsers}/>
-        <MatchList allGame={allGame}/>
-        <GroupJoinWant/>
+        <RegiMatch allUsers={allUsers} group={group}/>
+        <UserList allUsers={allUsers} group={group}/>
+        <MatchList allGame={allGame} group={group}/>
+        <GroupJoinWant group={group}/>
       </div>
     </div>
   )
