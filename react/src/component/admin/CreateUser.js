@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { Form, Input, Button } from 'reactstrap';
 import { dbService, storageService } from '../../fbase';
 
-const CreateUser = () => {
+const CreateUser = ({allUsers}) => {
   const [inputs, setInputs] = useState({
     name: '',
     studentid:'',
@@ -12,6 +12,12 @@ const CreateUser = () => {
     status:'재학'
   });
   const [attachment, setAttachment] = useState("");
+  const [allUserList, setAllUserList] = useState([])
+  useEffect(() => {
+    allUsers.map(user => {
+      setAllUserList(allUserList => [...allUserList, user.name])
+    })
+  }, [allUsers])
 
 
   const { name, studentid, department, start_rating, status} = inputs;
@@ -28,6 +34,10 @@ const CreateUser = () => {
     e.preventDefault();
     if(name === ''){
       alert("이름을 입력하세요")
+      return;
+    }
+    if(allUserList.includes(name)){
+      alert("이미 등록된 이름입니다")
       return;
     }
     if(studentid === ''){
@@ -90,7 +100,7 @@ const CreateUser = () => {
       game_win:0,
       game_lose:0,
     }
-    await dbService.collection("user").doc(name).set(userProfile);
+    await dbService.collection("kotc").doc("group_data").collection("players").doc(name).set(userProfile);
 
     setAttachment("");
     setInputs({

@@ -6,7 +6,7 @@ import CreateUser from '../../src/admin/component/CreateUser'
 import RegiMatch from '../../src/admin/component/RegiMatch'
 import UserList from '../../src/admin/component/UserList'
 import MatchList from '../../src/admin/component/MatchList'
-import GroupJoinWant from '../../src/admin/compnent/GroupJoinWant'
+// import GroupJoinWant from '../../src/admin/compnent/GroupJoinWant'
 
 const admin_main = () => {
   const [allUsers, setAllUsers] = useState([]);
@@ -56,11 +56,11 @@ const admin_main = () => {
     <div className={styles.AdminMain}>
       <Header />
       <div className={styles.Content}>
-        <CreateUser/>
+        <CreateUser allUsers={allUsers}/>
         <RegiMatch allUsers={allUsers}/>
         <UserList allUsers={allUsers}/>
         <MatchList allGame={allGame}/>
-        <GroupJoinWant/>
+        {/* <GroupJoinWant/> */}
       </div>
     </div>
   );

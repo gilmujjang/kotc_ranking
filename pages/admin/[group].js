@@ -59,7 +59,7 @@ const admin_main = () => {
     <div className={styles.AdminMain}>
       <Header group={groupName}/>
       <div className={styles.Content}>
-        <CreateUser group={groupName}/>
+        <CreateUser allUsers={allUsers} group={groupName}/>
         <RegiMatch allUsers={allUsers} group={groupName}/>
         <UserList allUsers={allUsers} group={groupName}/>
         <MatchList allGame={allGame} group={groupName}/>

@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { dbService, storageService } from '../../fbase';
 import styles from '../css/Admin.module.css'
 
-const CreateUser = ({group}) => {
+const CreateUser = ({allUsers, group}) => {
   const [inputs, setInputs] = useState({
     name: '',
     studentid:'',
@@ -12,6 +12,12 @@ const CreateUser = ({group}) => {
     status:'재학'
   });
   const [attachment, setAttachment] = useState("");
+  const [allUserList, setAllUserList] = useState([])
+  useEffect(() => {
+    allUsers.map(user => {
+      setAllUserList(allUserList => [...allUserList, user.name])
+    })
+  }, [allUsers])
 
 
   const { name, studentid, department, start_rating, status} = inputs;
@@ -28,6 +34,10 @@ const CreateUser = ({group}) => {
     e.preventDefault();
     if(name === ''){
       alert("이름을 입력하세요")
+      return;
+    }
+    if(allUserList.includes(name)){
+      alert("이미 등록된 이름입니다")
       return;
     }
     if(studentid === ''){
