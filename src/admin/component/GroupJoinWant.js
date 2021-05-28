@@ -1,26 +1,32 @@
-import { React } from 'react';
+import { React, useState, useEffect } from 'react';
 import styles from '../css/Admin.module.css'
 import { Icon } from 'semantic-ui-react'
 import { dbService } from '../../fbase';
 
 const GroupJoinWant = ({group}) => {
+  console.log("excute groupjoinwnat")
   const [awaitorlist, setawaitorlist] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
-  dbService.collection({group}).doc("group_data").collection("awaitors").get().then(snapshot => {
-    snapshot.docs.map(doc => {
-      const userObject = {
-        name:doc.data().name,
-        time:doc.data().time,
-        attachmentUrl:doc.data().attachmentUrl,
-        userid: doc.data().userid,
-      }
-      setawaitorlist(awaitorlist => [...awaitorlist, userObject]);
+  useEffect(() => {
+    dbService.collection(group).doc("group_data").collection("awaitors").get().then(snapshot => {
+      snapshot.docs.map(doc => {
+        const userObject = {
+          name:doc.data().name,
+          time:doc.data().time,
+          attachmentUrl:doc.data().attachmentUrl,
+          userid: doc.data().userid,
+        }
+        console.log(userObject)
+        setawaitorlist(awaitorlist => [...awaitorlist, userObject]);
+      })
     })
-  }, [refresh])
+  },[refresh])
+  
 
   const joinAccept =(e, user) => {
     // joinlist에서 해당유저 삭제하고 db join에서 삭제하고 member에 삽입
+    console.log("가입 승인")
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
@@ -81,7 +87,7 @@ const GroupJoinWant = ({group}) => {
   ))
 
   return (
-    <div className={styles.LongBox}>
+    <div className={styles.ShortBox}>
       {AwaitorUsers}
     </div>
   );

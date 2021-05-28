@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { dbService, storageService } from '../../fbase';
 import styles from '../css/Admin.module.css'
 
@@ -12,7 +12,8 @@ const CreateUser = ({allUsers, group}) => {
     status:'재학'
   });
   const [attachment, setAttachment] = useState("");
-  const [allUserList, setAllUserList] = useState([])
+  const [allUserList, setAllUserList] = useState([]);
+
   useEffect(() => {
     allUsers.map(user => {
       setAllUserList(allUserList => [...allUserList, user.name])

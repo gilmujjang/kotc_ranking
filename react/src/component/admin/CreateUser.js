@@ -12,7 +12,7 @@ const CreateUser = ({allUsers}) => {
     status:'재학'
   });
   const [attachment, setAttachment] = useState("");
-  const [allUserList, setAllUserList] = useState([])
+  const [allUserList, setAllUserList] = useState([]);
   useEffect(() => {
     allUsers.map(user => {
       setAllUserList(allUserList => [...allUserList, user.name])

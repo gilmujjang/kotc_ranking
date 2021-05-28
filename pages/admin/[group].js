@@ -7,9 +7,10 @@ import CreateUser from '../../src/admin/component/CreateUser'
 import RegiMatch from '../../src/admin/component/RegiMatch'
 import UserList from '../../src/admin/component/UserList'
 import MatchList from '../../src/admin/component/MatchList'
-// import GroupJoinWant from '../../src/admin/compnent/GroupJoinWant'
+import GroupJoinWant from '../../src/admin/component/GroupJoinWant'
 
 const admin_main = () => {
+  console.log("excute admin_main")
   const [allUsers, setAllUsers] = useState([]);
   const [allGame, setAllGame] = useState([]);
   const router = useRouter()
@@ -63,7 +64,7 @@ const admin_main = () => {
         <RegiMatch allUsers={allUsers} group={groupName}/>
         <UserList allUsers={allUsers} group={groupName}/>
         <MatchList allGame={allGame} group={groupName}/>
-        {/* <GroupJoinWant group={group}/> */}
+        <GroupJoinWant group={group}/>
       </div>
     </div>
   )
