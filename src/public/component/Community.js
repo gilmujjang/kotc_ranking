@@ -596,7 +596,7 @@ const Community = () => {
 
   // // 데이터처리 더미코드
   // const test = () => {
-  //   dbService.collection("kotc_player").get().then( snapshot => {
+  //   dbService.collection("kotc_players").get().then( snapshot => {
   //     snapshot.docs.map( doc => {
   //       setTimeout(function(){
   //         console.log(doc.data())

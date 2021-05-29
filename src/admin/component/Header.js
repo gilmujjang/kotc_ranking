@@ -8,14 +8,14 @@ import { Icon } from 'semantic-ui-react'
 
 
 
-const Header = () => {
+const Header = ({group}) => {
   const history = useHistory();
   const onLogOutClick = () => {
     authService.signOut();
   };
   return (
     <div className={styles.header}>
-      <span className={styles.headerText}>KOTC 랭킹시스템 관리자 페이지</span>
+      <span className={styles.headerText}>{group} 랭킹시스템 관리자 페이지</span>
       <Link href="/publick/team_main">
         <Icon name="sign-out icon large" className={styles.logout} onClick={onLogOutClick}></Icon>
       </Link>

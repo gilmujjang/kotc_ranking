@@ -13,7 +13,7 @@ const AdminMain = ({allUsers, allGame}) => {
     <div className="AdminMain">
       <Header />
       <div className="Content">
-        <CreateUser/>
+        <CreateUser allUsers={allUsers}/>
         <RegiMatch allUsers={allUsers}/>
         <UserList allUsers={allUsers}/>
         <MatchList allGame={allGame}/>
