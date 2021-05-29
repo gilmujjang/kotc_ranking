@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 
 const MemberDetailChart = ({ chartMode, period, playerGame, playerDetailTarget }) => {
@@ -13,13 +14,6 @@ const MemberDetailChart = ({ chartMode, period, playerGame, playerDetailTarget }
       return wanted.loser_rating_after[wanted.losers.indexOf(playerDetailTarget.name)]
     }
   }
-
-  // 랭킹은 게임기록에서 가져 올 수 없음
-  // 랭킹은 게임기록에서 가져 올 수 없음
-  // 랭킹은 게임기록에서 가져 올 수 없음
-  // function getRanking(STD_Date) {
-  //     return 1
-  // }
 
   function getDate(STD_Date) {
     let year = STD_Date.getFullYear()
@@ -112,7 +106,7 @@ const MemberDetailChart = ({ chartMode, period, playerGame, playerDetailTarget }
       }
     }
   }
-    
+
   return (
     <Line
       data={{

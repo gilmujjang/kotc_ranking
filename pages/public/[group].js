@@ -33,6 +33,7 @@ const group_main = () => {
       }
       setGroupPlayers(groupPlayers => [...groupPlayers, singlePlayerObject])
     })
+    groupPlayers.sort((a, b) => b.rating - a.rating)
   }
 
   async function getWholeGames() {

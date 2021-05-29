@@ -13,7 +13,6 @@ const MemberList = ({ groupName, groupPlayers }) => {
     const searchedTarget = searchPlayerFromGroupPlayers(e.target)
 
     setPlayerDetailTarget(searchedTarget)
-    console.log('리스트 : ', playerDetailTarget);
     setIsModalOpen(true)
   }
 

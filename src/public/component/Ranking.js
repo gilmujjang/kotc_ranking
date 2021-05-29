@@ -6,23 +6,22 @@ import styles from '../css/Ranking.module.css'
 const RankingContent = ({ groupPlayers }) => {
   const [playersToShow, setPlayersToShow] = useState([]);
   const [currentType, setCurrentType] = useState('전체');
-  const [wantedPlayer, setWantedPlayer] = useState('');
+  const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
     switch(currentType) {
       case '전체':
-        if(wantedPlayer) {
-          setPlayersToShow(groupPlayers.filter(el => el.name === parseInt(wantedPlayer) || el.displayName === parseInt(wantedPlayer)))
-        } else{
+        if(filterName) {
+          setPlayersToShow(groupPlayers.filter(el => el.name.includes(filterName)))
+        } else {
           setPlayersToShow(groupPlayers)
         }
-        setPlayersToShow(groupPlayers)
         break;
       default:
-        setPlayersToShow(allUsersList)
+        setPlayersToShow(groupPlayers)
         break;
     }
-  }, [groupPlayers, currentType, wantedPlayer])
+  }, [groupPlayers, currentType, filterName])
 
   const playerRankingCard = playersToShow.map((player,index) => (
     <div className={styles.ranking_card} key={index}>
@@ -61,8 +60,8 @@ const RankingContent = ({ groupPlayers }) => {
     </div>
   ))
 
-  function filterWantedPlayer(e) {
-    setWantedPlayer(e.target.value)
+  function traceInput(e) {
+    setFilterName(e.target.value)
   }
 
   function filterMembersToShow(e) {
@@ -80,7 +79,7 @@ const RankingContent = ({ groupPlayers }) => {
           <li className="dropdown__list__item" data-type="전체" onClick={filterMembersToShow}>전체</li>
         </ul>
       </div>
-      <input type="text" className="filter__rankingContainer" placeholder="text me..." onChange={filterWantedPlayer} />
+      <input type="text" className="filter__rankingContainer" placeholder="text me..." onChange={traceInput} />
     </>
   )
 

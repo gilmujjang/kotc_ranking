@@ -65,7 +65,6 @@ const MemberDetailModal = ({ isModalOpen, setIsModalOpen, groupName, playerDetai
   )
   
   useEffect(() => {
-    console.log('모달 : ', playerDetailTarget);
     dbService.collection(groupName).doc('group_data').collection('players').doc(playerDetailTarget.name).collection('games').get().then((querySnapshot) => {
       if(querySnapshot.docs.length === 0) {
         setPlayerGame([])
