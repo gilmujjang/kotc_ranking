@@ -13,19 +13,20 @@ const public_joinGroup = () => {
   const [mapGroupList, setMapGroupList] = useState([])
 
   function requestJoin(e) {
-    const memberDocRef = dbService.collection(e.target.dataset.group_name).doc('group members').collection('멤버 목록').doc(userObj.uid)
-    const awaitorDocRef = dbService.collection(e.target.dataset.group_name).doc('group awaitors').collection('가입 대기자 목록').doc(userObj.uid)
+    const memberDocRef = dbService.collection(e.target.dataset.group_name).doc('group_data').collection('members').doc(userObj.uid)
+    const awaitorDocRef = dbService.collection(e.target.dataset.group_name).doc('group_data').collection('awaitors').doc(userObj.uid)
 
     memberDocRef.get().then((doc) => {
       if(doc.exists) {
-        // 신청한 사람의 uid가 멤버 목록에 존재 할 경우
+        // 신청한 사람의 uid가 members에 존재 할 경우
         alert('이미 가입한 그룹입니다. :D')
       } else {
-        // 신청한 사람의 uid가 멤버 목록에 존재 하지 않을 경우
+        // 신청한 사람의 uid가 members에 존재 하지 않을 경우
         awaitorDocRef.set({
           name: userObj.name,
           displayName: userObj.displayName,
           photoURL: userObj.photoURL,
+          introduce: userObj.introduce,
           uid: userObj.uid
         })
       }
@@ -49,8 +50,7 @@ const public_joinGroup = () => {
       querySnapshot.forEach((doc) => {
         setWholeGroups(wholeGroups => [...wholeGroups, {
           group_name: doc.data().group_name,
-          group_introduce: doc.data().group_introduce,
-          id: doc.data().id
+          group_introduce: doc.data().group_introduce
         }])
       })
     })

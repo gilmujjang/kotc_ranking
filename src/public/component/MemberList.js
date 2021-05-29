@@ -1,31 +1,42 @@
 import { useEffect, useState } from 'react';
-import MemberDetail from './MemberDetail';
+import MemberDetailModal from './MemberDetailModal';
 import styles from '../css/MemberList.module.css'
 
-const MemberList = ({ groupMembers }) => {
-  const groupMemberList = groupMembers.concat().sort(function(a, b) {a.name - b.name})
+const MemberList = ({ groupName, groupPlayers }) => {
+  const groupPlayerList = groupPlayers.concat().sort(function(a, b) {a.name - b.name})
   const [mapList, setMapList] = useState([])
-  const [isDetailOn, setIsDetailOn] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [filterName, setFilterName] = useState('')
-  const [memberDetailTarget, setMemberDetailTarget] = useState({}) // 상세 정보 보여 줄 타겟 정보
+  const [playerDetailTarget, setPlayerDetailTarget] = useState({}) // 상세 정보 보여 줄 타겟 정보
 
   function showDetail(e) {
-    setMemberDetailTarget(groupMemberList.find(el => el.name === e.target.dataset.name))
-    setIsDetailOn(true)
+    const searchedTarget = searchPlayerFromGroupPlayers(e.target)
+
+    setPlayerDetailTarget(searchedTarget)
+    console.log('리스트 : ', playerDetailTarget);
+    setIsModalOpen(true)
   }
 
-  const memberListCard = mapList.map((member,index) => (
+  function searchPlayerFromGroupPlayers(target) {
+    const searchedTarget = groupPlayers.find(player => player.name === target.dataset.name)
+    return searchedTarget
+  }
+
+  const memberListCard = mapList.map((player,index) => (
     <div className={styles.member_card} key={index}>
       <div className={styles.top}>
-        <img src={member.photoURL} alt="member profile" />
+        {
+        player.photoURL ? 
+        <img src={player.photoURL} alt="player profile" /> :
+        <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/68/d768b6caa2c0d23507bc12087bf171a8.jpeg" alt="default profile img" />       
+        }
       </div>
       <div className={styles.mid}>
-        <span className={styles.displayName}>{member.displayName}</span>
-        <span className={styles.name}>{member.name}</span>
-        <span className={styles.introduce}>{member.introduce}</span>
+        <span className={styles.name}>{player.name}</span>
+        <span className={styles.status}>{player.status}</span>
       </div>
       <div className={styles.bot}>
-        <div className="button__index">Look Detail</div>
+        <div className="button__index" onClick={showDetail} data-name={player.name}>Look Detail</div>
       </div>
     </div>
   ))
@@ -36,9 +47,9 @@ const MemberList = ({ groupMembers }) => {
 
   useEffect(() => {
     if(filterName) {
-      setMapList(groupMemberList.filter(el => el.name.includes(filterName)))
+      setMapList(groupPlayerList.filter(el => el.name.includes(filterName)))
     } else {
-      setMapList(groupMemberList)
+      setMapList(groupPlayerList)
     }
   }, [filterName])
 
@@ -49,7 +60,7 @@ const MemberList = ({ groupMembers }) => {
         <div className={styles.memberList}>
           {memberListCard}
         </div>
-        {isDetailOn && <MemberDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} memberDetailTarget={memberDetailTarget} />}
+        <MemberDetailModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} groupName={groupName} playerDetailTarget={playerDetailTarget} setPlayerDetailTarget={setPlayerDetailTarget} groupPlayers={groupPlayers} />
       </div>
     </>
   )

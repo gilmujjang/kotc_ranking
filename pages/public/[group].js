@@ -12,59 +12,58 @@ import RecentGame from "../../src/public/component/RecentGame"
 const group_main = () => {
   const router = useRouter()
   const { group } = router.query
+  const groupName = group
   const [content, setContent] = useState('community')
-  const [groupMembers, setGroupMembers] = useState([]);
+  const [groupPlayers, setGroupPlayers] = useState([]);
   const [wholeGames, setWholeGames] = useState([]);
 
-  useEffect(() => {
-    // 전체 멤버
-    const docRef = dbService.collection(group).doc('group members').collection('멤버 목록')
-    docRef.get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        const singleMemberObject = {
-          name: doc.data().name,
-          displayName: doc.data().displayName,
-          uid: doc.data().uid,
-          photoURL: doc.data().photoURL,
-          joined_date: doc.data().joined_date,
-          rating: doc.data().rating,
-          game_all: doc.data().game_all,
-          game_win: doc.data().game_win,
-          game_lose: doc.data().game_lose,
-          status: doc.data().status,
-          introduce: doc.data().introduce
-        }
-        setGroupMembers(groupMembers => [...groupMembers, singleMemberObject])
-      })
+  async function getGroupPlayers() {
+    const querySnapshot = await dbService.collection(group).doc('group_data').collection('players').get()
+    querySnapshot.forEach(doc => {
+      const singlePlayerObject = {
+        name: doc.data().name,
+        photoURL: doc.data().photoURL,
+        joined_date: doc.data().joined_date,
+        rating: doc.data().rating,
+        game_all: doc.data().game_all,
+        game_win: doc.data().game_win,
+        game_lose: doc.data().game_lose,
+        status: doc.data().status,
+        introduce: doc.data().introduce
+      }
+      setGroupPlayers(groupPlayers => [...groupPlayers, singlePlayerObject])
     })
-  }, [])
+  }
+
+  async function getWholeGames() {
+    const querySnapshot = await dbService.collection(group).doc('group_data').collection('games').orderBy("write_time","desc").limit(10).get()
+    querySnapshot.forEach(doc => {
+      const singleGameObject = {
+        winners: doc.data().winners,
+        losers: doc.data().losers,
+        rating_change: doc.data().rating_change,
+        percentage: doc.data().percentage,
+        date: doc.data().date,
+        time: doc.data().write_time,
+        id: `${doc.data().date}-${doc.data().write_time}`,
+        winner_rating_after: doc.data().winner_rating_after,
+        loser_ratingafter: doc.data().loser_ratingafter
+      }
+      setWholeGames(wholeGames => [...wholeGames, singleGameObject]);
+    })
+  }
 
   useEffect(() => {
-    // 경기 기록
-    dbService.collection(group).doc('group_data').collection('game').orderBy("write_time","desc").limit(10).get().then(snapshot => {
-      snapshot.docs.map(doc => {
-        const singleGameObject = {
-          winners: doc.data().winners,
-          losers: doc.data().losers,
-          ratingChange: doc.data().ratingChange,
-          percentage: doc.data().percentage,
-          date: doc.data().date,
-          time: doc.data().write_time,
-          id: doc.data().date+'-'+doc.data().write_time,
-          winnerRatingAfter: doc.data().winnerRatingAfter,
-          loserRatingAfter: doc.data().loserRatingAfter
-        }
-        setWholeGames(wholeGames => [...wholeGames, singleGameObject]);
-      })
-    })
+    getGroupPlayers()
+    getWholeGames()
   }, [])
 
   return (
     <div className={styles.publicContainer}>
       <Nav setContent={setContent} />
       <div className={styles.teamContainer}>
-        {content === 'ranking' && <Ranking groupMembers={groupMembers} />}
-        {content === 'member list' && <MemberList groupMembers={groupMembers} />}
+        {content === 'ranking' && <Ranking groupPlayers={groupPlayers} />}
+        {content === 'member list' && <MemberList groupName={groupName} groupPlayers={groupPlayers} />}
         {content === 'community' && <Community />}
       </div>
       {content !== 'community' &&

@@ -34,15 +34,20 @@ address, em, i {font-style: normal;}
 .button__index:hover{background-color: rgba(52, 152, 219, .8);}
 
 /* DROPDOWN */
-.dropdown{width: 100px; cursor: pointer;}
-.dropdown:hover .dropdown__list{opacity: 1; visibility: visible;}
-.dropdown .dropdown__selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px;}
+.dropdown{width: 100px; cursor: pointer; transition: .5s;}
+.dropdown .dropdown__selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px; transition: .5s;}
 .dropdown .dropdown__list{background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
-.dropdown .dropdown__list .dropdown__list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500;}
-.dropdown .dropdown__list .dropdown__list__item:hover{background-color: rgba(180, 180, 180, 0.8);}
+.dropdown .dropdown__list .dropdown__list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500; transition: .5s;}
+.dropdown .dropdown__list .dropdown__list__item:hover{background-color: #2d2d2d; color: #fff;}
+/* rgba(180, 180, 180, 0.8) */
+
+.dropdown:hover .dropdown__list{opacity: 1; visibility: visible;}
+.dropdown__selected:hover{background-color: #2d2d2d;}
+.dropdown__selected:hover .selected{color: #fff;}
+.dropdown__selected:hover i{color: #fff;}
 
 .dropdown.dropdown__rankingContainer{position: absolute; top: -60px; right: 160px;}
-.dropdown.dropdown__userDetail{position: absolute; top: -40px; right: 20px;}
+.dropdown.dropdown__userDetail{position: relative;}
 
 /* INPUT */
 .input__text{display: block; width: 330px; height: 40px; padding: 8px; background-color: #dfe6e9; border: none; border-radius: 4px;}

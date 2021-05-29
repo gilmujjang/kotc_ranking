@@ -37,7 +37,7 @@ const MyTeam = () => {
   )
 
   useEffect(() => {
-    dbService.collection('whole_users').doc(userObj.uid).collection('가입한 그룹').get().then((querySnapshot) => {
+    dbService.collection('whole_users').doc(userObj.uid).collection('joined_group').get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         setMyTeamList(myTeamList => [...myTeamList, {
           group_name: doc.data().group_name,
