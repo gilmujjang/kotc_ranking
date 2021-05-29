@@ -12,6 +12,7 @@ import RecentGame from "../../src/public/component/RecentGame"
 const group_main = () => {
   const router = useRouter()
   const { group } = router.query
+  console.log(group);
   const groupName = group
   const [content, setContent] = useState('community')
   const [groupPlayers, setGroupPlayers] = useState([]);
@@ -29,6 +30,7 @@ const group_main = () => {
         game_win: doc.data().game_win,
         game_lose: doc.data().game_lose,
         status: doc.data().status,
+        start_rating: doc.data().start_rating,
         introduce: doc.data().introduce
       }
       setGroupPlayers(groupPlayers => [...groupPlayers, singlePlayerObject])

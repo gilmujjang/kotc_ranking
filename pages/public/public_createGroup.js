@@ -75,10 +75,6 @@ const public_createGroup = () => {
                 uid: userObj.uid,
                 photoURL: userObj.photoURL,
                 joined_date: userObj.joinedDate,
-                rating: 1500,
-                game_all, game_win, game_lose: 0,
-                status: '이제 막 시작...!',
-                introduce: userObj.introduce
               })
             })
             // whole_users - 유저.uid 문서 - 가입한 그룹 collection 에 생성 한 그룹 문서 추가
