@@ -58,14 +58,14 @@ const GroupJoinWant = ({group}) => {
       joindate: time,
       uid: user.uid
     }
-    dbService.collection({group}).doc("group_data").collection("members").doc(userinfo);
-    dbService.collection({group}).doc("group_data").collection("awaitors").delete();
+    dbService.collection({group}).doc("group_data").collection("members").doc(userinfo).set(userinfo);
+    dbService.collection({group}).doc("group_data").collection("awaitors").doc(e.target.id).delete();
     setRefresh(!refresh)
   }
 
   const joinDeny = (e, user) => {
     // joinlist에서 해당유저 삭제
-    dbService.collection({group}).doc("group_data").collection("awaitors").delete();
+    dbService.collection({group}).doc("group_data").collection("awaitors").doc(user.id).delete();
     setRefresh(!refresh)
   }
 
