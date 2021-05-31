@@ -13,7 +13,7 @@ const GroupJoinWant = ({group}) => {
         const userObject = {
           displayName:doc.data().displayName,
           name:doc.data().name,
-          photoURL:doc.data().attachmentUrl,
+          photoURL:doc.data().photoURL,
           uid: doc.data().uid,
           introduce: doc.data().introduce,
         }
@@ -26,12 +26,6 @@ const GroupJoinWant = ({group}) => {
 
   const joinAccept =(e, user) => {
     // joinlist에서 해당유저 삭제하고 db join에서 삭제하고 member에 삽입
-    console.log("가입 승인");
-    console.log(user.user.photoURL);
-    console.log(user.user.name);
-    console.log(user.user.introduce);
-    console.log(user.user.displayName);
-    console.log(user.user.uid);
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
