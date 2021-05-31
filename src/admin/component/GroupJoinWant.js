@@ -4,7 +4,6 @@ import { Icon } from 'semantic-ui-react'
 import { dbService } from '../../fbase';
 
 const GroupJoinWant = ({group}) => {
-  console.log("excute groupjoinwnat")
   const [awaitorlist, setawaitorlist] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
@@ -12,10 +11,11 @@ const GroupJoinWant = ({group}) => {
     dbService.collection(group).doc("group_data").collection("awaitors").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {
+          displayName:doc.data().displayName,
           name:doc.data().name,
-          time:doc.data().time,
-          attachmentUrl:doc.data().attachmentUrl,
-          userid: doc.data().userid,
+          photoURL:doc.data().attachmentUrl,
+          uid: doc.data().uid,
+          introduce: doc.data().introduce,
         }
         console.log(userObject)
         setawaitorlist(awaitorlist => [...awaitorlist, userObject]);
@@ -26,7 +26,12 @@ const GroupJoinWant = ({group}) => {
 
   const joinAccept =(e, user) => {
     // joinlist에서 해당유저 삭제하고 db join에서 삭제하고 member에 삽입
-    console.log("가입 승인")
+    console.log("가입 승인");
+    console.log(user.user.photoURL);
+    console.log(user.user.name);
+    console.log(user.user.introduce);
+    console.log(user.user.displayName);
+    console.log(user.user.uid);
     let now = new Date();   
     let year = now.getFullYear(); // 년도
     let month = now.getMonth() + 1;  // 월
@@ -51,21 +56,23 @@ const GroupJoinWant = ({group}) => {
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
     const userinfo = {
-      displayName: user.displayName,
-      name: user.name,
-      photoURL: user.photoURL,
-      introduce: user.introduce,
+      displayName: user.user.displayName,
+      name: user.user.name,
+      photoURL: user.user.photoURL,
+      introduce: user.user.introduce,
       joindate: time,
-      uid: user.uid
+      uid: user.user.uid
     }
-    dbService.collection({group}).doc("group_data").collection("members").doc(userinfo).set(userinfo);
-    dbService.collection({group}).doc("group_data").collection("awaitors").doc(e.target.id).delete();
+    dbService.collection(group).doc("group_data").collection("members").doc(user.user.uid).set(userinfo);
+    dbService.collection(group).doc("group_data").collection("awaitors").doc(user.user.uid).delete();
     setRefresh(!refresh)
   }
 
   const joinDeny = (e, user) => {
     // joinlist에서 해당유저 삭제
-    dbService.collection({group}).doc("group_data").collection("awaitors").doc(user.id).delete();
+    console.log("가입 거절");
+    console.log(user.user.uid)
+    dbService.collection(group).doc("group_data").collection("awaitors").doc(user.user.uid).delete();
     setRefresh(!refresh)
   }
 
@@ -76,12 +83,9 @@ const GroupJoinWant = ({group}) => {
           <div className={styles.needMargin}>{user.name}</div>
         </div>
       </div>
-      <div className={styles.userinfomodule}>
-        <div className={styles.userinfo}>시각 : {user.time}</div>
-      </div>
-      <div>
-        <Icon name="check icon" onClick={(e) => {joinAccept(e,{user})}}/>
-        <Icon name="window close outline icon" onClick={(e) => {joinDeny(e,{user})}}/>
+      <div className={styles.awaitorlist}>
+        <Icon name="check icon large" onClick={(e) => {joinAccept(e,{user})}}/>
+        <Icon name="window close outline icon large" onClick={(e) => {joinDeny(e,{user})}}/>
       </div>
     </div>
   ))
