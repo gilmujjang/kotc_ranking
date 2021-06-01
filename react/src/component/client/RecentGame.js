@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function getRecentGamesStructure(arr) {
   return arr.slice(0, 5).map((el, index) => (
-    <div className="game" key={index}>
+    <div className="games" key={index}>
       <div className="top">{el.date.slice(0, 4)}년 {el.date.slice(4, 6)}월 {el.date.slice(6)}일</div>
       <div className="bot">
         {el.winners.length === 2 ?

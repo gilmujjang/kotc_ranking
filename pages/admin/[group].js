@@ -38,7 +38,7 @@ const admin_main = () => {
   }, [])
 
   useEffect(() => {
-    dbService.collection(group).doc("group_data").collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
+    dbService.collection(group).doc("group_data").collection("games").orderBy("write_time","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
           winners: doc.data().winners,

@@ -567,7 +567,7 @@ const Post = ({userObj}) => {
   )
 
   // const test = () => {
-  //   dbService.collection("game").get().then(snapshot => {
+  //   dbService.collection("games").get().then(snapshot => {
   //     snapshot.docs.map(doc => {
   //       let docname = doc.data().date + '-' + doc.data().write_time
   //       let winnerlist = doc.data().winners;
@@ -575,7 +575,7 @@ const Post = ({userObj}) => {
   //         if(winnerlist[i]=="1500"){
   //           winnerlist[i] = "정화"
   //           (winnerlist)
-  //           dbService.collection("game").doc(docname).update({winners: winnerlist})
+  //           dbService.collection("games").doc(docname).update({winners: winnerlist})
   //         }
   //       }
 
@@ -583,7 +583,7 @@ const Post = ({userObj}) => {
   //       for(let i=0; i<loserlist.length; i++){
   //         if(loserlist[i]=="1500"){
   //           loserlist[i] = "정화"
-  //           dbService.collection("game").doc(docname).update({losers: loserlist})
+  //           dbService.collection("games").doc(docname).update({losers: loserlist})
   //         }
   //       }
         

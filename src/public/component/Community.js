@@ -594,13 +594,12 @@ const Community = () => {
   )
 
 
-  // // 데이터처리 더미코드
+  // 데이터처리 더미코드
   // const test = () => {
-  //   dbService.collection("kotc_players").get().then( snapshot => {
+  //   dbService.collection("game").get().then( snapshot => {
   //     snapshot.docs.map( doc => {
   //       setTimeout(function(){
-  //         console.log(doc.data())
-  //         dbService.collection("kotc").doc("group_data").collection("players").doc(doc.data().name).set(doc.data());
+  //         dbService.collection("kotc").doc("group_data").collection("games").doc(doc.data().date+"-"+doc.data().write_time).set(doc.data());
   //       },1000)
   //     })
   //   })
