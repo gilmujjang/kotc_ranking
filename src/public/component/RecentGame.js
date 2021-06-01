@@ -16,8 +16,8 @@ function getRecentGamesStructure(arr) {
                 <span className="winner__name">{el.winners[1]}</span>
               </div>
               <div className="winnerRatings">
-                <span className="winner__rating>">{el.ratingChange}<Icon name="caret up" className="icon__win" /></span>
-                <span className="winner__rating>">{el.ratingChange}<Icon name="caret up" className="icon__win" /></span>
+                <span className="winner__rating>">{el.rating_change}<Icon name="caret up" className="icon__win" /></span>
+                <span className="winner__rating>">{el.rating_change}<Icon name="caret up" className="icon__win" /></span>
               </div>
             </div>
           </div>
@@ -29,8 +29,8 @@ function getRecentGamesStructure(arr) {
                 <span className="loser__name">{el.losers[1]}</span>
               </div>
               <div className="loserRatings">
-                <span className="loser__rating>">{el.ratingChange}<Icon name="caret down" className="icon__lose" /></span>
-                <span className="loser__rating>">{el.ratingChange}<Icon name="caret down" className="icon__lose" /></span>
+                <span className="loser__rating>">{el.rating_change}<Icon name="caret down" className="icon__lose" /></span>
+                <span className="loser__rating>">{el.rating_change}<Icon name="caret down" className="icon__lose" /></span>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@ function getRecentGamesStructure(arr) {
                 <span className="winner__name">{el.winners[0]}</span>
               </div>
               <div className="winnerRatings">
-                <span className="winner__rating>">{el.ratingChange}<Icon name="caret up" className="icon__win" /></span>
+                <span className="winner__rating>">{el.rating_change}<Icon name="caret up" className="icon__win" /></span>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@ function getRecentGamesStructure(arr) {
                   <span className="loser__name">{el.losers[0]}</span>
                 </div>
                 <div className="loserRatings">
-                  <span className="loser__rating>">{el.ratingChange}<Icon name="caret down" className="icon__lose" /></span>
+                  <span className="loser__rating>">{el.rating_change}<Icon name="caret down" className="icon__lose" /></span>
                 </div>
               </div>
           </div>
@@ -66,15 +66,30 @@ function getRecentGamesStructure(arr) {
   ))
 }
 
-const RecentGame = ({ allGame }) => {
-
-  const recentGames = useMemo(() => getRecentGamesStructure(allGame), [allGame])
-
+function noGamesStructure() {
   return (
-    <div className="games">
-      {recentGames}
+    <div className="noGame">
+      <span>경기 기록이 없습니다.</span>
     </div>
-  );
+  )
+}
+
+const RecentGame = ({ wholeGames }) => {
+  const recentGames = useMemo(() => getRecentGamesStructure(wholeGames), [wholeGames])
+  const noGames = useMemo(() => noGamesStructure(), [])
+  
+  return (
+    <>
+      {
+      wholeGames.length > 0 ?
+        <div className="games">
+          {recentGames}
+        </div>
+      :
+        noGames
+      }
+    </>
+  )
 }
 
 export default RecentGame

@@ -10,9 +10,9 @@ const Nav = ({ setContent }) => {
   return (
     <div className={styles.nav}>
       <ul>
+        <li data-content="community" onClick={changeContent}>커뮤니티</li>
         <li data-content="ranking" onClick={changeContent}>멤버 랭킹</li>
         <li data-content="member list" onClick={changeContent}>멤버 리스트</li>
-        <li data-content="community" onClick={changeContent}>커뮤니티</li>
       </ul>
       <span className={styles.back}><Link href="/public/public_main"><a>선택 화면으로</a></Link></span>
       <footer>

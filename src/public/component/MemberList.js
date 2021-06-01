@@ -1,44 +1,41 @@
 import { useEffect, useState } from 'react';
-import MemberDetail from './MemberDetail';
+import MemberDetailModal from './MemberDetailModal';
 import styles from '../css/MemberList.module.css'
 
-const MemberList = ({ allUsers }) => {
-  const allUsersByTime = [...allUsers];
-  allUsersByTime.sort(function(a, b){
-    if(a.time < b.time) return 1
-    else if(a.time > b.time) return -1
-    else return 0
-  })
+const MemberList = ({ groupName, groupPlayers }) => {
+  const groupPlayerList = groupPlayers.concat().sort(function(a, b) {a.name - b.name})
   const [mapList, setMapList] = useState([])
-  const [isDetailOn, setIsDetailOn] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [filterName, setFilterName] = useState('')
-  const [userDetailTarget, setUserDetailTarget] = useState({}) // 상세 정보 보여 줄 타겟 정보
+  const [playerDetailTarget, setPlayerDetailTarget] = useState({}) // 상세 정보 보여 줄 타겟 정보
 
   function showDetail(e) {
-    setUserDetailTarget(allUsersByTime.find(el => el.name === e.target.dataset.name))
-    setIsDetailOn(true)
+    const searchedTarget = searchPlayerFromGroupPlayers(e.target)
+
+    setPlayerDetailTarget(searchedTarget)
+    setIsModalOpen(true)
   }
 
-  const userInfo = mapList.map((user,index) => (
-    <div className={styles.memberInfo} key={index}>
-      <div>
-        <img className={styles.userImage} src={user.attachmentUrl} onClick={showDetail} data-name={user.name} alt="member list profile"/>
+  function searchPlayerFromGroupPlayers(target) {
+    const searchedTarget = groupPlayers.find(player => player.name === target.dataset.name)
+    return searchedTarget
+  }
+
+  const memberListCard = mapList.map((player,index) => (
+    <div className={styles.member_card} key={index}>
+      <div className={styles.top}>
+        {
+        player.photoURL ? 
+        <img src={player.photoURL} alt="player profile" /> :
+        <img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/68/d768b6caa2c0d23507bc12087bf171a8.jpeg" alt="default profile img" />       
+        }
       </div>
-      <div className={styles.right}>
-        <div className={styles.up}>
-          <div>
-            <span className={styles.memberName}>{user.name}</span>
-            <span className={styles.memberStatus}>{user.status}</span>
-          </div>
-          <div className={styles.memberRecord}>
-            <div>{user.game_win}승</div>
-            <div>{user.game_lose}패</div>
-          </div>
-        </div>
-        <div className={styles.bot}>
-          <span className={styles.memberRating}>레이팅: {user.rating}</span>
-          <span className={styles.memberDepartment}>{user.department}</span>
-        </div>
+      <div className={styles.mid}>
+        <span className={styles.name}>{player.name}</span>
+        <span className={styles.status}>{player.status}</span>
+      </div>
+      <div className={styles.bot}>
+        <div className="button__index" onClick={showDetail} data-name={player.name}>Look Detail</div>
       </div>
     </div>
   ))
@@ -49,11 +46,9 @@ const MemberList = ({ allUsers }) => {
 
   useEffect(() => {
     if(filterName) {
-      setMapList(allUsersByTime.filter(el => el.name === filterName))
+      setMapList(groupPlayerList.filter(el => el.name.includes(filterName)))
     } else {
-      setMapList(allUsersByTime.sort(function(a,b){
-        return a.time > b.time ? -1 : a.time < b.time ? 1: 0;
-      }))
+      setMapList(groupPlayerList)
     }
   }, [filterName])
 
@@ -62,9 +57,9 @@ const MemberList = ({ allUsers }) => {
       <input type="text" className="filter__memberList" placeholder="text name..." onChange={traceInput} />
       <div className={styles.allMembers}>
         <div className={styles.memberList}>
-          {userInfo}
+          {memberListCard}
         </div>
-        {isDetailOn && <MemberDetail setIsDetailOn={setIsDetailOn} allUsersByTime={allUsersByTime} userDetailTarget={userDetailTarget} />}
+        <MemberDetailModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} groupName={groupName} playerDetailTarget={playerDetailTarget} setPlayerDetailTarget={setPlayerDetailTarget} groupPlayers={groupPlayers} />
       </div>
     </>
   )

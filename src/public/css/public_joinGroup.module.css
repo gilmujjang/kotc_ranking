@@ -1,0 +1,10 @@
+.joinGroup{min-height: calc(100vh - 130px); background-color: #101820;}
+.joinGroup > .container__public_joinGroup{display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.joinGroup > .container__public_joinGroup > input{display: inline-flex; width: 500px; margin: 48px 0; padding: 16px; background-color: transparent; outline: none; border: none; border-bottom: 1px solid #fff; font-size: 24px; color: #fff; text-align: center; cursor: pointer;}
+.joinGroup > .container__public_joinGroup .groupSmallCardContainer{}
+
+.card{min-width: 290px; padding: 12px 4px 4px 4px; background-color: #fff; border: 1px solid #bdc3c7; border-radius: 8px;}
+.card > .group_name{margin: 0 0 8px 4px; font-size: 20px; color: #101820; letter-spacing: 1.5px;}
+.card > .group_introduce{margin: 0 0 4px 4px; font-size: 14px; color: #7f8c8d; letter-spacing: 1.2px;}
+.card > div{padding: 4px 0; border: 1px solid #2ecc71; border-radius: 4px; font-size: 16px; color: #2ecc71; text-align: center; letter-spacing: 1.2px; transition: .5s; cursor: pointer;}
+.card > div:hover{background-color: #2ecc71; color: #fff;}

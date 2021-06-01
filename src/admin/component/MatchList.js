@@ -1,13 +1,11 @@
-import { React, useEffect, useState } from 'react';
-import { Toast, ToastHeader } from 'reactstrap';
+import { React } from 'react';
 import { dbService } from '../../fbase';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import styles from '../css/Admin.module.css'
-import classNames from 'classnames';
 import { Icon } from 'semantic-ui-react'
 
-const MatchList = ({allGame}) => {
+const MatchList = ({allGame, group}) => {
 
   const deleteClick = async(e) => {
     let winTeam = []
@@ -22,8 +20,8 @@ const MatchList = ({allGame}) => {
     })
 
     await winTeam.map(winner => {
-      dbService.collection("user").doc(winner).collection("game_record").doc(e.target.id).delete()
-      dbService.collection("user").doc(winner).update({
+      dbService.collection(group).doc("group_data").collection("players").doc(winner).collection("game_record").doc(e.target.id).delete()
+      dbService.collection(group).doc("group_data").collection("players").doc(winner).update({
         rating:firebase.firestore.FieldValue.increment(-changedRating),
         game_all:firebase.firestore.FieldValue.increment(-1),
         game_win:firebase.firestore.FieldValue.increment(-1)
@@ -31,14 +29,14 @@ const MatchList = ({allGame}) => {
     })
 
     await loseTeam.map(loser => {
-      dbService.collection("user").doc(loser).collection("game_record").doc(e.target.id).delete()
-      dbService.collection("user").doc(loser).update({
+      dbService.collection(group).doc("group_data").collection("players").doc(loser).collection("game_record").doc(e.target.id).delete()
+      dbService.collection(group).doc("group_data").collection("players").doc(loser).update({
         rating:firebase.firestore.FieldValue.increment(changedRating),
         game_all:firebase.firestore.FieldValue.increment(-1),
         game_lose:firebase.firestore.FieldValue.increment(-1)
       })
     })
-    await dbService.collection("game").doc(e.target.id).delete()
+    await dbService.collection("kotc").doc("group_data").collection("game").doc(e.target.id).delete()
     alert(e.target.id+' 를 삭제했습니다')
   }
 

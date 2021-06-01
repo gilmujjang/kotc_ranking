@@ -292,3 +292,10 @@
 .displayFlex {
   display: flex;
 }
+
+/* GroupJoinWnat */
+.awaitorlist {
+  padding: 8px;
+  display: flex;
+  justify-content: space-around;
+}

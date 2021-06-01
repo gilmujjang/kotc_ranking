@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import { React, useEffect, useState } from 'react';
 import { dbService } from '../../src/fbase'
 import styles from '../../src/admin/css/Admin.module.css'
@@ -6,14 +7,17 @@ import CreateUser from '../../src/admin/component/CreateUser'
 import RegiMatch from '../../src/admin/component/RegiMatch'
 import UserList from '../../src/admin/component/UserList'
 import MatchList from '../../src/admin/component/MatchList'
-// import GroupJoinWant from '../../src/admin/compnent/GroupJoinWant'
+import GroupJoinWant from '../../src/admin/component/GroupJoinWant'
 
 const admin_main = () => {
+  console.log("excute admin_main")
   const [allUsers, setAllUsers] = useState([]);
   const [allGame, setAllGame] = useState([]);
-
+  const router = useRouter()
+  const { group } = router.query
+  const groupName = group
   useEffect(() => {
-    dbService.collection("kotc").doc("group_data").collection("players").orderBy("rating","desc").get().then(snapshot => {
+    dbService.collection(group).doc("group_data").collection("players").orderBy("rating","desc").get().then(snapshot => {
       snapshot.docs.map(doc => {
         const userObject = {
           name:doc.data().name,
@@ -34,7 +38,7 @@ const admin_main = () => {
   }, [])
 
   useEffect(() => {
-    dbService.collection("kotc").doc("group_data").collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
+    dbService.collection(group).doc("group_data").collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
           winners: doc.data().winners,
@@ -51,19 +55,19 @@ const admin_main = () => {
       })
     })
   }, [])
-  
+
   return (
     <div className={styles.AdminMain}>
-      <Header />
+      <Header group={groupName}/>
       <div className={styles.Content}>
-        <CreateUser allUsers={allUsers}/>
-        <RegiMatch allUsers={allUsers}/>
-        <UserList allUsers={allUsers}/>
-        <MatchList allGame={allGame}/>
-        {/* <GroupJoinWant/> */}
+        <CreateUser allUsers={allUsers} group={groupName}/>
+        <RegiMatch allUsers={allUsers} group={groupName}/>
+        <UserList allUsers={allUsers} group={groupName}/>
+        <MatchList allGame={allGame} group={groupName}/>
+        <GroupJoinWant group={group}/>
       </div>
     </div>
-  );
+  )
 };
 
-export default admin_main;
+export default admin_main

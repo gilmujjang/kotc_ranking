@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
 import { Icon } from 'semantic-ui-react'
+import classNames from 'classnames';
+import styles from '../css/MemberDetailModal.module.css'
 
 function getRecentGamesStructure(arr) {
   return (
     arr.map((el, index) => 
-      <div className="game" key={index}>
+      <div className={classNames({["game"]: true, [styles.game__member_detail_modal]: true})} key={index}>
         <div className="top">{el.date.slice(0, 4)}년 {el.date.slice(4, 6)}월 {el.date.slice(6)}일</div>
         <div className="bot">
           {el.winners.length === 2 ?
@@ -76,15 +78,15 @@ function noGamesStructure() {
   )
 }
 
-const UserDetailGame = ( {userMatch} ) => {
-  const recentGames = useMemo(() => getRecentGamesStructure(userMatch), [userMatch])
+const PlayerDetailGame = ( {playerGame} ) => {
+  const recentGames = useMemo(() => getRecentGamesStructure(playerGame), [playerGame])
 
   const noGames = useMemo(() => noGamesStructure(), [])
 
   return (
     <>
       {
-      userMatch.length > 0 ?
+      playerGame.length > 0 ?
         <div className="games">
           {recentGames}
         </div>
@@ -95,4 +97,4 @@ const UserDetailGame = ( {userMatch} ) => {
   )
 }
 
-export default UserDetailGame
+export default PlayerDetailGame

@@ -11,7 +11,7 @@ const Top = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [userObj, setUserObj] = useContext(UserObjContext)
-  console.log('Top')
+  
   function getJoinedDate() {
     const today = new Date()
     const year = today.getFullYear()
@@ -37,7 +37,8 @@ const Top = () => {
             displayName: result.user.displayName,
             uid: result.user.uid,
             photoURL: result.user.photoURL,
-            joined_date: getJoinedDate()
+            joined_date: getJoinedDate(),
+            introduce: `안녕하세요? ${result.user.displayName}입니다 :D`
           })
           .catch((error) => {alert("whole_users에 문서를 추가하는데에 실패하였습니다. : ", error)})
         }
@@ -90,4 +91,3 @@ const Top = () => {
 }
 
 export default memo(Top)
-// export default Top

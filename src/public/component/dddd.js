@@ -1,13 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { dbService } from '../../fbase';
-import { Icon } from 'semantic-ui-react'
-import classNames from 'classnames';
-import styles from '../css/MemberDetail.module.css'
-import MemberDetailChart from './MemberDetailChart';
-import MemberDetailGame from './MemberDetailGame';
-import MemberDetailWinningRate from './MemberDetailWinningRate';
-import MemberDetailRankingRate from './MemberDetailRankingRate';
-
 const MemberDetail = ({ allUsersByTime, setIsDetailOn, userDetailTarget }) => {
     const [chartMode, setChartMode] = useState('rating')
     const [period, setPeriod] = useState('30')
