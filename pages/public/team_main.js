@@ -35,7 +35,7 @@ const team_main = () => {
   }, [])
 
   useEffect(() => {
-    dbService.collection("game").orderBy("write_time","desc").limit(10).get().then(snapshot => {
+    dbService.collection("games").orderBy("write_time","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(doc => {
         const gameObject = {
           winners: doc.data().winners,

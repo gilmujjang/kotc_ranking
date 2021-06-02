@@ -199,7 +199,7 @@ const RegiMatch = ({allUsers}) => {
       return;
     }
 
-    await dbService.collection("kotc").doc("group_data").collection("game").doc(matchDate+'-'+time).set(match);
+    await dbService.collection("kotc").doc("group_data").collection("games").doc(matchDate+'-'+time).set(match);
     
     await winners.map(winner => {
       dbService.collection("kotc").doc("group_data").collection("players").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
