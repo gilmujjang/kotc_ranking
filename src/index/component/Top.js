@@ -61,8 +61,11 @@ const Top = () => {
 
 
   useEffect(() => {
-    if(Object.keys(userObj).length === 0) {setIsSignedIn(false)}
-    else if(Object.keys(userObj).length !== 0) {setIsSignedIn(true)}
+    if(userObj) {
+      setIsSignedIn(true)
+    } else {
+      setIsSignedIn(false)
+    }
   }, [userObj])
 
   return (
