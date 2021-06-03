@@ -21,6 +21,10 @@ const MemberList = ({ groupName, groupPlayers }) => {
     return searchedTarget
   }
 
+  const noMembers = (
+    <div className={styles.no_members}>생성된 플레이어가 한 명도 없습니다.</div>
+  )
+
   const memberListCard = mapList.map((player,index) => (
     <div className={styles.member_card} key={index}>
       <div className={styles.top}>
@@ -56,9 +60,13 @@ const MemberList = ({ groupName, groupPlayers }) => {
     <>
       <input type="text" className="filter__memberList" placeholder="text name..." onChange={traceInput} />
       <div className={styles.allMembers}>
-        <div className={styles.memberList}>
-          {memberListCard}
-        </div>
+        {
+          mapList.length === 0 ?
+          noMembers :
+          <div className={styles.memberList}>
+            {memberListCard}
+          </div>
+        }
         <MemberDetailModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} groupName={groupName} playerDetailTarget={playerDetailTarget} setPlayerDetailTarget={setPlayerDetailTarget} groupPlayers={groupPlayers} />
       </div>
     </>

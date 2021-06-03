@@ -72,7 +72,7 @@ function getRecentGamesStructure(arr) {
 
 function noGamesStructure() {
   return (
-    <div className="noGame">
+    <div className="no_game">
       <span>경기 기록이 없습니다.</span>
     </div>
   )

@@ -1,3 +1,5 @@
+.ranking_filter_container{display: flex; align-items: center; position: absolute; top: -60px; right: 5%;}
+
 /* RankingContent */
 .rankingContainer{display: flex; flex-direction: column; align-items: center; width: 100%; max-height: 100%; overflow: auto; scrollbar-color: rgba(116, 185, 255, .5) rgba(255, 255, 255, 0); scrollbar-width: thin;}
 
@@ -21,3 +23,6 @@
 .ranking_card > .right{display: flex; flex-direction: column; justify-content: center; align-items: center; margin-left: 16px; padding: 8px;}
 .ranking_card > .right > .ranking{font-size: 48px;}
 .ranking_card > .right > span:last-child{font-size: 24px; letter-spacing: 2px;}
+
+
+.no_rankings{display: flex; justify-content: center; align-items: center; width: 90%; height: 100%; margin: 0 auto; background-color: rgba(255, 255, 255, .4); border-radius: 8px; font-size: 24px; text-align: center; word-break: keep-all;}

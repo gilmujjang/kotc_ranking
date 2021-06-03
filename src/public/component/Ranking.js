@@ -23,6 +23,10 @@ const RankingContent = ({ groupPlayers }) => {
     }
   }, [groupPlayers, currentType, filterName])
 
+  const noRankings = (
+    <div className={styles.no_rankings}>생성된 플레이어가 한 명도 없습니다.</div>
+  )
+
   const playerRankingCard = playersToShow.map((player,index) => (
     <div className={styles.ranking_card} key={index}>
       <div className={styles.left}>
@@ -68,8 +72,8 @@ const RankingContent = ({ groupPlayers }) => {
     setCurrentType(e.target.dataset.type)
   }
 
-  const rankingContentFilter = (
-    <>
+  const rankingFilter = (
+    <div className={styles.ranking_filter_container}>
       <div className="dropdown dropdown__rankingContainer">
         <div className="dropdown__selected">
           <span className="selected">{currentType}</span>
@@ -80,15 +84,19 @@ const RankingContent = ({ groupPlayers }) => {
         </ul>
       </div>
       <input type="text" className="filter__rankingContainer" placeholder="text me..." onChange={traceInput} />
-    </>
+    </div>
   )
 
   return (
     <>
-      {rankingContentFilter}
-      <div className={styles.rankingContainer}>
-        {playerRankingCard}
-      </div>
+      {rankingFilter}
+      {
+        playersToShow.length === 0 ?
+        noRankings :
+        <div className={styles.rankingContainer}>
+          {playerRankingCard}
+        </div>
+      }
     </>
   )
 };
