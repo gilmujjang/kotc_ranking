@@ -65,7 +65,7 @@ const MemberDetailModal = ({ isModalOpen, setIsModalOpen, groupName, playerDetai
   )
   
   useEffect(() => {
-    dbService.collection(groupName).doc('group_data').collection('players').doc(playerDetailTarget.name).collection('games').get().then((querySnapshot) => {
+    dbService.collection(groupName).doc('group_data').collection('players').doc(playerDetailTarget.name).collection('game_record').get().then((querySnapshot) => {
       if(querySnapshot.docs.length === 0) {
         setPlayerGame([])
       } else {

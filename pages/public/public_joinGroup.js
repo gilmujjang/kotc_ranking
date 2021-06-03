@@ -58,7 +58,7 @@ const public_joinGroup = () => {
 
   useEffect(() => {
     if(groupFilter) {
-      setMapGroupList(wholeGroups.filter(el => el.group_name === groupFilter))
+      setMapGroupList(wholeGroups.filter(el => el.group_name.includes(groupFilter)))
     } else {
       setMapGroupList([])
     }
