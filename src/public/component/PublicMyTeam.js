@@ -7,7 +7,7 @@ import UserObjContext from '../../contextAPI/UserObjContext'
 import Link from 'next/link'
 
 const MyTeam = () => {
-  const [userObj, setUserObj] = useContext(UserObjContext)
+  const [userObj] = useContext(UserObjContext)
   const [myTeamList, setMyTeamList] = useState([])
   const src = 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg'
 
@@ -15,7 +15,7 @@ const MyTeam = () => {
     <div className={styles.team_card} key={index}>
       <div className={styles.team_image}>
         <img src={src} alt="team profile" />
-        {el.isOperator === true ? <Link href={`/admin/${el.group_name}`}><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
+        {el.isAdmin === true ? <Link href={`/admin/${el.group_name}`}><a><Icon fitted className={styles.setting} name='setting' size='large' /></a></Link> : <></>}
       </div>
       <Link href={`/public/${el.group_name}`}><a><h1 className={styles.team_name}>{el.group_name}</h1></a></Link>
       <h2 className={styles.team_introduce}>{el.group_introduce}</h2>
@@ -42,7 +42,7 @@ const MyTeam = () => {
         setMyTeamList(myTeamList => [...myTeamList, {
           group_name: doc.data().group_name,
           group_introduce: doc.data().group_introduce,
-          isOperator: doc.data().isOperator,
+          isAdmin: doc.data().isAdmin,
           joined_date: doc.data().joined_date,
           created_date: doc.data().created_date,
           number_of_member: doc.data().number_of_member

@@ -86,7 +86,7 @@ const PlayerDetailGame = ( {playerGame} ) => {
   return (
     <>
       {
-      playerGame.length > 0 ?
+        playerGame.length > 0 ?
         <div className="games">
           {recentGames}
         </div>
