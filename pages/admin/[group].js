@@ -34,24 +34,6 @@ const admin_main = () => {
       }
       setAllUsers(allUsers => [...allUsers, userObject]);
     })
-    // dbService.collection(group).doc("group_data").collection("players").orderBy("rating","desc").get().then(snapshot => {
-    //   snapshot.docs.map(doc => {
-    //     const userObject = {
-    //       name:doc.data().name,
-    //       rating:doc.data().rating,
-    //       start_rating: doc.data().start_rating,
-    //       game_all:doc.data().game_all,
-    //       game_win:doc.data().game_win,
-    //       game_lose:doc.data().game_lose,
-    //       studentid:doc.data().studentid,
-    //       department:doc.data().department,
-    //       status: doc.data().status,
-    //       time:doc.data().time,
-    //       attachmentUrl:doc.data().attachmentUrl
-    //     }
-    //     setAllUsers(allUsers => [...allUsers, userObject]);
-    //   })
-    // })
   }
   async function getWholeGames() {
     const snapshot = await  dbService.collection(group).doc("group_data").collection("games").orderBy("write_time","desc").limit(10).get();
@@ -69,22 +51,6 @@ const admin_main = () => {
       }
       setAllGame(allGame => [...allGame, gameObject]);
     })
-    // dbService.collection(group).doc("group_data").collection("games").orderBy("write_time","desc").limit(10).get().then(snapshot => {
-    //   snapshot.docs.map(doc => {
-    //     const gameObject = {
-    //       winners: doc.data().winners,
-    //       losers: doc.data().losers,
-    //       ratingChange: doc.data().ratingChange,
-    //       percentage: doc.data().percentage,
-    //       date: doc.data().date,
-    //       time: doc.data().write_time,
-    //       id: doc.data().date+'-'+doc.data().write_time,
-    //       winnerRatingAfter: doc.data().winnerRatingAfter,
-    //       loserRatingAfter: doc.data().loserRatingAfter
-    //     }
-    //     setAllGame(allGame => [...allGame, gameObject]);
-    //   })
-    // })
   }
   useEffect(() => {
     if(router.query.group){
@@ -101,7 +67,7 @@ const admin_main = () => {
         <RegiMatch allUsers={allUsers} group={groupName}/>
         <UserList allUsers={allUsers} group={groupName}/>
         <MatchList allGame={allGame} group={groupName}/>
-        <GroupJoinWant group={group}/>
+        <GroupJoinWant group={groupName}/>
       </div>
     </div>
   )

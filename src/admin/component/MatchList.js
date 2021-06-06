@@ -70,8 +70,8 @@ const MatchList = ({allGame, group}) => {
   return (
     <div className={styles.LongBox}>
       <div className={styles.gameListHeader}>
-        <span>승리팀</span>
-        <span>패배팀</span>
+        <span>승리</span>
+        <span>패배</span>
       </div>
       <div>{RecentGame}</div>
     </div>

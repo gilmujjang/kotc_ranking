@@ -39,7 +39,6 @@ const Auth = () => {
     } catch(error){
       setError(error.message);
     }
-    history.push("/kotc_router")
   };
 
   return(

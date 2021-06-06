@@ -69,7 +69,7 @@ const group_main = () => {
       <div className={styles.teamContainer}>
         {content === 'ranking' && <Ranking groupPlayers={groupPlayers} />}
         {content === 'member list' && <MemberList groupName={groupName} groupPlayers={groupPlayers} />}
-        {content === 'community' && <Community />}
+        {content === 'community' && <Community groupName={groupName}/>}
       </div>
       {content !== 'community' &&
       <div className={styles.aside}>

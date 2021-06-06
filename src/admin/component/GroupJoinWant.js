@@ -86,6 +86,7 @@ const GroupJoinWant = ({group}) => {
 
   return (
     <div className={styles.ShortBox}>
+      <div className={styles.toastheader}>{group}에 들어온 가입신청</div>
       {AwaitorUsers}
     </div>
   );
