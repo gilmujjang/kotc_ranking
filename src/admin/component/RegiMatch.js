@@ -8,7 +8,7 @@ import 'firebase/firestore';
 import classNames from 'classnames';
 import styles from '../css/Admin.module.css'
 
-const RegiMatch = ({allUsers}) => {
+const RegiMatch = ({allUsers, group}) => {
   const increment = firebase.firestore.FieldValue.increment(1);
   const [searchWinner,setSearchWinner] = useState("");
   const [winnersRating, setWinnersRating] = useState([]);
@@ -52,7 +52,7 @@ const RegiMatch = ({allUsers}) => {
           } else {
             setWinners(winners.concat(searchWinner))
             setGameUser(gameUser.concat(searchWinner))
-            dbService.collection("kotc").doc("group_data").collection("players").where("name","==",searchWinner).get().then((snapshot) => {
+            dbService.collection(group).doc("group_data").collection("players").where("name","==",searchWinner).get().then((snapshot) => {
               snapshot.forEach((doc) => {
                 setWinnersRating(winnersRating.concat(doc.data().rating));
               })
@@ -91,7 +91,7 @@ const RegiMatch = ({allUsers}) => {
           } else {
             setGameUser(gameUser.concat(searchLoser))
             setLosers(losers.concat(searchLoser))
-            dbService.collection("kotc").doc("group_data").collection("players").where("name","==",searchLoser).get().then((snapshot) => {
+            dbService.collection(group).doc("group_data").collection("players").where("name","==",searchLoser).get().then((snapshot) => {
               snapshot.forEach((doc) => {
                 setLosersRating(losersRating.concat(doc.data().rating));
               })
@@ -200,19 +200,19 @@ const RegiMatch = ({allUsers}) => {
       return;
     }
 
-    await dbService.collection("kotc").doc("group_data").collection("games").doc(matchDate+'-'+time).set(match);
+    await dbService.collection(group).doc("group_data").collection("games").doc(matchDate+'-'+time).set(match);
     
     await winners.map(winner => {
-      dbService.collection("kotc").doc("group_data").collection("players").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
-      dbService.collection("kotc").doc("group_data").collection("players").doc(winner).update({
+      dbService.collection(group).doc("group_data").collection("players").doc(winner).collection("game_record").doc(matchDate+'-'+time).set(match)
+      dbService.collection(group).doc("group_data").collection("players").doc(winner).update({
         rating: winnersRating.shift() + RatingChange,
         game_all: increment,
         game_win: increment
       })
     })
     await losers.map(loser => {
-      dbService.collection("kotc").doc("group_data").collection("players").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
-      dbService.collection("kotc").doc("group_data").collection("players").doc(loser).update({
+      dbService.collection(group).doc("group_data").collection("players").doc(loser).collection("game_record").doc(matchDate+'-'+time).set(match)
+      dbService.collection(group).doc("group_data").collection("players").doc(loser).update({
         rating: losersRating.shift() - RatingChange,
         game_all: increment,
         game_lose: increment

@@ -597,9 +597,11 @@ const Community = ({groupName}) => {
   // const test = () => {
   //   dbService.collection("user").get().then( snapshot => {
   //     snapshot.docs.map( doc => {
-  //       setTimeout(function(){
-  //         dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).set(doc.data());
-  //       },1000)
+  //       dbService.collection("user").doc(doc.data().name).collection("game_record").get().then( shot => {
+  //         shot.docs.map( docc => {
+  //           dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).collection("game_record").doc(docc.data().date +"-"+ docc.data().write_time).set(doc.data());
+  //         })
+  //       })
   //     })
   //   })
   // }
