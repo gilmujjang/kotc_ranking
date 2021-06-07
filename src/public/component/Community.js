@@ -596,10 +596,13 @@ const Community = ({groupName}) => {
   // 데이터처리 더미코드
   // const test = () => {
   //   dbService.collection("user").get().then( snapshot => {
+  //      snapshot.docs.map(doc => {
+  //        dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).set(doc.data())
+  //      })
   //     snapshot.docs.map( doc => {
   //       dbService.collection("user").doc(doc.data().name).collection("game_record").get().then( shot => {
   //         shot.docs.map( docc => {
-  //           dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).collection("game_record").doc(docc.data().date +"-"+ docc.data().write_time).set(doc.data());
+  //           dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).collection("game_record").doc(docc.data().date +"-"+ docc.data().write_time).set(docc.data());
   //         })
   //       })
   //     })

@@ -6,7 +6,6 @@ import { dbService } from '../../fbase';
 const GroupJoinWant = ({group}) => {
   const [awaitorlist, setawaitorlist] = useState([]);
   const [refresh, setRefresh] = useState(false);
-
   useEffect(() => {
     dbService.collection(group).doc("group_data").collection("awaitors").get().then(snapshot => {
       snapshot.docs.map(doc => {
@@ -57,7 +56,13 @@ const GroupJoinWant = ({group}) => {
       joindate: time,
       uid: user.user.uid
     }
+    const groupinfo = {
+      group_name:group,
+      isAdmin: False
+    }
+
     dbService.collection(group).doc("group_data").collection("members").doc(user.user.uid).set(userinfo);
+    dbService.collection("whole_users").doc(user.user.uid).collection("joined_group").doc(group).set(groupinfo)
     dbService.collection(group).doc("group_data").collection("awaitors").doc(user.user.uid).delete();
     setRefresh(!refresh)
   }
