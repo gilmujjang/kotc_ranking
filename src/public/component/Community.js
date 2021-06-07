@@ -404,7 +404,7 @@ const Community = ({groupName}) => {
   const modal = (
     <div className={styles.modal}>
       <span className={styles.close} onClick={closeClick}>&times;</span>
-      {imageid != 0 && <span className="left" onClick={moveleft}>&lt;</span>}
+      {imageid != 0 && <span className={styles.left} onClick={moveleft}>&lt;</span>}
       {postimage.length-1 !== imageid && <span className={styles.right} onClick={moveright}>&gt;</span>}
       <img className={styles.modal_content} src={postimage[imageid]}/>
     </div>
