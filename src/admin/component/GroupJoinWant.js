@@ -58,7 +58,7 @@ const GroupJoinWant = ({group}) => {
     }
     const groupinfo = {
       group_name:group,
-      isAdmin: False
+      isAdmin: Boolean(false)
     }
 
     dbService.collection(group).doc("group_data").collection("members").doc(user.user.uid).set(userinfo);
