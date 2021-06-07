@@ -8,7 +8,7 @@
 
 .top > .top__left > div:last-child{display: flex; flex-direction: column;}
 .top > .top__left > div:last-child > .detail__name{font-size: 28px; letter-spacing: 1.2px;}
-.top > .top__left > div:last-child > .detail__status{padding: 2px 4px; background-color: #16a085; border-radius: 4px; font-size: 16px; color: #fff; letter-spacing: 1.1px;}
+.top > .top__left > div:last-child > .detail__status{padding: 2px 4px; background-color: #16a085; border-radius: 4px; font-size: 16px; color: #fff; text-align: center; letter-spacing: 1.1px;}
 
 .top > .top__circleRate{width: 140px; height: 140px; margin-right: 16px; position: relative;}
 

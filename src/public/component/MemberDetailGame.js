@@ -78,15 +78,15 @@ function noGamesStructure() {
   )
 }
 
-const PlayerDetailGame = ( {playerGame} ) => {
-  const recentGames = useMemo(() => getRecentGamesStructure(playerGame), [playerGame])
+const PlayerDetailGame = ( {playersGame} ) => {
+  const recentGames = useMemo(() => getRecentGamesStructure(playersGame), [playersGame])
 
   const noGames = useMemo(() => noGamesStructure(), [])
 
   return (
     <>
       {
-        playerGame.length > 0 ?
+        playersGame.length > 0 ?
         <div className="games">
           {recentGames}
         </div>
