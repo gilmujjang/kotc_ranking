@@ -9,7 +9,7 @@ import MemberDetailWinningRate from './MemberDetailWinningRate';
 import MemberDetailRankingRate from './MemberDetailRankingRate';
 
 const MemberDetailModal = ({ isModalOpen, setIsModalOpen, groupName, playerDetailTarget, setPlayerDetailTarget, groupPlayers }) => {
-  const [playerGame, setPlayerGame] = useState([])
+  const [playersGame, setPlayersGame] = useState([])
   const [chartMode, setChartMode] = useState('rating')
   const [period, setPeriod] = useState(30)
   const modalRef = useRef()
@@ -63,28 +63,29 @@ const MemberDetailModal = ({ isModalOpen, setIsModalOpen, groupName, playerDetai
       </ul>
     </div>
   )
+
+  async function getPlayersGame() {
+    const querySnapshot = await dbService.collection(groupName).doc('group_data').collection('players').doc(playerDetailTarget.name).collection('game_record').orderBy("date", "desc").get()
+    
+    if(querySnapshot.docs.length === 0) {
+      setPlayersGame([])
+    } else {
+      querySnapshot.forEach((doc) => {
+        const singlePlayersGameObj = {
+          date: doc.data().date,
+          loserRatingAfter: doc.data().loserRatingAfter,
+          losers: doc.data().losers,
+          ratingChange: doc.data().ratingChange,
+          winnerRatingAfter: doc.data().winnerRatingAfter,
+          winners: doc.data().winners
+        }
+        setPlayersGame(playersGame => [...playersGame, singlePlayersGameObj])
+      })
+    }
+  }
   
   useEffect(() => {
-    dbService.collection(groupName).doc('group_data').collection('players').doc(playerDetailTarget.name).collection('game_record').get().then((querySnapshot) => {
-      if(querySnapshot.docs.length === 0) {
-        setPlayerGame([])
-      } else {
-        querySnapshot.forEach((doc) => {
-          const singlePlayerGameObj = {
-            date: doc.data().date,
-            loser_rating_after: doc.data().loser_rating_after,
-            losers: doc.data().losers,
-            rating_change: doc.data().rating_change,
-            winner_rating_after: doc.data().winner_rating_after,
-            winners: doc.data().winners
-          }
-          setPlayerGame(playerGame => [...playerGame, singlePlayerGameObj])
-        })
-      }
-    })
-    .then(() => {
-      playerGame.sort((a, b) => {return b.date - a.date})
-    })
+    getPlayersGame()    
   }, [playerDetailTarget])
 
   return (
@@ -110,10 +111,10 @@ const MemberDetailModal = ({ isModalOpen, setIsModalOpen, groupName, playerDetai
             </div>
             <div className={styles.bot}>
               <div className={styles.bot__left}>
-                <MemberDetailChart chartMode={chartMode} period={period} playerDetailTarget={playerDetailTarget} playerGame={playerGame} />
+                <MemberDetailChart chartMode={chartMode} period={period} playerDetailTarget={playerDetailTarget} playersGame={playersGame} />
               </div>
               <div className={styles.bot__right}>
-                <PlayerDetailGame playerGame={playerGame} />
+                <PlayerDetailGame playersGame={playersGame} />
               </div>
             </div>
           </div>

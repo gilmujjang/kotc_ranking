@@ -35,22 +35,21 @@ const group_main = () => {
       }
       setGroupPlayers(groupPlayers => [...groupPlayers, singlePlayerObject])
     })
-    groupPlayers.sort((a, b) => b.rating - a.rating)
   }
 
   async function getWholeGames() {
-    const querySnapshot = await dbService.collection(group).doc('group_data').collection('games').orderBy("write_time","desc").limit(10).get()
+    const querySnapshot = await dbService.collection(group).doc('group_data').collection('games').orderBy("write_time","desc").get()
     querySnapshot.forEach(doc => {
       const singleGameObject = {
         winners: doc.data().winners,
         losers: doc.data().losers,
-        rating_change: doc.data().rating_change,
+        ratingChange: doc.data().ratingChange,
         percentage: doc.data().percentage,
         date: doc.data().date,
         time: doc.data().write_time,
         id: `${doc.data().date}-${doc.data().write_time}`,
-        winner_rating_after: doc.data().winner_rating_after,
-        loser_ratingafter: doc.data().loser_ratingafter
+        winnerRatingAfter: doc.data().winnerRatingAfter,
+        loserRatingAfter: doc.data().loserRatingAfter
       }
       setWholeGames(wholeGames => [...wholeGames, singleGameObject]);
     })

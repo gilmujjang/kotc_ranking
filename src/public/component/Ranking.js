@@ -7,21 +7,22 @@ const RankingContent = ({ groupPlayers }) => {
   const [playersToShow, setPlayersToShow] = useState([]);
   const [currentType, setCurrentType] = useState('전체');
   const [filterName, setFilterName] = useState('')
+  const sortedPlayers = groupPlayers.concat().sort((a, b) => b.rating - a.rating)
 
   useEffect(() => {
     switch(currentType) {
       case '전체':
         if(filterName) {
-          setPlayersToShow(groupPlayers.filter(el => el.name.includes(filterName)))
+          setPlayersToShow(sortedPlayers.filter(el => el.name.includes(filterName)))
         } else {
-          setPlayersToShow(groupPlayers)
+          setPlayersToShow(sortedPlayers)
         }
         break;
       default:
-        setPlayersToShow(groupPlayers)
+        setPlayersToShow(sortedPlayers)
         break;
     }
-  }, [groupPlayers, currentType, filterName])
+  }, [currentType, filterName])
 
   const noRankings = (
     <div className={styles.no_rankings}>생성된 플레이어가 한 명도 없습니다.</div>
