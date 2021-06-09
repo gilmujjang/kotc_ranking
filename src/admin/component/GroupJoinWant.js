@@ -60,7 +60,7 @@ const GroupJoinWant = ({group}) => {
         number_of_member: info.data().number_of_member+1 
       }
       dbService.collection("whole_users").doc(user.user.uid).collection("joined_group").doc(group).set(groupinfo)
-      dbService.collection(group).doc(group_information).set({number_of_member: groupinfo.number_of_member},{merge: true})
+      dbService.collection(group).doc("group_information").set({number_of_member: groupinfo.number_of_member},{merge: true})
     })
 
     dbService.collection(group).doc("group_data").collection("members").doc(user.user.uid).set(userinfo);
