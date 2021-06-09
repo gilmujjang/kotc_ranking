@@ -73,7 +73,7 @@ const Top = () => {
     <>
     <div className={styles.header}>
       <div className={classNames({["container"]: true, [styles.container__index__header]: true})}>
-        <h1 className={styles.logo}><Link href="/"><a>가즈아</a></Link></h1>
+        <h1 className={styles.logo}><Link href="/"><a>Play. &</a></Link></h1>
         {
         isSignedIn ?
         <ul>

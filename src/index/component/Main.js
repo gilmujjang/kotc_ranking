@@ -8,8 +8,8 @@ const Main = () => {
       <div className={classNames({["container"]: true, [styles.container__index__main]: true})}>
         <div className={styles.main__section}>
           <div className={styles.greeting}>
-            <h1>'가즈아'는 온라인 모임 공간을 찾던 테니스 동호인들을 위한 새로운 정답이 될&nbsp;것입니다.</h1>
-            <h2>'가즈아'와 함께 실력을 쌓아가고 새로운 만남을 이어나가세요.</h2>
+            <h1>'Play. &'는 온라인 모임 공간을 찾던 테니스 동호인들을 위한 새로운 정답이 될&nbsp;것입니다.</h1>
+            <h2>'Play. &'와 함께 실력을 쌓아가고 새로운 만남을 이어나가세요.</h2>
           </div>
           <div className={classNames({["button__index"]: true, [styles.button__index__main]: true})}><Link href="/public/public_main"><a>Get Started</a></Link></div>
         </div>
