@@ -17,22 +17,22 @@ const MyTeam = () => {
 
     querySnapshot.forEach((doc) => {
       let singleInfoObj = {}
-      dbService.collection(doc.data().group_name).doc('group_information').get().then((doc) => {
-        singleInfoObj.group_name = doc.data().group_name,
-        singleInfoObj.group_introduce = doc.data().group_introduce,
-        singleInfoObj.number_of_member = doc.data().number_of_member,
-        singleInfoObj.created_date = doc.data().created_date
+      dbService.collection(doc.data().group_name).doc('group_information').get().then((small_doc) => {
+        singleInfoObj.group_name = small_doc.data().group_name,
+        singleInfoObj.group_introduce = small_doc.data().group_introduce,
+        singleInfoObj.number_of_member = small_doc.data().number_of_member,
+        singleInfoObj.created_date = small_doc.data().created_date
       })
       .then(() => {
-        dbService.collection(doc.data().group_name).doc('group_data').collection('admins').doc(userObj.uid).get().then((doc) => {
-          if(doc.exists) {
+        dbService.collection(doc.data().group_name).doc('group_data').collection('admins').doc(userObj.uid).get().then((small_doc) => {
+          if(small_doc.exists) {
             singleInfoObj.isAdmin =  true
           }
         })
       })
       .then(() => {
-        dbService.collection(doc.data().group_name).doc('group_data').collection('members').doc(userObj.uid).get().then((doc) => {
-          singleInfoObj.joined_date = doc.data().joined_date
+        dbService.collection(doc.data().group_name).doc('group_data').collection('members').doc(userObj.uid).get().then((small_doc) => {
+          singleInfoObj.joined_date = Number(small_doc.data().joindate.slice(0, 8))
         })
       })
       setMyTeamInfo(myTeamInfo => [...myTeamInfo, singleInfoObj])
