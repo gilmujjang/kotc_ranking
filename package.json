@@ -9,6 +9,7 @@
     "netlify-deploy": "next build && next export"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^3.4.2",
     "chart.js": "^3.2.1",
     "firebase": "^8.4.3",
     "next": "10.2.0",
@@ -20,6 +21,7 @@
     "reactstrap": "^8.9.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "webpack-dev-server": "^3.11.2"
   }
 }
