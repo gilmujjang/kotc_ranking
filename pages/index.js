@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <>
     <Head>
-      <title>index.js</title>
+      <title>Play. &</title>
       <meta name="description" content="BBABBA의 홈입니다."></meta>
     </Head>
     {

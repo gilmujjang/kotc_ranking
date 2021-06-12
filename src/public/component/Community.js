@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { Icon } from 'semantic-ui-react'
 import UserObjContext from '../../contextAPI/UserObjContext';
 
-const Community = () => {
+const Community = ({groupName}) => {
   // 요렇게 불러오면 됩니다.
   const [userObj, setUserObj] = useContext(UserObjContext)
 
@@ -41,15 +41,14 @@ const Community = () => {
     });
   }, [])
   useEffect(() => {
-    console.log('커뮤 :', userObj)
     setEveryPost([])
-    dbService.collection("kotc").doc("group_data").collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
+    dbService.collection(groupName).doc("group_data").collection("post").orderBy("date","desc").limit(10).get().then(snapshot => {
       snapshot.docs.map(async(doc) => {
         let likelistname = [];
         let likelistuserid = [];
         let likenum = 0;
         let commentslists = [];
-        await dbService.collection("kotc").doc("group_data").collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
+        await dbService.collection(groupName).doc("group_data").collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
           likelist.docs.map(like => {
             likenum += 1;
             likelistname.push(like.data().name);
@@ -57,7 +56,7 @@ const Community = () => {
           })
         })
         let commentsnum = 0;
-        await dbService.collection("kotc").doc("group_data").collection("post").doc(doc.data().date).collection("comments").get().then(comment => {
+        await dbService.collection(groupName).doc("group_data").collection("post").doc(doc.data().date).collection("comments").get().then(comment => {
           comment.docs.map(comment => {
             commentsnum += 1;
             const commentObject = {
@@ -141,7 +140,7 @@ const Community = () => {
       return;
     }
     const time = rightNow();
-    await dbService.collection("kotc").doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
+    await dbService.collection(groupName).doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
     const neweverypost = everyPost.map(page => {
       if(page.date == object.post.date){
         page.commentslist.map(comment => {
@@ -173,7 +172,7 @@ const Community = () => {
       writerid: userObj.uid,
       writerphoto: userObj.photoUrl,
     }
-    await dbService.collection("kotc").doc("group_data").collection("post").doc(post.post.date).collection("comments").doc(time).set(commentinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
+    await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("comments").doc(time).set(commentinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
     setComment('');
 
     const neweverypost = everyPost.map(page => {
@@ -189,7 +188,7 @@ const Community = () => {
 
   const unlikeClicked = async(e,post) => {
     e.preventDefault();
-    await dbService.collection("kotc").doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
+    await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
 
     const neweverypost = everyPost.map(page => {
       if(page.date == post.post.date){
@@ -213,7 +212,7 @@ const Community = () => {
       userid: userObj.uid,
       time: rightNow(),
     }
-    await dbService.collection("kotc").doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
+    await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
 
     const neweverypost = everyPost.map(page => {
       if(page.date == post.post.date){
@@ -230,7 +229,7 @@ const Community = () => {
     setEveryPost(neweverypost);    
   }
 
-  const submitReview = async(e) =>{
+  const submitPost = async(e) =>{
     e.preventDefault();
     if(contentmake === ''){
       alert("내용을 입력하세요")
@@ -260,7 +259,7 @@ const Community = () => {
 
     if(postFixmode){
       console.log("postfixmode")
-      await dbService.collection("kotc").doc("group_data").collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
+      await dbService.collection(groupName).doc("group_data").collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
     } else {
       const postObject = {
         date: time,
@@ -271,7 +270,7 @@ const Community = () => {
         writerprofile: userObj.photoUrl,
         imageurl: attachmentUrl,
       }
-      await dbService.collection("kotc").doc("group_data").collection("post").doc(time).set(postObject);
+      await dbService.collection(groupName).doc("group_data").collection("post").doc(time).set(postObject);
     }
     setContent('')
     setWriteMode(!writeMode)
@@ -405,7 +404,7 @@ const Community = () => {
   const modal = (
     <div className={styles.modal}>
       <span className={styles.close} onClick={closeClick}>&times;</span>
-      {imageid != 0 && <span className="left" onClick={moveleft}>&lt;</span>}
+      {imageid != 0 && <span className={styles.left} onClick={moveleft}>&lt;</span>}
       {postimage.length-1 !== imageid && <span className={styles.right} onClick={moveright}>&gt;</span>}
       <img className={styles.modal_content} src={postimage[imageid]}/>
     </div>
@@ -421,7 +420,7 @@ const Community = () => {
 
   const Postdelete = async(e,post) => {
     if(window.confirm("ㄹㅇ 지움?")) {
-      await dbService.collection("post").doc(post.post.date).delete()
+      await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).delete()
       setRefresh(!refresh)
     }
   }
@@ -438,7 +437,7 @@ const Community = () => {
 
   const Commentdelete = async(e,object) => {
     if(window.confirm("ㄹㅇ 지움?")) {
-      await dbService.collection("kotc").doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).delete()
+      await dbService.collection(groupName).doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).delete()
       setRefresh(!refresh)
     }
   }
@@ -571,7 +570,7 @@ const Community = () => {
           <button className={styles.writeModeBtn} onClick={writeModeBtn}>
             취소
           </button>
-          <button className={styles.writeModeBtn} onClick={submitReview}>
+          <button className={styles.writeModeBtn} onClick={submitPost}>
             작성
           </button>
         </div>
@@ -594,14 +593,18 @@ const Community = () => {
   )
 
 
-  // // 데이터처리 더미코드
+  // 데이터처리 더미코드
   // const test = () => {
-  //   dbService.collection("kotc_players").get().then( snapshot => {
+  //   dbService.collection("user").get().then( snapshot => {
+  //      snapshot.docs.map(doc => {
+  //        dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).set(doc.data())
+  //      })
   //     snapshot.docs.map( doc => {
-  //       setTimeout(function(){
-  //         console.log(doc.data())
-  //         dbService.collection("kotc").doc("group_data").collection("players").doc(doc.data().name).set(doc.data());
-  //       },1000)
+  //       dbService.collection("user").doc(doc.data().name).collection("game_record").get().then( shot => {
+  //         shot.docs.map( docc => {
+  //           dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).collection("game_record").doc(docc.data().date +"-"+ docc.data().write_time).set(docc.data());
+  //         })
+  //       })
   //     })
   //   })
   // }

@@ -83,7 +83,7 @@ const public_createGroup = () => {
               docRef.set({
                 group_name: group_name,
                 group_introduce: group_introduce,
-                isOperator: true,
+                isAdmin: true,
                 joined_date: getToday(),
                 created_date: getToday(),
                 number_of_member: 1

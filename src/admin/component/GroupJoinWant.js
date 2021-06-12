@@ -2,6 +2,8 @@ import { React, useState, useEffect } from 'react';
 import styles from '../css/Admin.module.css'
 import { Icon } from 'semantic-ui-react'
 import { dbService } from '../../fbase';
+import 'firebase/firestore';
+import firebase from 'firebase/app';
 
 const GroupJoinWant = ({group}) => {
   const [awaitorlist, setawaitorlist] = useState([]);
@@ -21,6 +23,7 @@ const GroupJoinWant = ({group}) => {
         setawaitorlist(awaitorlist => [...awaitorlist, userObject]);
       })
     })
+    
   },[refresh])
   
 
@@ -48,7 +51,8 @@ const GroupJoinWant = ({group}) => {
     if(seconds<10){
       seconds = 0+''+seconds
     }
-    const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds)
+    const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds);
+    const join_date = Number(year + '' + month + '' + date);
     const userinfo = {
       displayName: user.user.displayName,
       name: user.user.name,
@@ -57,6 +61,20 @@ const GroupJoinWant = ({group}) => {
       joindate: time,
       uid: user.user.uid
     }
+
+    dbService.collection(group).doc("group_information").get().then(info => {
+      const groupinfo = {
+        created_date: info.data().created_date,
+        group_introduce: info.data().group_introduce,
+        group_name:info.data().group_name,
+        isAdmin: Boolean(false),
+        joined_date: join_date,
+        number_of_member: info.data().number_of_member +1 
+      }
+      dbService.collection("whole_users").doc(user.user.uid).collection("joined_group").doc(group).set(groupinfo)
+      dbService.collection(group).doc("group_information").set({number_of_member: groupinfo.number_of_member},{merge: true})
+    })
+
     dbService.collection(group).doc("group_data").collection("members").doc(user.user.uid).set(userinfo);
     dbService.collection(group).doc("group_data").collection("awaitors").doc(user.user.uid).delete();
     setRefresh(!refresh)
@@ -86,6 +104,7 @@ const GroupJoinWant = ({group}) => {
 
   return (
     <div className={styles.ShortBox}>
+      <div className={styles.toastheader}>{group}에 들어온 가입신청</div>
       {AwaitorUsers}
     </div>
   );

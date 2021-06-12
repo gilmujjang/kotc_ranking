@@ -36,7 +36,7 @@ const MatchList = ({allGame, group}) => {
         game_lose:firebase.firestore.FieldValue.increment(-1)
       })
     })
-    await dbService.collection("kotc").doc("group_data").collection("game").doc(e.target.id).delete()
+    await dbService.collection("kotc").doc("group_data").collection("games").doc(e.target.id).delete()
     alert(e.target.id+' 를 삭제했습니다')
   }
 
@@ -70,8 +70,8 @@ const MatchList = ({allGame, group}) => {
   return (
     <div className={styles.LongBox}>
       <div className={styles.gameListHeader}>
-        <span>승리팀</span>
-        <span>패배팀</span>
+        <span>승리</span>
+        <span>패배</span>
       </div>
       <div>{RecentGame}</div>
     </div>

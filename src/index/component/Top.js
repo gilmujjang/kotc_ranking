@@ -52,8 +52,11 @@ const Top = () => {
     authService.signOut().then(() => {
       // sign-out successful.
       setUserObj({})
+    })
+    .then(() => {
       setIsSignedIn(false)
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.log(error.code)
       console.log(error.message)
     })
@@ -61,15 +64,16 @@ const Top = () => {
 
 
   useEffect(() => {
-    if(Object.keys(userObj).length === 0) {setIsSignedIn(false)}
-    else if(Object.keys(userObj).length !== 0) {setIsSignedIn(true)}
+    if(Object.keys(userObj).length) {
+      setIsSignedIn(true)
+    }
   }, [userObj])
 
   return (
     <>
     <div className={styles.header}>
       <div className={classNames({["container"]: true, [styles.container__index__header]: true})}>
-        <h1 className={styles.logo}><Link href="/"><a>가즈아</a></Link></h1>
+        <h1 className={styles.logo}><Link href="/"><a>Play. &</a></Link></h1>
         {
         isSignedIn ?
         <ul>

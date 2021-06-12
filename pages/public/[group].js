@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { dbService } from '../../src/fbase'
 import { useRouter } from 'next/router'
-import styles from '../../src/public/css/team_main.module.css'
+import styles from '../../src/public/css/group_main.module.css'
 import Nav from "../../src/public/component/Nav"
 import Ranking from "../../src/public/component/Ranking"
 import MemberList from "../../src/public/component/MemberList"
 import Community from "../../src/public/component/Community"
 import RecentGame from "../../src/public/component/RecentGame"
-// import Ad from "../../src/public/component/Ad"
+import Ad from "../../src/public/component/Ad"
 
 const group_main = () => {
   const router = useRouter()
@@ -35,22 +35,21 @@ const group_main = () => {
       }
       setGroupPlayers(groupPlayers => [...groupPlayers, singlePlayerObject])
     })
-    groupPlayers.sort((a, b) => b.rating - a.rating)
   }
 
   async function getWholeGames() {
-    const querySnapshot = await dbService.collection(group).doc('group_data').collection('games').orderBy("write_time","desc").limit(10).get()
+    const querySnapshot = await dbService.collection(group).doc('group_data').collection('games').orderBy("write_time","desc").get()
     querySnapshot.forEach(doc => {
       const singleGameObject = {
         winners: doc.data().winners,
         losers: doc.data().losers,
-        rating_change: doc.data().rating_change,
+        ratingChange: doc.data().ratingChange,
         percentage: doc.data().percentage,
         date: doc.data().date,
         time: doc.data().write_time,
         id: `${doc.data().date}-${doc.data().write_time}`,
-        winner_rating_after: doc.data().winner_rating_after,
-        loser_ratingafter: doc.data().loser_ratingafter
+        winnerRatingAfter: doc.data().winnerRatingAfter,
+        loserRatingAfter: doc.data().loserRatingAfter
       }
       setWholeGames(wholeGames => [...wholeGames, singleGameObject]);
     })
@@ -69,7 +68,7 @@ const group_main = () => {
       <div className={styles.teamContainer}>
         {content === 'ranking' && <Ranking groupPlayers={groupPlayers} />}
         {content === 'member list' && <MemberList groupName={groupName} groupPlayers={groupPlayers} />}
-        {content === 'community' && <Community />}
+        {content === 'community' && <Community groupName={groupName}/>}
       </div>
       {content !== 'community' &&
       <div className={styles.aside}>
@@ -77,7 +76,7 @@ const group_main = () => {
           <RecentGame wholeGames={wholeGames} />
         </div>
         <div className={styles.aside2}>
-          <h2>aside2</h2>
+          <Ad />
         </div>
       </div>
       }

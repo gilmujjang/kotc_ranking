@@ -8,7 +8,7 @@
 
 .top > .top__left > div:last-child{display: flex; flex-direction: column;}
 .top > .top__left > div:last-child > .detail__name{font-size: 28px; letter-spacing: 1.2px;}
-.top > .top__left > div:last-child > .detail__status{padding: 2px 4px; background-color: #16a085; border-radius: 4px; font-size: 16px; color: #fff; letter-spacing: 1.1px;}
+.top > .top__left > div:last-child > .detail__status{padding: 2px 4px; background-color: #16a085; border-radius: 4px; font-size: 16px; color: #fff; text-align: center; letter-spacing: 1.1px;}
 
 .top > .top__circleRate{width: 140px; height: 140px; margin-right: 16px; position: relative;}
 
@@ -16,7 +16,7 @@
 
 .top > .top__circleRate .gameRecord{display: none; width: 140px; height: 140px; border-radius: 50%; background-color: rgba(255, 255, 255, .8); position: absolute; top: 50%; transform: translateY(-50%);}
 .top > .top__circleRate .gameRecord::after{content: ''; display: block; width: 170px; height: 2px; background-color: #474747; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); animation: width-up-and-rotate 0.8s ease-in-out;}
-.top > .top__circleRate .gameRecord .record__left{position: absolute; top: 30%; left: 35%; transform: translate(-50%, -50%); font-size: 40px; color: #1bb1a2; font-weight: 500; animation: slide-y 1.6s;}
+.top > .top__circleRate .gameRecord .record__left{position: absolute; top: 30%; left: 35%; transform: translate(-50%, -50%); font-size: 32px; color: #1bb1a2; font-weight: 500; animation: slide-y 1.6s;}
 .top > .top__circleRate .gameRecord .record__right{position: absolute; top: 70%; right: 35%; transform: translate(50%, -50%); font-size: 32px; color: #e74c3c; font-weight: 500; animation: slide-y 1.6s;}
 .top > .top__circleRate:hover .gameRecord{display: block; cursor: pointer;}
 .top > .top__circleRate:hover .hover{display: none;}
@@ -26,7 +26,6 @@
 .mid{display: flex; flex-direction: row; margin-bottom: 8px;}
 .mid > .button__memberDetail{margin-right: 4px; border: 1px solid #2d2d2d; border-radius: 8px; transition: .5s;}
 .mid > .button__memberDetail:hover{background-color: #2d2d2d; color: #fff;}
-
 
 .bot{width: 100%; height: calc(100% - 180px); position: relative;}
 .bot > .bot__left{width: 65%; height: 100%; position: relative;}

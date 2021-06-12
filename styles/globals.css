@@ -23,7 +23,7 @@ address, em, i {font-style: normal;}
 .container{width: 1080px; margin: 0 auto;}
 
 /* LOADING */
-.loading{width: 100%; height: 100%;}
+.loading{width: 100%; height: 100%; margin: 0 !important;}
 
 /* BUTTON */
 .button{display: inline-flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, 0.7); border-radius: 5px; cursor: pointer;}
@@ -35,10 +35,10 @@ address, em, i {font-style: normal;}
 
 /* DROPDOWN */
 .dropdown{width: 100px; cursor: pointer; transition: .5s;}
-.dropdown .dropdown__selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px; transition: .5s;}
-.dropdown .dropdown__list{background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
-.dropdown .dropdown__list .dropdown__list__item{margin: 8px 0; padding: 8px 16px; font-weight: 500; transition: .5s;}
-.dropdown .dropdown__list .dropdown__list__item:hover{background-color: #2d2d2d; color: #fff;}
+.dropdown > .dropdown__selected{display: flex; justify-content: space-between; align-items: center; width: 100%; height: 40px; padding: 0 16px; background-color: rgba(255, 255, 255, .7); border-radius: 5px; transition: .5s;}
+.dropdown > .dropdown__list{width: 100px; background-color: rgba(255, 255, 255, .9); border-radius: 5px; position: absolute; top: 45px; left: 0; right: 0; z-index: 99; opacity: 0; visibility: hidden; transition: all .1s linear;}
+.dropdown > .dropdown__list > .dropdown__list__item{margin: 4px 0; padding: 8px 16px; font-weight: 500; transition: .5s;}
+.dropdown > .dropdown__list > .dropdown__list__item:hover{background-color: #2d2d2d; color: #fff;}
 /* rgba(180, 180, 180, 0.8) */
 
 .dropdown:hover .dropdown__list{opacity: 1; visibility: visible;}
@@ -46,7 +46,7 @@ address, em, i {font-style: normal;}
 .dropdown__selected:hover .selected{color: #fff;}
 .dropdown__selected:hover i{color: #fff;}
 
-.dropdown.dropdown__rankingContainer{position: absolute; top: -60px; right: 160px;}
+.dropdown.dropdown__rankingContainer{margin-right: 8px;}
 .dropdown.dropdown__userDetail{position: relative;}
 
 /* INPUT */
@@ -54,8 +54,8 @@ address, em, i {font-style: normal;}
 .input__underline{display: block; height: 36px; padding: 8px; background-color: transparent; border: none; border-bottom: 1px solid #2d2d2d;}
 
 /* INPUT--FILTER */
-.filter__rankingContainer{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 20px;}
-.filter__memberList{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 80px;}
+.filter__rankingContainer{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px;}
+.filter__memberList{width: 130px; height: 40px; padding: 8px 16px; background-color: rgba(255, 255, 255, .7); border: none; border-radius: 5px; position: absolute; top: -60px; right: 5%;}
 
 /* GAME LIST */
 .games{margin-right: 16px;}
@@ -74,3 +74,4 @@ address, em, i {font-style: normal;}
 .games > .game .bot .loser .loserInfo .loserRatings{display: flex; flex-direction: column;}
 .games > .game .bot .loser .loserInfo .loserRatings .icon__lose{margin-left: 4px; color: #ff4757;}
 
+.no_game{display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; background-color: rgba(255, 255, 255, .4); border-radius: 8px; text-align: center;}

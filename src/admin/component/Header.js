@@ -16,7 +16,7 @@ const Header = ({group}) => {
   return (
     <div className={styles.header}>
       <span className={styles.headerText}>{group} 랭킹시스템 관리자 페이지</span>
-      <Link href="/publick/team_main">
+      <Link href="/public/public_main">
         <Icon name="sign-out icon large" className={styles.logout} onClick={onLogOutClick}></Icon>
       </Link>
     </div>

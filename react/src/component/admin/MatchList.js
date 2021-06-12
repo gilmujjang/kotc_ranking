@@ -35,7 +35,7 @@ const MatchList = ({allGame}) => {
         game_lose:firebase.firestore.FieldValue.increment(-1)
       })
     })
-    await dbService.collection("game").doc(e.target.id).delete()
+    await dbService.collection("games").doc(e.target.id).delete()
     alert(e.target.id+' 를 삭제했습니다')
   }
 

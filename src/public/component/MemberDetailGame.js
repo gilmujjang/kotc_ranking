@@ -72,21 +72,21 @@ function getRecentGamesStructure(arr) {
 
 function noGamesStructure() {
   return (
-    <div className="noGame">
+    <div className="no_game">
       <span>경기 기록이 없습니다.</span>
     </div>
   )
 }
 
-const PlayerDetailGame = ( {playerGame} ) => {
-  const recentGames = useMemo(() => getRecentGamesStructure(playerGame), [playerGame])
+const PlayerDetailGame = ( {playersGame} ) => {
+  const recentGames = useMemo(() => getRecentGamesStructure(playersGame), [playersGame])
 
   const noGames = useMemo(() => noGamesStructure(), [])
 
   return (
     <>
       {
-      playerGame.length > 0 ?
+        playersGame.length > 0 ?
         <div className="games">
           {recentGames}
         </div>
