@@ -52,7 +52,7 @@ const GroupJoinWant = ({group}) => {
       seconds = 0+''+seconds
     }
     const time = (year + '' + month + '' + date + '' + hours + '' + minutes + '' + seconds);
-    const join_date = int(year + '' + month + '' + date);
+    const join_date = Number(year + '' + month + '' + date);
     const userinfo = {
       displayName: user.user.displayName,
       name: user.user.name,
@@ -69,7 +69,7 @@ const GroupJoinWant = ({group}) => {
         group_name:info.data().group_name,
         isAdmin: Boolean(false),
         joined_date: join_date,
-        number_of_member: info.data().number_of_member+1 
+        number_of_member: info.data().number_of_member +1 
       }
       dbService.collection("whole_users").doc(user.user.uid).collection("joined_group").doc(group).set(groupinfo)
       dbService.collection(group).doc("group_information").set({number_of_member: groupinfo.number_of_member},{merge: true})
