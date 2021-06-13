@@ -1,6 +1,6 @@
 [build]
   command = "npm run netlify-deploy"
-  publish = "build"
+  publish = "npm run build"
 
 [context.production.environment]
   TOML_ENV_VAR = "From netlify.toml"
