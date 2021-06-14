@@ -74,7 +74,7 @@ const public_createGroup = () => {
                 displayName: userObj.displayName,
                 uid: userObj.uid,
                 photoURL: userObj.photoURL,
-                joined_date: userObj.joinedDate,
+                joindate: userObj.joinedDate,
               })
             })
             // whole_users - 유저.uid 문서 - 가입한 그룹 collection 에 생성 한 그룹 문서 추가
