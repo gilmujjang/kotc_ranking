@@ -115,22 +115,55 @@ const RegiMatch = ({allUsers, group}) => {
 
   const matchSubmit = async(e) => {
     e.preventDefault();
-    let winnerAverageRating = winnersRating[0];
-    let loserAverageRating = losersRating[0];
-    if(winnersRating.length==2){
-      winnerAverageRating = (Math.max(winnersRating[0],winnersRating[1])+2*Math.min(winnersRating[0],winnersRating[1]))/3
+
+
+    let winnerAverageRating = 0;
+    let loserAverageRating = 0;
+    let reverse_percentage = 0;
+    let RatingChange = 0;
+
+
+    if(winnersRating.length == 1){
+      winnerAverageRating = winnersRating[0];
+      loserAverageRating = losersRating[0];
+      reverse_percentage = (1/(1+(Math.pow(10,(winnerAverageRating-loserAverageRating)/400)))).toFixed(2)
+      RatingChange = Math.round(reverse_percentage*48)
     }
-    if(losersRating.length==2){
-      loserAverageRating = (Math.max(losersRating[0],losersRating[1])+2*Math.min(losersRating[0],losersRating[1]))/3
+
+    if(winnersRating.length == 2){
+      const winner1 = winnersRating[0];
+      const winner2 = winnersRating[1];
+      const loser1 = losersRating[0];
+      const loser2 = losersRating[1];
+      if(winner1 > winner2){
+        winnerAverageRating = (winner1 + 2*winner2)/3
+      } else {
+        winnerAverageRating = (2*winner1 + winner2)/3
+      }
+      if(loser1 > loser2){
+        loserAverageRating = (loser1 + 2*loser2)/3
+      } else {
+        loserAverageRating = (2*loser1 + loser2)/3
+      }
+      
+      const rating_gap = winnerAverageRating-loserAverageRating
+      let deviation_number = 0
+      reverse_percentage = (1/(1+(Math.pow(10,rating_gap/400)))).toFixed(2)
+      RatingChange = Math.round(reverse_percentage*36)
+
+      average_rating = Math.round((winner1+winner2+loser1+loser2)/4)
+      standard_deviation = Math.sqrt((winner1-average_rating)**2 + (winner2-average_rating)**2 +(loser1-average_rating)**2 +(loser2-average_rating)**2)
+      if (standard_deviation < 500){
+        deviation_number = Math.sqrt((500-standard_deviation)/500)
+      }
+      RatingChange = Math.round(deviation_number*RatingChange)
+      if(RatingChange == 0){
+        RatingChange = 1
+      }
     }
-    const percentage = (1/(1+(Math.pow(10,(loserAverageRating-winnerAverageRating)/400)))).toFixed(2)
-    const reversePercentage = (1-percentage).toFixed(2)
-    let RatingChange=0
-    if(winnersRating.length==2){
-      RatingChange = Math.round(reversePercentage*16)
-    } else {
-      RatingChange = Math.round(reversePercentage*32)
-    }
+
+
+
     if(winners.length===0){
       alert('승자를 입력하세요');
       return;
