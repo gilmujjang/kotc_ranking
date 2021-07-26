@@ -48,7 +48,7 @@ const Community = ({groupName}) => {
         let likelistuserid = [];
         let likenum = 0;
         let commentslists = [];
-        await dbService.collection(groupName).doc("group_data").collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
+         dbService.collection(groupName).doc("group_data").collection("post").doc(doc.data().date).collection("likes").get().then(likelist => {
           likelist.docs.map(like => {
             likenum += 1;
             likelistname.push(like.data().name);
@@ -56,7 +56,7 @@ const Community = ({groupName}) => {
           })
         })
         let commentsnum = 0;
-        await dbService.collection(groupName).doc("group_data").collection("post").doc(doc.data().date).collection("comments").get().then(comment => {
+         dbService.collection(groupName).doc("group_data").collection("post").doc(doc.data().date).collection("comments").get().then(comment => {
           comment.docs.map(comment => {
             commentsnum += 1;
             const commentObject = {
@@ -100,7 +100,7 @@ const Community = ({groupName}) => {
     if(name === "google") {
       provider = new firebaseInstance.auth.GoogleAuthProvider();
     }
-    await authService.signInWithPopup(provider);
+     authService.signInWithPopup(provider);
   };
 
   function rightNow() {
@@ -140,7 +140,7 @@ const Community = ({groupName}) => {
       return;
     }
     const time = rightNow();
-    await dbService.collection(groupName).doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
+     dbService.collection(groupName).doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).update({text: commentfix, recentfix: time})
     const neweverypost = everyPost.map(page => {
       if(page.date == object.post.date){
         page.commentslist.map(comment => {
@@ -172,7 +172,7 @@ const Community = ({groupName}) => {
       writerid: userObj.uid,
       writerphoto: userObj.photoUrl,
     }
-    await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("comments").doc(time).set(commentinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
+     dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("comments").doc(time).set(commentinfo) //동시에 댓글을 달면 데이터가 겹쳐짐
     setComment('');
 
     const neweverypost = everyPost.map(page => {
@@ -188,7 +188,7 @@ const Community = ({groupName}) => {
 
   const unlikeClicked = async(e,post) => {
     e.preventDefault();
-    await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
+     dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).delete()
 
     const neweverypost = everyPost.map(page => {
       if(page.date == post.post.date){
@@ -212,7 +212,7 @@ const Community = ({groupName}) => {
       userid: userObj.uid,
       time: rightNow(),
     }
-    await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
+     dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).collection("likes").doc(userObj.uid).set(likeinfo)
 
     const neweverypost = everyPost.map(page => {
       if(page.date == post.post.date){
@@ -246,20 +246,20 @@ const Community = ({groupName}) => {
         if(file.slice(0,4)=="http"){
           return file
         } else {
-          let attachmentRef = await storageService.ref().child('post/').child(time).child(String(i));
-          let response = await attachmentRef.putString(file, "data_url");
-          let url = await response.ref.getDownloadURL();
+          let attachmentRef =  storageService.ref().child('post/').child(time).child(String(i));
+          let response =  attachmentRef.putString(file, "data_url");
+          let url =  response.ref.getDownloadURL();
           return url
         }
       })
-      const results =  await Promise.all(promises)
+      const results =   Promise.all(promises)
       results.forEach(data => attachmentUrl.push(data) )
     }
-    await sendData();
+     sendData();
 
     if(postFixmode){
       console.log("postfixmode")
-      await dbService.collection(groupName).doc("group_data").collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
+       dbService.collection(groupName).doc("group_data").collection("post").doc(postFixmode).update({recent_fix: time,content: contentmake,imageurl: attachmentUrl,})
     } else {
       const postObject = {
         date: time,
@@ -270,7 +270,7 @@ const Community = ({groupName}) => {
         writerprofile: userObj.photoUrl,
         imageurl: attachmentUrl,
       }
-      await dbService.collection(groupName).doc("group_data").collection("post").doc(time).set(postObject);
+       dbService.collection(groupName).doc("group_data").collection("post").doc(time).set(postObject);
     }
     setContent('')
     setWriteMode(!writeMode)
@@ -420,7 +420,7 @@ const Community = ({groupName}) => {
 
   const Postdelete = async(e,post) => {
     if(window.confirm("ㄹㅇ 지움?")) {
-      await dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).delete()
+       dbService.collection(groupName).doc("group_data").collection("post").doc(post.post.date).delete()
       setRefresh(!refresh)
     }
   }
@@ -437,7 +437,7 @@ const Community = ({groupName}) => {
 
   const Commentdelete = async(e,object) => {
     if(window.confirm("ㄹㅇ 지움?")) {
-      await dbService.collection(groupName).doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).delete()
+       dbService.collection(groupName).doc("group_data").collection("post").doc(object.post.date).collection("comments").doc(object.comment.writedate).delete()
       setRefresh(!refresh)
     }
   }
@@ -593,17 +593,181 @@ const Community = ({groupName}) => {
   )
 
 
-  // 데이터처리 더미코드
-  // const test = () => {
-  //   dbService.collection("user").get().then( snapshot => {
-  //      snapshot.docs.map(doc => {
-  //        dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).set(doc.data())
-  //      })
-  //     snapshot.docs.map( doc => {
-  //       dbService.collection("user").doc(doc.data().name).collection("game_record").get().then( shot => {
-  //         shot.docs.map( docc => {
-  //           dbService.collection("KOTC").doc("group_data").collection("players").doc(doc.data().name).collection("game_record").doc(docc.data().date +"-"+ docc.data().write_time).set(docc.data());
-  //         })
+  // const reset = () => {
+  //   dbService.collection("KOTC").doc("group_data").collection("players").get().then(snapshot => {
+  //     snapshot.docs.map(async (player) => {
+  //       console.log(player.data())
+  //        dbService.collection("KOTC").doc("group_data").collection("players").doc(player.data().name).update({
+  //         game_all: 0,
+  //         game_win: 0,
+  //         game_lose: 0,
+  //         rating: player.data().start_rating
+  //       })
+  //     })
+  //   })
+  // }
+
+  // const test = async() => {
+  //   let count = 1
+  //   let playerlist = {
+  //     '정해광': {'total_data': [1900, 0, 0, 0]},
+  //     '조성빈': {'total_data': [1500, 0, 0, 0]},
+  //     '유연호': {'total_data': [1500, 0, 0, 0]},
+  //     '백민재': {'total_data': [1500, 0, 0, 0]},
+  //     '원지섭': {'total_data': [1500, 0, 0, 0]},
+  //     '유현승': {'total_data': [1500, 0, 0, 0]},
+  //     '민무길': {'total_data': [1500, 0, 0, 0]},
+  //     '최준혁': {'total_data': [1300, 0, 0, 0]},
+  //     '오예원': {'total_data': [1300, 0, 0, 0]},
+  //     '장현광': {'total_data': [1300, 0, 0, 0]},
+  //     '정혜성': {'total_data': [1300, 0, 0, 0]},
+  //     '김한승': {'total_data': [1500, 0, 0, 0]},
+  //     '김현식': {'total_data': [2100, 0, 0, 0]},
+  //     '김태호': {'total_data': [1300, 0, 0, 0]},
+  //     '강성광': {'total_data': [1500, 0, 0, 0]},
+  //     '박재현': {'total_data': [2100, 0, 0, 0]},
+  //     '정화': {'total_data': [1500, 0, 0, 0]},
+  //     '이학봉': {'total_data': [1100, 0, 0, 0]},
+  //     '전경민': {'total_data': [900, 0, 0, 0]},
+  //     '신도엽': {'total_data': [900, 0, 0, 0]},
+  //     '이경훈': {'total_data': [1100, 0, 0, 0]},
+  //     '허민영': {'total_data': [900, 0, 0, 0]},
+  //     '이창민': {'total_data': [1300, 0, 0, 0]},
+  //     '김종호': {'total_data': [1300, 0, 0, 0]},
+  //     '미영': {'total_data': [1300, 0, 0, 0]},
+  //     '강지훈': {'total_data': [1500, 0, 0, 0]},
+  //     '김성동': {'total_data': [1500, 0, 0, 0]},
+  //     '조경수': {'total_data': [1100, 0, 0, 0]},
+  //     '장태희': {'total_data': [900, 0, 0, 0]},
+  //     '양승현': {'total_data': [900, 0, 0, 0]},
+  //     '김현아': {'total_data': [900, 0, 0, 0]},
+  //     '박태용': {'total_data': [900, 0, 0, 0]},
+  //     '정의영': {'total_data': [900, 0, 0, 0]},
+  //     '박재홍': {'total_data': [900, 0, 0, 0]},
+  //     '종호': {'total_data': [1300, 0, 0, 0]}
+  //   }
+
+  //   await dbService.collection("game").orderBy("write_time","asc").get().then(snapshot => {
+  //     snapshot.docs.map(doc => {
+  //       const winners = doc.data().winners
+  //       const losers = doc.data().losers
+  //       let winnerAverageRating = 0;
+  //       let loserAverageRating = 0;
+  //       let reverse_percentage = 0;
+  //       let percentage = 0;
+  //       let RatingChange = 0;
+  //       let average_rating = 0;
+  //       let rating_gap = 0;
+  //       let standard_deviation = 0;
+  //       let deviation_number = 0;
+  //       let winner1 = 0;
+  //       let winner2 = 0;
+  //       let loser1 = 0;
+  //       let loser2 = 0;
+  //       let winnerRatingBefore = []
+  //       let winnerRatingAfter = []
+  //       let loserRatingBefore = []
+  //       let loserRatingAfter = []
+
+  //       if(winners.length == 1){
+  //         const winnername = winners[0]
+  //         const losername = losers[0]
+  //         winnerAverageRating = playerlist[winnername]["total_data"][0]
+  //         winnerRatingBefore.push(winnerAverageRating)
+  //         loserAverageRating = playerlist[losername]["total_data"][0]
+  //         loserRatingBefore.push(loserAverageRating)
+  
+  //         reverse_percentage = (1/(1+(Math.pow(10,(winnerAverageRating-loserAverageRating)/400)))).toFixed(2)
+  //         percentage = (1-reverse_percentage)*100
+  //         RatingChange = Math.round(reverse_percentage*48)
+  //         winnerRatingAfter.push(winnerRatingBefore[0]+RatingChange)
+  //         loserRatingAfter.push(loserRatingBefore[0]-RatingChange)
+  //       }
+  
+  //       if(winners.length == 2){
+  //         const winner1name = winners[0]
+  //         const winner2name = winners[1]
+  //         const loser1name = losers[0]
+  //         const loser2name = losers[1]
+
+  //         winner1 = playerlist[winner1name]["total_data"]
+  //         winnerRatingBefore.push(winner1[0])
+  //         winner2 = playerlist[winner2name]["total_data"]
+  //         winnerRatingBefore.push(winner2[0])
+  //         loser1 = playerlist[loser1name]["total_data"]
+  //         loserRatingBefore.push(loser1[0])
+  //         loser2 = playerlist[loser2name]["total_data"]
+  //         loserRatingBefore.push(loser2[0])
+         
+  //         if(winner1[0] > winner2[0]){
+  //           winnerAverageRating = (winner1[0] + 2*winner2[0])/3
+  //         } else {
+  //           winnerAverageRating = (2*winner1[0] + winner2[0])/3
+  //         }
+  //         if(loser1[0] > loser2[0]){
+  //           loserAverageRating = (loser1[0] + 2*loser2[0])/3
+  //         } else {
+  //           loserAverageRating = (2*loser1[0] + loser2[0])/3
+  //         }
+          
+  //         rating_gap = winnerAverageRating-loserAverageRating
+  //         reverse_percentage = (1/(1+(Math.pow(10,rating_gap/400)))).toFixed(2)
+  //         percentage = Math.round((1-reverse_percentage)*100)
+  //         RatingChange = Math.round(reverse_percentage*36)
+    
+  //         average_rating = Math.round((winner1[0]+winner2[0]+loser1[0]+loser2[0])/4)
+  //         standard_deviation = Math.sqrt((winner1[0]-average_rating)**2 + (winner2[0]-average_rating)**2 +(loser1[0]-average_rating)**2 +(loser2[0]-average_rating)**2)
+  //         if (standard_deviation < 800){
+  //           deviation_number = Math.sqrt((800-standard_deviation)/800)
+  //         }
+
+  //         RatingChange = Math.round(deviation_number*RatingChange)
+  //         if(RatingChange == 0){
+  //           RatingChange = 1
+  //         }
+  //         winnerRatingAfter.push(winnerRatingBefore[0]+RatingChange)
+  //         winnerRatingAfter.push(winnerRatingBefore[1]+RatingChange)
+  //         loserRatingAfter.push(loserRatingBefore[0]-RatingChange)
+  //         loserRatingAfter.push(loserRatingBefore[1]-RatingChange)
+  //       }
+
+  //       const game_object = {
+  //         date : doc.data().date,
+  //         percentage: Math.round(percentage),
+  //         ratingChange : RatingChange,
+  //         winners : winners,
+  //         winnerRatingBefore : winnerRatingBefore,
+  //         winnerRatingAfter: winnerRatingAfter,
+  //         losers : losers,
+  //         loserRatingBefore: loserRatingBefore,
+  //         loserRatingAfter: loserRatingAfter,
+  //         write_time: doc.data().write_time
+  //       }
+  //       console.log(game_object)
+  //       dbService.collection("KOTC").doc("group_data").collection("games").doc(doc.data().date +"-"+ doc.data().write_time).set(game_object)
+  //       winners.map(winner => {
+  //         playerlist[winner]["total_data"][0] = playerlist[winner]["total_data"][0]+RatingChange
+  //         playerlist[winner]["total_data"][1] = playerlist[winner]["total_data"][1]+1
+  //         playerlist[winner]["total_data"][2] = playerlist[winner]["total_data"][2]+1
+  //         dbService.collection("KOTC").doc("group_data").collection("players").doc(winner).collection("game_record").doc(doc.data().date +"-"+ doc.data().write_time).set(game_object)
+  //       })
+  //        losers.map(loser => {
+  //         playerlist[loser]["total_data"][0] = playerlist[loser]["total_data"][0]-RatingChange
+  //         playerlist[loser]["total_data"][1] = playerlist[loser]["total_data"][1]+1
+  //         playerlist[loser]["total_data"][3] = playerlist[loser]["total_data"][3]+1
+  //         dbService.collection("KOTC").doc("group_data").collection("players").doc(loser).collection("game_record").doc(doc.data().date +"-"+ doc.data().write_time).set(game_object)
+  //       })
+  //     })
+  //   })
+
+  //   dbService.collection("KOTC").doc("group_data").collection("players").get().then(snapshot => {
+  //     snapshot.docs.map(player => {
+  //       const name = player.data().name
+  //       dbService.collection("KOTC").doc("group_data").collection("players").doc(name).update({
+  //         rating: playerlist[name]["total_data"][0],
+  //         game_all: playerlist[name]["total_data"][1],
+  //         game_win: playerlist[name]["total_data"][2],
+  //         game_lose: playerlist[name]["total_data"][3]
   //       })
   //     })
   //   })
@@ -614,7 +778,8 @@ const Community = ({groupName}) => {
       <div className={styles.postMain}>
         {showImage && modal}
         {writeMode && postMaker}
-        {/* <button onClick={test}>데이터처리</button> */}
+        {/* <button onClick={test}>데이터처리</button>
+        <button onClick={reset}>초기화</button> */}
         <div className={writeMode ? styles.postListactive : styles.postList}>
           {userObj.displayName
             ? <>{postMakeBtn}</>
