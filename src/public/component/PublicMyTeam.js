@@ -14,6 +14,10 @@ const MyTeam = () => {
 
   useEffect(async () => {
     const querySnapshot = await dbService.collection('whole_users').doc(userObj.uid).collection('joined_group').get()
+    console.log(querySnapshot.docs);
+    if(querySnapshot.docs.length === 0){
+      // 여기에 KOTC 카드
+    }
 
     querySnapshot.forEach((doc) => {
       let singleInfoObj = {}
