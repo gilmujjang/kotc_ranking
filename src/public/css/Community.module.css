@@ -8,7 +8,7 @@
 .titleInput { margin:8px; width: 70%; height: 40px;}
 .buttons{width: 100%; text-align: center; border-top: 1px solid gray;} 
 .submitButton { width: 64px; height: 24px; font-size: 16px; border: none; background: white; border-radius: 5px; margin-top: 12px;}
-.writeModeBtn {height: 70%; width: 20%; margin: 8px; padding-right: 12px; padding-left: 12px; border-radius: 10%;}
+.writeModeBtn {height: 48px; width: 96px; margin: 8px; padding-right: 12px; padding-left: 12px; border-radius: 10%;}
 .postMakeBtn{ margin: 16px; padding:10px;background-color: white; box-shadow : 2px 2px 5px #999; display: flex; align-items: center; justify-content: space-between;}
 .userProfile{width: 48px; height: 48px; border-radius: 50%;}
 .postHeader{display: flex; padding-left: 8px; padding-left: 8px; padding-right: 8px;}
