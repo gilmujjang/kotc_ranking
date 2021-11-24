@@ -597,8 +597,6 @@ const Community = ({groupName}) => {
       <div className={styles.postMain}>
         {showImage && modal}
         {writeMode && postMaker}
-        {/* <button onClick={test}>데이터처리</button>
-        <button onClick={reset}>초기화</button> */}
         <div className={writeMode ? styles.postListactive : styles.postList}>
           {userObj.displayName
             ? <>{postMakeBtn}</>
