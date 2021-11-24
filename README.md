@@ -1,5 +1,7 @@
 # Play, And[Play, &]
 
+https://playn.netlify.app/
+
 ## 개요
 테니스 동아리 활동과 Ello Rating System에 착안하여 시작한 프로젝트입니다.<br />
 Play And 라는 이름은 즐겁게 운동한 이후의 여운을 해소한다는 의미를 함축적으로 표현하였습니다.
