@@ -45,9 +45,9 @@ const MemberDetailModal = ({ isModalOpen, setIsModalOpen, groupName, playerDetai
 
   const periodFilter = (
     <>
-      <div className={classNames({["button"]: true, [styles.button__memberDetail]: true})} onClick={periodFilterHandler} data-period="10">10일</div>
       <div className={classNames({["button"]: true, [styles.button__memberDetail]: true})} onClick={periodFilterHandler} data-period="30">30일</div>
       <div className={classNames({["button"]: true, [styles.button__memberDetail]: true})} onClick={periodFilterHandler} data-period="60">60일</div>
+      <div className={classNames({["button"]: true, [styles.button__memberDetail]: true})} onClick={periodFilterHandler} data-period="90">90일</div>
     </>
   )
 

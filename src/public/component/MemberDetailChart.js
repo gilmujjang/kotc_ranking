@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 
 const MemberDetailChart = ({ chartMode, period, playersGame, playerDetailTarget }) => {
-  console.log(playersGame);
   // userMatch에서 rating 가져오기
   function getRating(STD_Date) {
     const wanted = playersGame.find(el => el.date - STD_Date <= 0) ? playersGame.find(el => el.date - STD_Date <= 0) : playerDetailTarget.start_rating
@@ -33,15 +32,14 @@ const MemberDetailChart = ({ chartMode, period, playersGame, playerDetailTarget 
   }
     
   function getToday() {
-    const date = new Date()  
+    const date = new Date('June 05, 2021 12:00:00'); 
 
     return getDate(date)
   }
 
   function lastDays(day) {
-    const date = new Date()
+    const date = new Date('June 05, 2021 12:00:00'); 
     const dayOfDate = date.getDate()
-    
     date.setDate(dayOfDate - day)  
     
     return getDate(date)
@@ -74,11 +72,11 @@ const MemberDetailChart = ({ chartMode, period, playersGame, playerDetailTarget 
 
   const dataLabels = () => {
     switch(period) {
-      case '10':
-          return getDataLabels(period)
       case '30':
           return getDataLabels(period)
       case '60':
+          return getDataLabels(period)
+      case '90':
           return getDataLabels(period)
       default:
           break;
@@ -88,20 +86,20 @@ const MemberDetailChart = ({ chartMode, period, playersGame, playerDetailTarget 
   const datas = () => {
     if(chartMode === 'rating') {
       switch(period) {
-        case '10':
-          return getDatas(period)
         case '30':
           return getDatas(period)
         case '60':
+          return getDatas(period)
+        case '90':
           return getDatas(period)
         default:
           break;
       }
     } else {
       switch(period) {
-        case '10':
         case '30':
         case '60':
+        case '90':
         default:
           break;
       }
