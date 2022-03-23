@@ -14,8 +14,6 @@ const group_main = () => {
   const { group } = router.query;
 
   const groupName = group;
-  console.log(group, groupName);
-  console.log("hi");
   const [content, setContent] = useState("community");
   const [groupPlayers, setGroupPlayers] = useState([]);
   const [wholeGames, setWholeGames] = useState([]);
@@ -72,7 +70,6 @@ const group_main = () => {
       getWholeGames();
     }
   }, [router]);
-  console.log("hi");
 
   return (
     <div className={styles.publicContainer}>
