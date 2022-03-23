@@ -19,7 +19,6 @@ const GroupJoinWant = ({group}) => {
           uid: doc.data().uid,
           introduce: doc.data().introduce,
         }
-        console.log(userObject)
         setawaitorlist(awaitorlist => [...awaitorlist, userObject]);
       })
     })
@@ -82,8 +81,6 @@ const GroupJoinWant = ({group}) => {
 
   const joinDeny = (e, user) => {
     // joinlist에서 해당유저 삭제
-    console.log("가입 거절");
-    console.log(user.user.uid)
     dbService.collection(group).doc("group_data").collection("awaitors").doc(user.user.uid).delete();
     setRefresh(!refresh)
   }

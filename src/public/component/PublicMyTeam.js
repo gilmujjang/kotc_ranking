@@ -14,6 +14,19 @@ const MyTeam = () => {
 
   useEffect(async () => {
     const querySnapshot = await dbService.collection('whole_users').doc(userObj.uid).collection('joined_group').get()
+    if(querySnapshot.docs.length === 0){
+      // 여기에 KOTC 카드
+      let singleInfoObj = {joined_date: 20000000};
+      dbService.collection('KOTC').doc('group_information').get().then((small_doc) => {
+        singleInfoObj.group_name = small_doc.data().group_name,
+        singleInfoObj.group_introduce = small_doc.data().group_introduce,
+        singleInfoObj.number_of_member = small_doc.data().number_of_member,
+        singleInfoObj.created_date = small_doc.data().created_date
+      })
+      .then(() => {
+        setMyTeamInfo([singleInfoObj]);
+      })
+    }
 
     querySnapshot.forEach((doc) => {
       let singleInfoObj = {}
