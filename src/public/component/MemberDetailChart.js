@@ -1,126 +1,135 @@
-import { useEffect } from 'react'
-import { Line } from 'react-chartjs-2'
+import { useEffect } from "react";
+import { Line } from "react-chartjs-2";
 
-const MemberDetailChart = ({ chartMode, period, playersGame, playerDetailTarget }) => {
-  // userMatch에서 rating 가져오기
+const MemberDetailChart = ({
+  chartMode,
+  period,
+  playersGame,
+  playerDetailTarget,
+}) => {
   function getRating(STD_Date) {
-    const wanted = playersGame.find(el => el.date - STD_Date <= 0) ? playersGame.find(el => el.date - STD_Date <= 0) : playerDetailTarget.start_rating
+    const wanted = playersGame.find((el) => el.date - STD_Date <= 0)
+      ? playersGame.find((el) => el.date - STD_Date <= 0)
+      : playerDetailTarget.start_rating;
 
-    if(typeof wanted === 'number' || typeof wanted === 'string') {
-      return Number(wanted)
-    } else if(wanted.winners.includes(playerDetailTarget.name)) {
-      return wanted.winnerRatingAfter[wanted.winners.indexOf(playerDetailTarget.name)]
-    } else if(wanted.losers.includes(playerDetailTarget.name)) {
-      return wanted.loserRatingAfter[wanted.losers.indexOf(playerDetailTarget.name)]
+    if (typeof wanted === "number" || typeof wanted === "string") {
+      return Number(wanted);
+    } else if (wanted.winners.includes(playerDetailTarget.name)) {
+      return wanted.winnerRatingAfter[
+        wanted.winners.indexOf(playerDetailTarget.name)
+      ];
+    } else if (wanted.losers.includes(playerDetailTarget.name)) {
+      return wanted.loserRatingAfter[
+        wanted.losers.indexOf(playerDetailTarget.name)
+      ];
     }
   }
 
   function getDate(STD_Date) {
-    let year = STD_Date.getFullYear()
-    let month = STD_Date.getMonth() + 1
-    let day = STD_Date.getDate()
+    let year = STD_Date.getFullYear();
+    let month = STD_Date.getMonth() + 1;
+    let day = STD_Date.getDate();
 
-    month = month >= 10 ? month : `0${month}`
-    day = day >= 10 ? day : `0${day}`
+    month = month >= 10 ? month : `0${month}`;
+    day = day >= 10 ? day : `0${day}`;
 
-    return `${year}${month}${day}`
+    return `${year}${month}${day}`;
   }
 
-  // 1월달에만 년도 출력하도록 변경하기
   function getNewDateForm(STD_Date) {
-    return `${STD_Date.slice(4, 6)}월 ${STD_Date.slice(6)}일`
+    return `${STD_Date.slice(4, 6)}월 ${STD_Date.slice(6)}일`;
   }
-    
-  function getToday() {
-    const date = new Date('June 05, 2021 12:00:00'); 
 
-    return getDate(date)
+  function getToday() {
+    const date = new Date("June 05, 2021 12:00:00");
+
+    return getDate(date);
   }
 
   function lastDays(day) {
-    const date = new Date('June 05, 2021 12:00:00'); 
-    const dayOfDate = date.getDate()
-    date.setDate(dayOfDate - day)  
-    
-    return getDate(date)
+    const date = new Date("June 05, 2021 12:00:00");
+    const dayOfDate = date.getDate();
+    date.setDate(dayOfDate - day);
+
+    return getDate(date);
   }
 
-  // period에 따라 labels array 생성
   const getDataLabels = (period) => {
-    let dataLabels = []  
+    let dataLabels = [];
 
-    for(let i = 0; i < period; i++) {
-        dataLabels.push(getNewDateForm(lastDays(period - i)))
+    for (let i = 0; i < period; i++) {
+      dataLabels.push(getNewDateForm(lastDays(period - i)));
     }
 
-    dataLabels.push(getNewDateForm(getToday()))  
+    dataLabels.push(getNewDateForm(getToday()));
 
-    return dataLabels
-  }
+    return dataLabels;
+  };
 
-  // period에 따라 datas 생성
   const getDatas = (period) => {
-    let datas = []
+    let datas = [];
 
-    for(let i = 0; i < period; i ++) {
-        datas.push(getRating(lastDays(period - i)))
+    for (let i = 0; i < period; i++) {
+      datas.push(getRating(lastDays(period - i)));
     }
-    datas.push(getRating(getToday()))
+    datas.push(getRating(getToday()));
 
-    return datas
-  }
+    return datas;
+  };
 
   const dataLabels = () => {
-    switch(period) {
-      case '30':
-          return getDataLabels(period)
-      case '60':
-          return getDataLabels(period)
-      case '90':
-          return getDataLabels(period)
+    switch (period) {
+      case "30":
+        return getDataLabels(period);
+      case "60":
+        return getDataLabels(period);
+      case "90":
+        return getDataLabels(period);
       default:
-          break;
+        break;
     }
-  }
+  };
 
   const datas = () => {
-    if(chartMode === 'rating') {
-      switch(period) {
-        case '30':
-          return getDatas(period)
-        case '60':
-          return getDatas(period)
-        case '90':
-          return getDatas(period)
+    if (chartMode === "rating") {
+      switch (period) {
+        case "30":
+          return getDatas(period);
+        case "60":
+          return getDatas(period);
+        case "90":
+          return getDatas(period);
         default:
           break;
       }
     } else {
-      switch(period) {
-        case '30':
-        case '60':
-        case '90':
+      switch (period) {
+        case "30":
+        case "60":
+        case "90":
         default:
           break;
       }
     }
-  }
+  };
 
   return (
     <Line
       data={{
         labels: dataLabels(),
-        datasets: [{
-          label: 'Rating',
-          data: datas(),
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
+        datasets: [
+          {
+            label: "Rating",
+            data: datas(),
+            fill: false,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.1,
+          },
+        ],
       }}
       options={{ maintainAspectRatio: false }}
     />
-  )
-}
+  );
+};
 
-export default MemberDetailChart
+export default MemberDetailChart;

@@ -12,7 +12,6 @@ import { Icon } from "semantic-ui-react";
 import UserObjContext from "../../contextAPI/UserObjContext";
 
 const Community = ({ groupName }) => {
-  // 요렇게 불러오면 됩니다.
   const [userObj, setUserObj] = useContext(UserObjContext);
 
   const [writeMode, setWriteMode] = useState(false);
@@ -131,24 +130,24 @@ const Community = ({ groupName }) => {
 
   function rightNow() {
     let now = new Date();
-    let year = now.getFullYear(); // 년도
-    let month = now.getMonth() + 1; // 월
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
     if (month < 10) {
       month = 0 + "" + month;
     }
-    let date = now.getDate(); // 날짜
+    let date = now.getDate();
     if (date < 10) {
       date = 0 + "" + date;
     }
-    let hours = now.getHours(); // 시
+    let hours = now.getHours();
     if (hours < 10) {
       hours = 0 + "" + hours;
     }
-    let minutes = now.getMinutes(); // 분
+    let minutes = now.getMinutes();
     if (minutes < 10) {
       minutes = 0 + "" + minutes;
     }
-    let seconds = now.getSeconds(); // 초
+    let seconds = now.getSeconds();
     if (seconds < 10) {
       seconds = 0 + "" + seconds;
     }
@@ -213,7 +212,7 @@ const Community = ({ groupName }) => {
       .doc(post.post.date)
       .collection("comments")
       .doc(time)
-      .set(commentinfo); //동시에 댓글을 달면 데이터가 겹쳐짐
+      .set(commentinfo);
     setComment("");
 
     const neweverypost = everyPost.map((page) => {
@@ -782,7 +781,7 @@ const Community = ({ groupName }) => {
           쓰기
         </div>
       </div>
-      {post.commentshow && ( //댓글작성, 보기
+      {post.commentshow && (
         <div className={styles.commentsBox}>
           <div className={styles.commentmaker}>
             <img class={styles.commentUserProfile} src={userObj.photoUrl}></img>
