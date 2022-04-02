@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Line } from "react-chartjs-2";
+import getToday from "../function";
 
 const MemberDetailChart = ({
   chartMode,
@@ -25,25 +26,10 @@ const MemberDetailChart = ({
     }
   }
 
-  function getDate(STD_Date) {
-    let year = STD_Date.getFullYear();
-    let month = STD_Date.getMonth() + 1;
-    let day = STD_Date.getDate();
-
-    month = month >= 10 ? month : `0${month}`;
-    day = day >= 10 ? day : `0${day}`;
-
-    return `${year}${month}${day}`;
-  }
+  const date = getToday(new Date("June 05, 2021 12:00:00"));
 
   function getNewDateForm(STD_Date) {
     return `${STD_Date.slice(4, 6)}월 ${STD_Date.slice(6)}일`;
-  }
-
-  function getToday() {
-    const date = new Date("June 05, 2021 12:00:00");
-
-    return getDate(date);
   }
 
   function lastDays(day) {
@@ -61,7 +47,7 @@ const MemberDetailChart = ({
       dataLabels.push(getNewDateForm(lastDays(period - i)));
     }
 
-    dataLabels.push(getNewDateForm(getToday()));
+    dataLabels.push(getNewDateForm(date));
 
     return dataLabels;
   };
@@ -72,7 +58,7 @@ const MemberDetailChart = ({
     for (let i = 0; i < period; i++) {
       datas.push(getRating(lastDays(period - i)));
     }
-    datas.push(getRating(getToday()));
+    datas.push(getRating(date));
 
     return datas;
   };

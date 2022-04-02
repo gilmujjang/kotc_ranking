@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import classNames from "classnames";
+import getToday from "../../src/public/function";
 import { dbService } from "../../src/fbase";
 import styles from "../../src/public/css/public_createGroup.module.css";
 import Top from "../../src/index/component/Top";
@@ -16,6 +17,7 @@ const public_createGroup = () => {
   });
 
   const { group_name, group_introduce } = groupInfo;
+  const today = getToday(new Date());
 
   function getInputChange(e) {
     const { name, value } = e.target;
@@ -23,18 +25,6 @@ const public_createGroup = () => {
       ...groupInfo,
       [name]: value,
     });
-  }
-
-  function getToday() {
-    const today = new Date();
-    const year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    let date = today.getDate();
-
-    month = month >= 10 ? month : `0${month}`;
-    date = date >= 10 ? date : `0${date}`;
-
-    return Number(`${year}${month}${date}`);
   }
 
   function createGroup() {
@@ -58,7 +48,7 @@ const public_createGroup = () => {
                 .then(() => {
                   dbService.collection(group_name).doc("group_information").set(
                     {
-                      created_date: getToday(),
+                      created_date: today,
                       number_of_member: 1,
                     },
                     { merge: true }
@@ -101,8 +91,8 @@ const public_createGroup = () => {
                       group_name: group_name,
                       group_introduce: group_introduce,
                       isAdmin: true,
-                      joined_date: getToday(),
-                      created_date: getToday(),
+                      joined_date: today,
+                      created_date: today,
                       number_of_member: 1,
                     },
                     { merge: true }
